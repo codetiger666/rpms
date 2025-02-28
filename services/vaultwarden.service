@@ -1,0 +1,17 @@
+[Unit]
+Description=Vaultwarden Service
+After=network.target
+
+[Service]
+Type=forking
+User=vaultwarden
+Group=vaultwarden
+EnvironmentFile=/usr/local/vaultwarden/.env
+WorkingDirectory=/usr/local/vaultwarden
+Restart=on-failure
+RestartSec=5s
+ExecStart=/usr/local/vaultwarden/vaultwarden.sh start
+ExecStop=/usr/local/vaultwarden/vaultwarden.sh stop
+
+[Install]
+WantedBy=multi-user.target

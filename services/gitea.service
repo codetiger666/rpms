@@ -1,0 +1,15 @@
+[Unit]
+Description=Gitea Service
+After=network.target
+
+[Service]
+Type=forking
+User=gitea
+Group=gitea
+Restart=on-failure
+RestartSec=5s
+ExecStart=/usr/local/gitea/gitea.sh start
+ExecStop=/usr/local/gitea/gitea.sh stop
+
+[Install]
+WantedBy=multi-user.target

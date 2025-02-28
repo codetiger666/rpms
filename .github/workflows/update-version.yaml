@@ -1,0 +1,118 @@
+name: update-version
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *'
+
+jobs:
+  update-version:
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: git init
+        run: |
+          git config --global user.email ${{ secrets.email }}
+          git config --global user.name "codetiger666"
+          git config pull.rebase false
+      
+      - name: get new version
+        run: |
+          while IFS= read -r line || [[ -n "$line" ]]; do
+            # 使用 '=' 分隔行
+            IFS='=' read -r program version repo <<< "$line"
+            # 去除 key 和 value 两边的空白（可选）
+            program=$(echo "$program" | xargs)
+            version=$(echo "$version" | xargs)
+            repo=$(echo "$repo" | xargs)
+            if [[ -z "$program" || -z "$version" || -z "$repo" ]]; then
+              # 如果任意一个变量为空，跳过当前循环迭代
+              continue
+            fi
+            new_version=$(curl -s https://api.github.com/repos/${repo}/releases/latest | jq -r '.tag_name')
+            temp_version=$new_version
+            new_version=$(echo $new_version  | sed 's/^v//')
+            if [ -e "init/${program}.sh" ]; then
+              new_version=$(. init/${program}.sh $new_version)
+            fi            
+            echo "$program获取到的最新版本${new_version}"
+            if [ "$version" = "$new_version" ]; then
+                echo "$program最新版本已经编译过"
+                curl -X POST \
+                --url https://api.telegram.org/bot${{ secrets.TG_BOT_KEY }}/sendMessage \
+                --header 'Accept: */*' \
+                --header 'Accept-Encoding: gzip, deflate, br' \
+                --header 'Connection: keep-alive' \
+                --header 'Content-Type: application/json' \
+                --data "{
+                \"chat_id\": \"${{ secrets.TG_BOT_USER_ID }}\",
+                \"text\": \"\\\\[${program//-/\\\\-}\\\\] \\\\[⭕ 已经编译完成\\\\]\n版本:\`${new_version//./\\\\.}\`\",
+                \"parse_mode\": \"MarkdownV2\",
+                \"reply_markup\": {
+                    \"inline_keyboard\": [
+                        [
+                                {
+                                    \"text\": \"${program} $new_version更新日志\",
+                                    \"url\": \"https://github.com/$repo/releases/tag/$temp_version\"
+                                }
+                        ]
+                    ]
+                }
+                }"
+                sleep 60
+                continue
+            else
+              run_workflow=$(curl https://api.github.com/repos/codetiger666/rpms/actions/runs | jq '.workflow_runs[] | select(.name == "release")' | jq 'select(.status == "queued" or .status == "in_progress")')
+              while true; do
+                # 如果变量 a 为空，跳过当前循环
+                if [ -z "$run_workflow" ]; then
+                  break
+                fi
+                echo "当前有编译任务进行中，等待30s后重试"
+                sleep 30
+                run_workflow=$(curl https://api.github.com/repos/codetiger666/rpms/actions/runs | jq '.workflow_runs[] | select(.name == "release")' | jq 'select(.status == "queued" or .status == "in_progress")')
+              done
+              # 替换版本
+              sed -i "s/$program=$version/$program=$new_version/" version
+              git pull
+              git add .
+              git commit -m "$program更新版本$new_version"
+              git push
+              curl -X POST \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/${{ github.repository }}/actions/workflows/release.yml/dispatches \
+              -d "{\"ref\":\"main\",\"inputs\":{\"program\":\"$program\",\"version\":\"$new_version\",\"release\":\"9\",\"remove\":\"false\",\"ssh\":\"false\"}}"
+              echo "$program触发编译版本:${new_version}"
+              curl -X POST \
+              --url https://api.telegram.org/bot${{ secrets.TG_BOT_KEY }}/sendMessage \
+              --header 'Accept: */*' \
+              --header 'Accept-Encoding: gzip, deflate, br' \
+              --header 'Connection: keep-alive' \
+              --header 'Content-Type: application/json' \
+              --data "{
+              \"chat_id\": \"${{ secrets.TG_BOT_USER_ID }}\",
+              \"text\": \"\\\\[${program//-/\\\\-}\\\\] \\\\[🟢 触发编译\\\\]\n版本：\`${new_version//./\\\\.}\`\",
+              \"parse_mode\": \"MarkdownV2\",
+              \"reply_markup\": {
+                  \"inline_keyboard\": [
+                      [
+                              {
+                                  \"text\": \"${program}$new_version更新日志\",
+                                  \"url\": \"https://github.com/$repo/releases/tag/$temp_version\"
+                              }
+                      ]
+                  ]
+              }
+              }"
+              sleep 60
+            fi
+          done < version
+
+      - name: Remove workflow runs
+        uses: GitRML/delete-workflow-runs@main
+        with:
+          retain_days: 1
+          keep_minimum_runs: 3
