@@ -4,7 +4,7 @@ nezha-server=1.9.6=nezhahq/nezha
 onedrive=2.5.4=abraunegg/onedrive
 openssh=9.9p2=openssh/openssh-portable
 frp=0.61.1=fatedier/frp
-gitea=1.23.4=go-gitea/gitea
+gitea=1.23.5=go-gitea/gitea
 alist=3.42.0=AlistGo/alist
 vaultwarden=1.33.2=dani-garcia/vaultwarden
 hysteria=2.6.1=apernet/hysteria
