@@ -55,6 +55,7 @@ if [ $1 == 1 ]; then
     mkdir -p /var/log/nginx
     chown -R nginx:nginx /var/log/nginx
     mkdir -p /usr/local/nginx/conf.d
+    mkdir -p /home/wwwlogs || true
 fi
 
 # 卸载前准备
