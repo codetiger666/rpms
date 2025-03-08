@@ -32,7 +32,7 @@ CFLAGS="-fPIC" ./configure --prefix=/usr/local/nginx --sbin-path=/usr/sbin/nginx
 --with-http_auth_request_module --with-http_random_index_module --with-select_module --with-poll_module --with-file-aio --with-http_degradation_module --with-libatomic \
 --http-client-body-temp-path=/var/tmp/nginx/client_body --http-proxy-temp-path=/var/tmp/nginx/proxy --http-fastcgi-temp-path=/var/tmp/nginx/fastcgi \
 --http-uwsgi-temp-path=/var/tmp/nginx/uwsgi --http-scgi-temp-path=/var/tmp/nginx/scgi --add-module=/opt/nginx-upstream-dynamic-servers \
---add-module=/opt/ngx_upstream_jdomain --with-stream_realip_module -j6
+--add-module=/opt/ngx_upstream_jdomain --with-stream_realip_module --with-stream_proxy_protocol_module -j6
 make -j6
 
 # 安装
