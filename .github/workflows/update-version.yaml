@@ -78,7 +78,7 @@ jobs:
               sed -i "s/$program=$version/$program=$new_version/" version
               git pull
               git add .
-              git commit -m "$program更新版本$new_version"
+              git commit -m "chore: $program更新版本$new_version"
               git push
               curl -X POST \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
