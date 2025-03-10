@@ -11,8 +11,8 @@ Source1:        nginx.conf
 Source2:        nginx.service
 Source3:        default.conf
 
-BuildRequires:  pcre pcre-devel openssl-devel gcc gd libxslt-devel libxml2-devel geoip-devel libatomic_ops-devel libstdc++ perl-ExtUtils-Embed gd-devel
-Requires:       pcre openssl cmake gcc libxml2 libxslt gd geoip libstdc++ perl
+BuildRequires:  gcc cmake pcre-devel zlib-devel libxml2-devel libxslt-devel gd-devel geoip-devel libatomic_ops-devel openssl-devel perl-devel
+Requires:       pcre openssl libxml2 libxslt gd geoip perl
 
 # 描述
 %description
