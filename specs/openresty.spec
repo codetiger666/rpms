@@ -13,7 +13,7 @@ Source3:        default.conf
 Source4:        stream.conf.example
 Source5:        ssl.conf.example
 
-BuildRequires:  gcc cmake pcre-devel zlib-devel libxml2-devel libxslt-devel gd-devel geoip-devel libatomic_ops-devel openssl-devel perl-devel
+BuildRequires:  gcc make pcre-devel zlib-devel libxml2-devel libxslt-devel gd-devel geoip-devel libatomic_ops-devel openssl-devel perl-devel
 Requires:       pcre openssl libxml2 libxslt gd geoip perl
 
 # 描述
