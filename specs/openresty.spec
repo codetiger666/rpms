@@ -10,6 +10,8 @@ Source0:        https://openresty.org/download/%{name}-%{version}.tar.gz
 Source1:        nginx.conf
 Source2:        nginx.service
 Source3:        default.conf
+Source4:        stream.conf.example
+Source5:        ssl.conf.example
 
 BuildRequires:  gcc cmake pcre-devel zlib-devel libxml2-devel libxslt-devel gd-devel geoip-devel libatomic_ops-devel openssl-devel perl-devel
 Requires:       pcre openssl libxml2 libxslt gd geoip perl
@@ -40,6 +42,8 @@ make -j6
 make install DESTDIR=%{buildroot}
 %{__install} -p -D -m 0644 %{SOURCE1} %{buildroot}%{prefix}/nginx.conf
 %{__install} -p -D -m 0644 %{SOURCE3} %{buildroot}%{prefix}/conf.d/default.conf
+%{__install} -p -D -m 0644 %{SOURCE4} %{buildroot}%{prefix}/conf.d/stream.example
+%{__install} -p -D -m 0644 %{SOURCE5} %{buildroot}%{prefix}/conf.d/ssl.conf.example
 %{__install} -p -D -m 0644 %{SOURCE2} %{buildroot}%{_usr}/lib/systemd/system/nginx.service
 
 # 安装前准备
