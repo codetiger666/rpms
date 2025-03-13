@@ -1,0 +1,14 @@
+[Unit]
+Description=Xray start stop
+After=network-online.target
+
+[Service]
+User=xray
+Group=xray
+Type=forking
+WorkingDirectory=/usr/local/xray
+ExecStart=/usr/local/xray/xray.sh start
+ExecStop=/usr/local/xray/xray.sh stop
+
+[Install]
+WantedBy=multi-user.target
