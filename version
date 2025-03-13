@@ -10,3 +10,4 @@ vaultwarden=1.33.2=dani-garcia/vaultwarden=release
 hysteria=2.6.1=apernet/hysteria=release=sed 's/v//' | sed 's/app\///'
 openssl=3.2.4=openssl/openssl=release=echo $(curl https://api.github.com/repos/openssl/openssl/releases | jq -r '.[].tag_name' | grep '^openssl-3.2.' | head -n1 | sed 's/openssl-//')=new
 xray=25.3.6=XTLS/Xray-core=release=sed 's/v//'
+nodejs=20.18.2=nodejs/node=release=echo $(curl https://api.github.com/repos/nodejs/node/releases | jq -r '.[].tag_name' | grep '^v20' | head -n1 | sed 's/v//')=new
