@@ -7,7 +7,7 @@ Epoch:          2
 
 License:        GPL
 URL:            https://gybyt.cn
-Source0:        https://github.com/XTLS/Xray-core/releases/download/%{name}-%{version}.tar.gz
+Source0:        https://github.com/nodejs/nodejs/releases/download/%{name}-%{version}.tar.gz
 # 禁用依赖推断
 AutoReqProv:    no
 

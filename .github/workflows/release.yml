@@ -21,6 +21,7 @@ on:
             - openssl
             - xray
             - nodejs
+            - uptime-kuma
         version:
           description: '软件版本'
           required: true

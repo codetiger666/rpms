@@ -1,0 +1,3 @@
+WORK_DATA=/usr/local/uptime-kuma/data
+WORK_PORT=3001
+WORK_HOST=localhost
