@@ -116,6 +116,7 @@ jobs:
       - name: init ${{ github.event.inputs.program }}-${{ matrix.arch }}
         run: |
           source $HOME/.profile
+          source init/common.sh
           if [ -f "./scripts/${{ github.event.inputs.program }}.sh" ];
           then
             source ./scripts/${{ github.event.inputs.program }}.sh

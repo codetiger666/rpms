@@ -2,7 +2,7 @@ openresty=1.25.3.2=openresty/openresty=release=sed 's/v//'
 nezha-agent=1.9.5=nezhahq/agent=release=sed 's/v//'
 nezha-server=1.9.9=nezhahq/nezha=release=sed 's/v//'
 onedrive=2.5.4=abraunegg/onedrive=release=sed 's/v//'
-openssh=9.9p2=openssh/openssh-portable=tag=sed 's/V_\([0-9]*\)_\([0-9]*\)_P\([0-9]*\)/\1.\2p\3/'
+openssh=9.9p2=openssh/openssh-portable=tag
 frp=0.61.2=fatedier/frp=release=sed 's/v//'
 gitea=1.23.5=go-gitea/gitea=release=sed 's/v//'
 alist=3.42.0=AlistGo/alist=release=sed 's/v//'
