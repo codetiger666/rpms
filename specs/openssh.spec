@@ -123,6 +123,7 @@ fi
 %{_usr}/bin/ssh-add
 %{_usr}/bin/ssh-agent
 %{_usr}/bin/ssh-keyscan
+%{_usr}/libexec/sshd-auth
 %config(noreplace) /etc/ssh/ssh_config
 %{_usr}/share/man/man1/scp.1.gz
 %{_usr}/share/man/man1/sftp.1.gz
