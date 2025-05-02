@@ -1,6 +1,6 @@
 openresty=1.25.3.2=openresty/openresty=release=sed 's/v//'
 nezha-agent=1.12.1=nezhahq/agent=release=sed 's/v//'
-nezha-server=1.12.2=nezhahq/nezha=release=sed 's/v//'
+nezha-server=1.12.3=nezhahq/nezha=release=sed 's/v//'
 onedrive=2.5.5=abraunegg/onedrive=release=sed 's/v//'
 openssh=10.0.P2=openssh/openssh-portable=tag=sed 's/V_//g; s/_/./g'
 frp=0.62.1=fatedier/frp=release=sed 's/v//'
