@@ -4,19 +4,39 @@ APP_NAME=onedrive
 # 应用运行目录
 PROGRAM_PATH=$(dirname "$(realpath "$0")")
 
+find_run_command() {
+    ps -ef | grep ${APP_NAME} | grep -v $0 | grep -vE "ps|grep|systemd --user|sd-pam|awk|xargs|systemctl"
+}
+
+get_status() {
+    if find_run_command > /dev/null ; then
+        return 1
+    else
+        return 0
+    fi
+}
+
 case "$1" in
 start)
+    get_status
+    if [ $? -eq 1 ]; then
+        echo "${APP_NAME} is runing..."
+        exit 0
+    fi
     ${APP_NAME} --confdir $PROGRAM_PATH/conf -m > $PROGRAM_PATH/$APP_NAME.log 2>&1 &
     echo $! > $PROGRAM_PATH/$APP_NAME.pid
     ;;
 stop)
-    if [ -e ${PROGRAM_PATH}/${APP_NAME}.pid ];then
-        kill $(cat ${PROGRAM_PATH}/${APP_NAME}.pid)
+    get_status
+    if [ $? -eq 1 ]; then
+        find_run_command | awk '{print $2}' | xargs -I {} kill {}
         rm $PROGRAM_PATH/$APP_NAME.pid
+        rm $PROGRAM_PATH/$APP_NAME.log
     fi
     ;;
 status)
-    if [ -e ${PROGRAM_PATH}/${APP_NAME}.pid ];then
+    get_status
+    if [ $? -eq 1 ]; then
         echo "${APP_NAME} is runing..."
     else
         echo "${APP_NAME} is not runing..."
@@ -24,6 +44,7 @@ status)
     ;;
 restart)
     $0 stop
+    sleep 5
     $0 start
     ;;
 *)
