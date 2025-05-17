@@ -9,6 +9,6 @@ alist=3.44.0=AlistGo/alist=release=sed 's/v//'
 vaultwarden=1.33.2=dani-garcia/vaultwarden=release
 hysteria=2.6.1=apernet/hysteria=release=sed 's/v//' | sed 's/app\///'
 openssl=3.2.4=openssl/openssl=release=echo $(curl https://api.github.com/repos/openssl/openssl/releases | jq -r '.[].tag_name' | grep '^openssl-3.2.' | head -n1 | sed 's/openssl-//')=new
-xray=25.4.30=XTLS/Xray-core=release=sed 's/v//'
+xray=25.5.16=XTLS/Xray-core=release=sed 's/v//'
 nodejs=20.19.2=nodejs/node=release=echo $(curl https://api.github.com/repos/nodejs/node/releases | jq -r '.[].tag_name' | grep '^v20' | head -n1 | sed 's/v//')=new
 uptime-kuma=1.23.16=louislam/uptime-kuma=release
