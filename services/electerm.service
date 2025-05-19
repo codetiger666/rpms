@@ -1,0 +1,13 @@
+[Unit]
+Description=Electerm start stop
+After=network-online.target
+
+[Service]
+User=electerm
+Group=electerm
+Type=forking
+ExecStart=/usr/local/electerm/electerm.sh start
+ExecStop=/usr/local/electerm/electerm.sh stop
+
+[Install]
+WantedBy=multi-user.target

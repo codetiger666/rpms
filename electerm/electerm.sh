@@ -1,6 +1,6 @@
 #!/bin/bash
 # 应用名称
-APP_NAME=uptime-kuma
+APP_NAME=electerm
 # 应用运行目录
 PROGRAM_PATH=$(dirname "$(realpath "$0")")
 
@@ -26,7 +26,7 @@ start)
         exit 0
     fi
     cd ${PROGRAM_PATH}/app
-    node server/server.js --port=${WORK_PORT} --data-dir=${WORK_DATA} --host=${WORK_HOST} --$APP_NAME > $PROGRAM_PATH/$APP_NAME.log 2>&1 &
+    NODE_ENV=production PORT=${WORK_PORT} DB_PATH=${WORK_DATA} HOST=${WORK_HOST} SERVER_SECRET=${APP_SECRET} SERVER_PASS=${APP_PASS} ENABLE_AUTH=1 node ${PROGRAM_PATH}/app/src/app/app.js --$APP_NAME > $PROGRAM_PATH/$APP_NAME.log 2>&1 &
     echo $! > $PROGRAM_PATH/$APP_NAME.pid
     ;;
 stop)

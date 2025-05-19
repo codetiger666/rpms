@@ -1,0 +1,5 @@
+WORK_DATA=/usr/local/electerm/data
+WORK_PORT=3001
+WORK_HOST=127.0.0.1
+APP_SECRET=
+APP_PASS=

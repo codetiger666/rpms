@@ -22,6 +22,7 @@ on:
             - xray
             - nodejs
             - uptime-kuma
+            - electerm
         version:
           description: '软件版本'
           required: true
