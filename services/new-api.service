@@ -1,0 +1,13 @@
+[Unit]
+Description=New api start stop
+After=network-online.target
+
+[Service]
+User=new-api
+Group=new-api
+Type=forking
+ExecStart=/usr/local/new-api/new-api.sh start
+ExecStop=/usr/local/new-api/new-api.sh stop
+
+[Install]
+WantedBy=multi-user.target
