@@ -150,7 +150,7 @@ jobs:
           path: rpm/rpmbuild/RPMS/${{ matrix.arch }}/${{ github.event.inputs.program }}*-${{ github.event.inputs.version }}-*.el9.${{ matrix.arch }}.rpm
 
   upload:
-    name: update-rpms-${{ github.event.inputs.program }}
+    name: upload-rpms-${{ github.event.inputs.program }}
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -204,6 +204,38 @@ jobs:
           git branch -m release
           git push -f origin release
 
+  update:
+    name: update-version-${{ github.event.inputs.program }}
+    runs-on: ubuntu-latest
+    needs: upload
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      # 初始化环境变量
+      - name: init-env
+        run: |
+          echo "export project_program=${{ github.event.inputs.program }}" >> $HOME/.profile
+          echo "export project_version=${{ github.event.inputs.version }}" >> $HOME/.profile
+          echo "export project_arch=${{ matrix.arch }}" >> $HOME/.profile
+          source $HOME/.profile
+
+      - name: git init
+        run: |
+          git config --global user.email ${{ secrets.email }}
+          git config --global user.name "codetiger666"
+          git config pull.rebase true
+
+      - name: update version
+        run: |
+          # 替换版本
+          echo '开始替换版本'
+          sed -i "s/${{ github.event.inputs.program }}---[0-9.]*/${{ github.event.inputs.program }}---${{ github.event.inputs.version }}/" version
+          echo '替换版本完成'
+          git add .
+          git commit -m "chore: ${{ github.event.inputs.program }} bump version to ${{ github.event.inputs.version }}"
+          git pull && git push
+      
       - name: send tg message
         run: |
           source $HOME/.profile
@@ -218,9 +250,3 @@ jobs:
           \"text\": \"\\\\[${project_program//-/\\\\-}\\\\] \\\\[✅ 编译成功\\\\]\n版本\`${project_version//./\\\\.}\`\",
           \"parse_mode\": \"MarkdownV2\"
           }"
-
-      - name: Remove workflow runs
-        uses: GitRML/delete-workflow-runs@main
-        with:
-          retain_days: 1
-          keep_minimum_runs: 3

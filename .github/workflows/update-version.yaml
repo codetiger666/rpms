@@ -21,47 +21,58 @@ jobs:
       - name: get new version
         run: |
           source init/common.sh
-          while IFS= read -r line || [[ -n "$line" ]]; do
-            # 使用 '=' 分隔行
-            IFS='=' read -r program version repo location handle new <<< "$line"
-            # 去除 key 和 value 两边的空白（可选）
-            program=$(echo "$program" | xargs)
-            version=$(echo "$version" | xargs)
-            new_version=
-            pkgVersion=$(apply_handle "$handle" "$new_version")
-            if [[ -z "$program" || -z "$version" || -z "$repo" ]]; then
-              # 如果任意一个变量为空，跳过当前循环迭代
+          while IFS= read -r line; do
+          # 跳过空行
+          [[ -z "$line" ]] && continue
+
+          # 使用 awk 分割字段，并用特殊分隔符（如 \x1F）连接
+          formatted_line=$(echo "$line" | awk -F "---" '{
+            for (i=1; i<=6; i++) {  # 假设最多 6 个字段
+              printf "%s\x1F", $i    # 用不可见字符 \x1F 分隔字段
+            }
+            print ""  # 换行
+          }')
+
+          # 设置 IFS 为 \x1F，将字段读入独立变量
+          IFS=$'\x1F' read -r program version repo location handle new <<< "$formatted_line"
+          # 去除 key 和 value 两边的空白（可选）
+          program=$(echo "$program" | xargs)
+          version=$(echo "$version" | xargs)
+          new_version=
+          pkgVersion=$(apply_handle "$handle" "$new_version")
+          if [[ -z "$program" || -z "$version" || -z "$repo" ]]; then
+            # 如果任意一个变量为空，跳过当前循环迭代
+            continue
+          fi
+          new_version=$(get_latest_version "$location" "$repo")
+          temp_version=$new_version
+          new_version=$(apply_handle "$handle" "$new_version" "$new")
+          echo -e "\n$program获取到的最新版本${new_version}"
+          if [ "$version" = "$new_version" ]; then
+              echo "$program最新版本已经编译过"
+              curl -X POST \
+              --url https://api.telegram.org/bot${{ secrets.TG_BOT_KEY }}/sendMessage \
+              --header 'Accept: */*' \
+              --header 'Accept-Encoding: gzip, deflate, br' \
+              --header 'Connection: keep-alive' \
+              --header 'Content-Type: application/json' \
+              --data "{
+              \"chat_id\": \"${{ secrets.TG_BOT_USER_ID }}\",
+              \"text\": \"\\\\[${program//-/\\\\-}\\\\] \\\\[⭕ 已经编译完成\\\\]\n版本:\`${new_version//./\\\\.}\`\",
+              \"parse_mode\": \"MarkdownV2\",
+              \"reply_markup\": {
+                  \"inline_keyboard\": [
+                      [
+                              {
+                                  \"text\": \"${program} $new_version更新日志\",
+                                  \"url\": \"https://github.com/$repo/releases/tag/$temp_version\"
+                              }
+                      ]
+                  ]
+              }
+              }"
+              sleep 60
               continue
-            fi
-            new_version=$(get_latest_version "$location" "$repo")
-            temp_version=$new_version
-            new_version=$(apply_handle "$handle" "$new_version" "$new")
-            echo -e "\n$program获取到的最新版本${new_version}"
-            if [ "$version" = "$new_version" ]; then
-                echo "$program最新版本已经编译过"
-                curl -X POST \
-                --url https://api.telegram.org/bot${{ secrets.TG_BOT_KEY }}/sendMessage \
-                --header 'Accept: */*' \
-                --header 'Accept-Encoding: gzip, deflate, br' \
-                --header 'Connection: keep-alive' \
-                --header 'Content-Type: application/json' \
-                --data "{
-                \"chat_id\": \"${{ secrets.TG_BOT_USER_ID }}\",
-                \"text\": \"\\\\[${program//-/\\\\-}\\\\] \\\\[⭕ 已经编译完成\\\\]\n版本:\`${new_version//./\\\\.}\`\",
-                \"parse_mode\": \"MarkdownV2\",
-                \"reply_markup\": {
-                    \"inline_keyboard\": [
-                        [
-                                {
-                                    \"text\": \"${program} $new_version更新日志\",
-                                    \"url\": \"https://github.com/$repo/releases/tag/$temp_version\"
-                                }
-                        ]
-                    ]
-                }
-                }"
-                sleep 60
-                continue
             else
               run_workflow=$(curl https://api.github.com/repos/codetiger666/rpms/actions/runs | jq '.workflow_runs[] | select(.name == "release")' | jq 'select(.status == "queued" or .status == "in_progress")')
               while true; do
@@ -73,12 +84,6 @@ jobs:
                 sleep 30
                 run_workflow=$(curl https://api.github.com/repos/codetiger666/rpms/actions/runs | jq '.workflow_runs[] | select(.name == "release")' | jq 'select(.status == "queued" or .status == "in_progress")')
               done
-              # 替换版本
-              sed -i "s/$program=$version/$program=$new_version/" version
-              git pull
-              git add .
-              git commit -m "chore: $program bump version to $new_version"
-              git push
               curl -X POST \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github.v3+json" \
