@@ -12,5 +12,5 @@ openssl---3.2.4---openssl/openssl---release---echo $(curl https://api.github.com
 xray---25.5.16---XTLS/Xray-core---release---sed 's/v//'
 nodejs---20.19.2---nodejs/node---release---echo $(curl https://api.github.com/repos/nodejs/node/releases | jq -r '.[].tag_name' | grep '^v20' | head -n1 | sed 's/v//')---new
 uptime-kuma---1.23.16---louislam/uptime-kuma---release
-electerm---1.91.1---electerm/electerm---release---sed 's/v//'
+electerm---1.91.8---electerm/electerm---release---sed 's/v//'
 new-api---0.7.2.4---QuantumNous/new-api---release---sed 's/v//'
