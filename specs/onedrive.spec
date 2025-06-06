@@ -11,7 +11,8 @@ Source2:        config
 Source3:        onedrive.sh
 Source4:        sync_list
 
-BuildRequires:  sqlite-devel     
+BuildRequires:  sqlite-devel dbus-devel
+Requires:       sqlite dbus
 
 # 描述
 %description
