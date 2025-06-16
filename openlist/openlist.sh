@@ -1,6 +1,6 @@
 #!/bin/bash
 PROGRAM_PATH=$(dirname "$(realpath "$0")")
-APP_NAME=alist
+APP_NAME=openlist
 
 source $PROGRAM_PATH/config
 

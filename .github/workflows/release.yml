@@ -14,7 +14,7 @@ on:
             - openssh
             - frp
             - gitea
-            - alist
+            - openlist
             - git
             - vaultwarden
             - hysteria

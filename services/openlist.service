@@ -1,0 +1,14 @@
+[Unit]
+Description=Openlist start stop
+After=network-online.target
+
+[Service]
+User=openlist
+Group=openlist
+Type=forking
+WorkingDirectory=/usr/local/openlist
+ExecStart=/usr/local/openlist/openlist.sh start
+ExecStop=/usr/local/openlist/openlist.sh stop
+
+[Install]
+WantedBy=multi-user.target
