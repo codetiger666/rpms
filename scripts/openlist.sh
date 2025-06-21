@@ -7,7 +7,7 @@ program_init(){
   if [ "${project_arch}" = "aarch64" ]; then
     ARCH=arm64
   fi
-  wget https://github.com/OpenListTeam/OpenList/releases/download/${project_version}/openlist-linux-${ARCH}.tar.gz
+  wget https://github.com/OpenListTeam/OpenList/releases/download/v${project_version}/openlist-linux-${ARCH}.tar.gz
   sudo /bin/cp specs/openlist.spec rpm/rpmbuild/SPECS/openlist.spec
   sudo sed -i "s/codetiger_arch/${ARCH}/g" specs/openlist.spec
   sudo /bin/cp openlist-linux-${ARCH}.tar.gz rpm/rpmbuild/SOURCES
