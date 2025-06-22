@@ -35,6 +35,7 @@ on:
           type: choice
           options:
             - 9
+            - 10
             - 7
         remove:
           description: '是否删除历史版本'
