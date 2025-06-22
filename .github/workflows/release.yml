@@ -28,15 +28,6 @@ on:
           description: '软件版本'
           required: true
           default: '1.0'
-        release:
-          description: '系统版本'
-          required: true
-          default: '9'
-          type: choice
-          options:
-            - 9
-            - 10
-            - 7
         remove:
           description: '是否删除历史版本'
           required: false
@@ -212,17 +203,15 @@ jobs:
               then
                 sudo rm -f redhat/$release/$arch/${{ github.event.inputs.program }}*.$arch.rpm
               fi
-              sudo /bin/cp -ra artifacts/${{ github.event.inputs.program }}-$arch-$release/${{ github.event.inputs.program }}*-${{ github.event.inputs.version }}-*.el$if [ "${{ github.event.inputs.remove }}" = "true" ];
-              then
-                sudo rm -f redhat/${{ github.event.inputs.release }}/$arch/${{ github.event.inputs.program }}*.$arch.rpm
-              fi
-              sudo /bin/cp -ra artifacts/${{ github.event.inputs.program }}-$arch-$release/${{ github.event.inputs.program }}*-${{ github.event.inputs.version }}-*.el$release.$arch.rpm redhat/${{ github.event.inputs.release }}/$arch
+              sudo /bin/cp -ra artifacts/${{ github.event.inputs.program }}-$arch-$release/${{ github.event.inputs.program }}*-${{ github.event.inputs.version }}-*.el$release.$arch.rpm redhat/$release/$arch
             done
           done
           rm -rf $GITHUB_WORKSPACE/artifacts
           rpms=`docker run -itd -v $GITHUB_WORKSPACE:/centos_rpms ghcr.io/codetiger666/images/rocky:${{ github.event.inputs.release }}`
           for arch in "${archs[@]}"; do
-            docker exec -i $rpms createrepo /centos_rpms/redhat/${{ github.event.inputs.release }}/$arch
+            for release in "${releases[@]}"; do
+              docker exec -i $rpms createrepo /centos_rpms/redhat/$release/$arch
+            done
           done
 
       - name: git add
