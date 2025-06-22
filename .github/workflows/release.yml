@@ -60,7 +60,7 @@ env:
 jobs:
 
   build:
-    name: build-rpms-${{ github.event.inputs.program }}-${{ matrix.arch }}
+    name: build-rpms-${{ github.event.inputs.program }}-${{ matrix.arch }}-${{ matrix.release }}
     runs-on: ${{ matrix.arch == 'x86_64' && 'ubuntu-latest' || matrix.arch == 'aarch64' && 'ubuntu-24.04-arm' }}
 
     strategy:
@@ -69,6 +69,9 @@ jobs:
         arch:
           - x86_64
           - aarch64
+        release:
+          - 9
+          - 10
     steps:
       - uses: actions/checkout@v2
 
@@ -109,7 +112,7 @@ jobs:
               exit 0
               ;;
           esac
-          centos=`docker run -itd -v $(pwd)/rpm:/opt ghcr.io/codetiger666/images/rocky:9`
+          centos=`docker run -itd -v $(pwd)/rpm:/opt ghcr.io/codetiger666/images/rocky:${{ matrix.release }}`
           echo "export centos=$centos" >> $HOME/.profile
           source $HOME/.profile
           docker cp $GITHUB_WORKSPACE/.rpmmacros $centos:/root/.rpmmacros
@@ -147,8 +150,8 @@ jobs:
       - name:  upload ${{ github.event.inputs.program }}-${{ matrix.arch }}
         uses: actions/upload-artifact@main
         with:
-          name: ${{ github.event.inputs.program }}-${{ matrix.arch }}
-          path: rpm/rpmbuild/RPMS/${{ matrix.arch }}/${{ github.event.inputs.program }}*-${{ github.event.inputs.version }}-*.el9.${{ matrix.arch }}.rpm
+          name: ${{ github.event.inputs.program }}-${{ matrix.arch }}-${{ matrix.release }}
+          path: rpm/rpmbuild/RPMS/${{ matrix.arch }}/${{ github.event.inputs.program }}*-${{ github.event.inputs.version }}-*.el${{ matrix.release }}.${{ matrix.arch }}.rpm
 
       
       - name: send tg message
@@ -200,14 +203,21 @@ jobs:
         run: |
           source $HOME/.profile
           archs=("x86_64" "aarch64")
-          sudo mkdir -p redhat/${{ github.event.inputs.release }}/${{ github.event.inputs.arch }}/
+          releases=("9" "10")
           git pull
           for arch in "${archs[@]}"; do
-            if [ "${{ github.event.inputs.remove }}" = "true" ];
-            then
-              sudo rm -f redhat/${{ github.event.inputs.release }}/$arch/${{ github.event.inputs.program }}*.$arch.rpm
-            fi
-            sudo /bin/cp -ra artifacts/${{ github.event.inputs.program }}-$arch/${{ github.event.inputs.program }}*-${{ github.event.inputs.version }}-*.el9.$arch.rpm redhat/${{ github.event.inputs.release }}/$arch
+            for release in "${releases[@]}"; do
+              sudo mkdir -p redhat/$release/$arch/
+              if [ "${{ github.event.inputs.remove }}" = "true" ];
+              then
+                sudo rm -f redhat/$release/$arch/${{ github.event.inputs.program }}*.$arch.rpm
+              fi
+              sudo /bin/cp -ra artifacts/${{ github.event.inputs.program }}-$arch-$release/${{ github.event.inputs.program }}*-${{ github.event.inputs.version }}-*.el$if [ "${{ github.event.inputs.remove }}" = "true" ];
+              then
+                sudo rm -f redhat/${{ github.event.inputs.release }}/$arch/${{ github.event.inputs.program }}*.$arch.rpm
+              fi
+              sudo /bin/cp -ra artifacts/${{ github.event.inputs.program }}-$arch-$release/${{ github.event.inputs.program }}*-${{ github.event.inputs.version }}-*.el$release.$arch.rpm redhat/${{ github.event.inputs.release }}/$arch
+            done
           done
           rm -rf $GITHUB_WORKSPACE/artifacts
           rpms=`docker run -itd -v $GITHUB_WORKSPACE:/centos_rpms ghcr.io/codetiger666/images/rocky:${{ github.event.inputs.release }}`
