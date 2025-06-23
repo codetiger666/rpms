@@ -208,8 +208,8 @@ jobs:
             done
           done
           rm -rf $GITHUB_WORKSPACE/artifacts
+          rpms=`docker run -itd -v $GITHUB_WORKSPACE:/centos_rpms ghcr.io/codetiger666/images/rocky:9`
           for release in "${releases[@]}"; do
-            rpms=`docker run -itd -v $GITHUB_WORKSPACE:/centos_rpms ghcr.io/codetiger666/images/rocky:$release`
             for arch in "${archs[@]}"; do
               docker exec -i $rpms createrepo /centos_rpms/redhat/$release/$arch
             done
