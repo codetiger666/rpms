@@ -12,7 +12,8 @@ Source1:        config
 Source2:        uptime-kuma.sh
 Source3:        uptime-kuma.service
 
-Requires:        nodejs >= 2:20.18.3
+Requires:       nodejs >= 2:20.18.3
+Requires:       codetiger-util >= 1.0.0
 
 # 禁用依赖推断
 AutoReqProv:    no

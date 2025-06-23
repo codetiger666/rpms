@@ -12,6 +12,8 @@ Source3:        server.key
 Source4:        server.crt
 Source5:        hysteria.service
 
+Requires:       codetiger-util >= 1.0.0
+
 %description
 
 

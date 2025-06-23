@@ -3,22 +3,9 @@ PROGRAM_PATH=$(dirname "$(realpath "$0")")
 APP_NAME=hysteria
 CONF=$PROGRAM_PATH/config.yaml
 
-find_run_command() {
-    ps -ef | grep ${APP_NAME} | grep -v $0 | grep -vE "ps|grep|systemd --user|sd-pam|awk|xargs|systemctl"
-}
-
-get_status() {
-    if find_run_command > /dev/null ; then
-        return 1
-    else
-        return 0
-    fi
-}
-
 case "$1" in
 start)
-    get_status
-    if [ $? -eq 1 ]; then
+    if /usr/local/codetiger-util/common.sh findRun $APP_NAME $0 > /dev/null ; then
         echo "${APP_NAME} is runing..."
         exit 0
     fi
@@ -26,20 +13,13 @@ start)
     echo $! > $PROGRAM_PATH/$APP_NAME.pid
     ;;
 stop)
-    get_status
-    if [ $? -eq 1 ]; then
-        find_run_command | awk '{print $2}' | xargs -I {} kill {}
+    if /usr/local/codetiger-util/common.sh findRun $APP_NAME $0 > /dev/null ; then
+        /usr/local/codetiger-util/common.sh findRun ${APP_NAME} $0 | awk '{print $1}' | xargs -I {} kill {}
         rm $PROGRAM_PATH/$APP_NAME.pid
-        rm $PROGRAM_PATH/$APP_NAME.log
     fi
     ;;
 status)
-    get_status
-    if [ $? -eq 1 ]; then
-        echo "${APP_NAME} is runing..."
-    else
-        echo "${APP_NAME} is not runing..."
-    fi
+    /usr/local/codetiger-util/common.sh status ${APP_NAME} $0
     ;;
 restart)
     $0 stop

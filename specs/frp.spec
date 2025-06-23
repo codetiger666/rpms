@@ -8,8 +8,9 @@ URL:            https://gybyt.cn
 Source0:        https://github.com/fatedier/frp/releases/download/v%{version}/%{name}_%{version}_linux_codetiger_arch.tar.gz
 Source1:        frpc.service
 Source2:        frps.service
-    
 
+Requires:       codetiger-util >= 1.0.0
+    
 %description
 
 # 编译前准备

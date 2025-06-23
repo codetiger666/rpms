@@ -13,6 +13,7 @@ Source4:        sync_list
 
 BuildRequires:  sqlite-devel dbus-devel
 Requires:       sqlite dbus
+Requires:       codetiger-util >= 1.0.0
 
 # 描述
 %description

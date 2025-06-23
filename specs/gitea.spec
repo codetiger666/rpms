@@ -11,6 +11,7 @@ Source2:        config
 Source3:        gitea.service
     
 Requires:       git openssh-server
+Requires:       codetiger-util >= 1.0.0
 
 %description
 

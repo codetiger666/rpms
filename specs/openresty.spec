@@ -15,6 +15,7 @@ Source5:        ssl.conf.example
 
 BuildRequires:  gcc make pcre-devel zlib-devel libxml2-devel libxslt-devel gd-devel geoip-devel libatomic_ops-devel openssl-devel perl-devel
 Requires:       pcre openssl libxml2 libxslt gd geoip perl
+Requires:       codetiger-util >= 1.0.0
 
 # 描述
 %description

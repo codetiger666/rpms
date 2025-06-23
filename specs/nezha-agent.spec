@@ -10,6 +10,8 @@ Source1:        nezha-agent.service
 Source2:        nezha-agent.sh
 Source3:        agent.conf
 
+Requires:       codetiger-util >= 1.0.0
+
 %description
 
 # 编译前准备

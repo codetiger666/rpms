@@ -10,6 +10,9 @@ Source1:        new-api.sh
 Source2:        .env
 Source3:        new-api.service
 
+
+Requires:       codetiger-util >= 1.0.0
+
 %description
 
 

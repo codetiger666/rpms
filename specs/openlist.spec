@@ -11,6 +11,8 @@ Source2:        openlist.sh
 Source3:        config
 Source4:        config.json
 
+Requires:       codetiger-util >= 1.0.0
+
 %description
 
 # 编译前准备
