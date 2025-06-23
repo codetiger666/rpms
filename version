@@ -14,3 +14,4 @@ nodejs---20.19.2---nodejs/node---release---echo $(curl https://api.github.com/re
 uptime-kuma---1.23.16---louislam/uptime-kuma---release
 electerm---1.91.16---electerm/electerm---release---sed 's/v//'
 new-api---0.8.6.1---QuantumNous/new-api---release---sed 's/v//'
+codetiger-util---1.0.0---codetiger666/rpms---release---echo '1.0.0'---new
