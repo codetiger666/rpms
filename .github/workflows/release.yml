@@ -62,6 +62,7 @@ jobs:
           - x86_64
           - aarch64
         release:
+          - 8
           - 9
           - 10
     steps:
