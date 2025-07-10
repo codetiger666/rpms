@@ -62,7 +62,6 @@ jobs:
           - x86_64
           - aarch64
         release:
-          - 8
           - 9
           - 10
     steps:
@@ -196,7 +195,7 @@ jobs:
         run: |
           source $HOME/.profile
           archs=("x86_64" "aarch64")
-          releases=("8" "9" "10")
+          releases=("9" "10")
           git pull
           for arch in "${archs[@]}"; do
             for release in "${releases[@]}"; do

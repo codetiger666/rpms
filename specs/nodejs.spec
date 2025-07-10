@@ -11,6 +11,9 @@ Source0:        https://github.com/nodejs/nodejs/releases/download/%{name}-%{ver
 # 禁用依赖推断
 AutoReqProv:    no
 
+# 禁用 strip 空静态库
+%global __brp_strip_static_archive %{nil}
+
 %description
 nodejs编译
 
