@@ -25,6 +25,7 @@ on:
             - electerm
             - new-api
             - codetiger-util
+            - minio
         version:
           description: '软件版本'
           required: true
