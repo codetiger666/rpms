@@ -1,0 +1,14 @@
+[Unit]
+Description=Openlist Api start stop
+After=network-online.target
+
+[Service]
+User=openlist-api
+Group=openlist-api
+Type=forking
+WorkingDirectory=/usr/local/openlist-api
+ExecStart=/usr/local/openlist-api/openlist-api.sh start
+ExecStop=/usr/local/openlist-api/openlist-api.sh stop
+
+[Install]
+WantedBy=multi-user.target

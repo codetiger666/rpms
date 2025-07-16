@@ -1,7 +1,7 @@
 #!/bin/bash
 
 find_run_command() {
-    ps -ef | grep -v $0 | grep -v $1 | grep -vE "ps|grep|systemd --user|sd-pam|awk|xargs|systemctl" | awk '{ print $2, $8, $9, $10 }' | grep $2
+    ps -ef | grep -v $0 | grep -v $1 | grep -vE "ps|grep|systemd --user|sd-pam|awk|xargs|tail|systemctl" | awk '{ print $2, $8, $9, $10 }' | grep $2
 }
 
 case "$1" in

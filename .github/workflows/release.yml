@@ -26,6 +26,7 @@ on:
             - new-api
             - codetiger-util
             - minio
+            - openlist-api
         version:
           description: '软件版本'
           required: true
