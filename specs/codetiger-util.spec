@@ -1,5 +1,5 @@
 Name:           codetiger-util
-Version:        1.0.0
+Version:        1.0.1
 Release:        1%{?dist}
 Summary:        codeitger util编译
 # 指定版本号覆盖版本
