@@ -15,3 +15,4 @@ uptime-kuma---1.23.16---louislam/uptime-kuma---release
 electerm---1.100.18---electerm/electerm---release---sed 's/v//'
 new-api---0.8.7.5---QuantumNous/new-api---release---sed 's/v//'
 codetiger-util---1.0.0---codetiger666/rpms---release---echo '1.0.0'---new
+minio---1.0.0---codetiger666/rpms---release---echo '1.0.0'---new

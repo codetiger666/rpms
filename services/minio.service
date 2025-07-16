@@ -1,0 +1,13 @@
+[Unit]
+Description=Minio start stop
+After=network-online.target
+
+[Service]
+User=minio
+Group=minio
+Type=forking
+ExecStart=/usr/local/minio/minio.sh start
+ExecStop=/usr/local/minio/minio.sh stop
+
+[Install]
+WantedBy=multi-user.target
