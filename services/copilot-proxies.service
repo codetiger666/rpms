@@ -1,0 +1,13 @@
+[Unit]
+Description=copilot-proxies start stop
+After=network-online.target
+
+[Service]
+User=copilot-proxies
+Group=copilot-proxies
+Type=forking
+ExecStart=/usr/local/copilot-proxies/copilot-proxies.sh start
+ExecStop=/usr/local/copilot-proxies/copilot-proxies.sh stop
+
+[Install]
+WantedBy=multi-user.target
