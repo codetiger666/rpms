@@ -6,7 +6,7 @@ source $PROGRAM_PATH/config
 
 case "$1" in
 start)
-    if /usr/local/codetiger-util/common.sh findRun $APP_NAME $0 > /dev/null ; then
+    if  ps -ef | grep $(cat $PROGRAM_PATH/$APP_NAME.pid) | grep -v grep > /dev/null ; then
         echo "${APP_NAME} is runing..."
         exit 0
     fi
@@ -15,13 +15,17 @@ start)
     echo $! > $PROGRAM_PATH/$APP_NAME.pid
     ;;
 stop)
-    if /usr/local/codetiger-util/common.sh findRun $APP_NAME $0 > /dev/null ; then
-        /usr/local/codetiger-util/common.sh findRun ${APP_NAME} $0 | awk '{print $1}' | xargs -I {} kill {}
+    if ps -ef | grep $(cat $PROGRAM_PATH/$APP_NAME.pid) | grep -v grep > /dev/null ; then
+        ps -ef | grep $(cat $PROGRAM_PATH/$APP_NAME.pid) | grep -v grep | awk '{print $2}' | xargs -I {} kill {}
         rm $PROGRAM_PATH/$APP_NAME.pid
     fi
     ;;
 status)
-    /usr/local/codetiger-util/common.sh status ${APP_NAME} $0
+    if ps -ef | grep $(cat $PROGRAM_PATH/$APP_NAME.pid) | grep -v grep > /dev/null ; then
+        echo "$APP_NAME is runing..."
+    else
+        echo "$APP_NAME is not runing..."
+    fi
     ;;
 restart)
     $0 stop
