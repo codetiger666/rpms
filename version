@@ -12,7 +12,7 @@ openssl---3.2.5---openssl/openssl---release---echo $(curl https://api.github.com
 xray---25.8.3---XTLS/Xray-core---release---sed 's/v//'
 nodejs---20.19.4---nodejs/node---release---echo $(curl https://api.github.com/repos/nodejs/node/releases | jq -r '.[].tag_name' | grep '^v20' | head -n1 | sed 's/v//')---new
 uptime-kuma---1.23.16---louislam/uptime-kuma---release
-electerm---1.100.56---electerm/electerm---release---sed 's/v//'
+electerm---1.100.60---electerm/electerm---release---sed 's/v//'
 new-api---0.8.9.3.1---QuantumNous/new-api---release---sed 's/v//'
 codetiger-util---1.0.1---codetiger666/rpms---release---echo '1.0.1'---new
 minio---1.0.0---codetiger666/rpms---release---echo '1.0.0'---new
