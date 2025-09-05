@@ -45,6 +45,10 @@ jobs:
             continue
           fi
           new_version=$(get_latest_version "$location" "$repo")
+          if [[ -z "$new_version" ]]; then
+            echo "未获取到最新版本，跳过当前循环"
+            continue
+          fi
           temp_version=$new_version
           new_version=$(apply_handle "$handle" "$new_version" "$new")
           echo -e "\n$program获取到的最新版本${new_version}"
