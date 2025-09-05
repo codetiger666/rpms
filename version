@@ -16,5 +16,5 @@ electerm---1.101.16---electerm/electerm---release---sed 's/v//'
 new-api---0.8.9.3.1---QuantumNous/new-api---release---sed 's/v//'
 codetiger-util---1.0.1---codetiger666/rpms---release---echo '1.0.1'---new
 minio---1.0.0---codetiger666/rpms---release---echo '1.0.0'---new
-openlist-api---1.0---OpenListTeam/OpenList-APIPages---release---sed 's/v//'
+openlist-api---4.1.0---OpenListTeam/OpenList-APIPages---release---sed 's/v//'
 copilot-proxies---0.1.14---ripperTs/github-copilot-proxies---release---curl -s https://gitee.com/api/v5/repos/ripperTs/github-copilot-proxies/releases/latest | jq -r '.tag_name' | sed 's/v//'---new
