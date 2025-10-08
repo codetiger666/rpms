@@ -8,7 +8,7 @@ program_init(){
     ARCH=-arm64
   fi
   sudo sed -i "s/codetiger_arch/${ARCH}/g" specs/new-api.spec
-  wget https://github.com/QuantumNous/new-api/releases/download/v${project_version}/new-api${ARCH} -O new-api-bin
+  wget https://github.com/QuantumNous/new-api/releases/download/v${project_version}/new-api${ARCH}-v${project_version} -O new-api-bin
   sudo /bin/cp specs/new-api.spec rpm/rpmbuild/SPECS/new-api.spec
   mkdir rpm/rpmbuild/SOURCES -p
   sudo /bin/cp new-api-bin rpm/rpmbuild/SOURCES/new-api
