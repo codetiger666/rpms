@@ -50,7 +50,7 @@ make -j6 && make install
 
 # 编译
 %build
-LDFLAGS="-L/usr/local/ssh/openssl/lib64 -L/usr/local/ssh/openssl/lib --static" && \
+LDFLAGS="-L/usr/local/ssh/openssl/lib64 -L/usr/local/ssh/openssl/lib -Wl,-Bstatic -lssl -lcrypto -Wl,-Bdynamic" && \
 CFLAGS="-I/usr/local/ssh/openssl/include" && \
 ./configure \
   --prefix=/usr \
