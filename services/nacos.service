@@ -1,0 +1,12 @@
+[Unit]
+Description=Nacos start stop
+After=network-online.target
+
+[Service]
+User=nacos
+Group=nacos
+Type=forking
+ExecStart=/usr/local/nacos/nacos.sh start
+ExecStop=/usr/local/nacos/nacos.sh stop
+[Install]
+WantedBy=multi-user.target

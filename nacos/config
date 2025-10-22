@@ -1,0 +1,3 @@
+DATA_PATH=/usr/local/nacos
+JVM_XMS=128m
+JVM_XMX=256m
