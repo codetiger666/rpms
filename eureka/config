@@ -1,0 +1,3 @@
+DATA_PATH=/usr/local/eureka
+JVM_XMS=56m
+JVM_XMX=128m

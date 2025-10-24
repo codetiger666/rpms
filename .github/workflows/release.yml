@@ -29,6 +29,7 @@ on:
             - openlist-api
             - copilot-proxies
             - nacos
+            - eureka
         version:
           description: '软件版本'
           required: true

@@ -22,7 +22,7 @@ AutoReqProv:    no
 # 安装
 %install
 %{__mkdir} -p %{buildroot}/usr/local/nacos
-%{__install} -p -D -m 0755 %{SOURCE0}  %{buildroot}/usr/local/nacos/nacos-server.jar
+%{__install} -p -D -m 0644 %{SOURCE0}  %{buildroot}/usr/local/nacos/nacos-server.jar
 %{__install} -p -D -m 0755 %{SOURCE1} %{buildroot}%{_usr}/local/nacos/nacos.sh
 %{__install} -p -D -m 0644 %{SOURCE2} %{buildroot}%{_usr}/local/nacos/config
 %{__install} -p -D -m 0644 %{SOURCE3} %{buildroot}%{_usr}/lib/systemd/system/nacos.service

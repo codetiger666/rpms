@@ -1,0 +1,12 @@
+[Unit]
+Description=Eureka start stop
+After=network-online.target
+
+[Service]
+User=eureka
+Group=eureka
+Type=forking
+ExecStart=/usr/local/eureka/eureka.sh start
+ExecStop=/usr/local/eureka/eureka.sh stop
+[Install]
+WantedBy=multi-user.target
