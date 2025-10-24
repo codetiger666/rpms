@@ -7,7 +7,7 @@ frp---0.65.0---fatedier/frp---release---sed 's/v//'
 gitea---1.24.6---go-gitea/gitea---release---sed 's/v//'
 openlist---4.1.5---OpenListTeam/OpenList---release---sed 's/v//'
 vaultwarden---1.34.3---dani-garcia/vaultwarden---release
-hysteria---2.6.4---apernet/hysteria---release---sed 's/v//' | sed 's/app\///'
+hysteria---2.6.5---apernet/hysteria---release---sed 's/v//' | sed 's/app\///'
 openssl---3.2.6---openssl/openssl---release---echo $(curl https://api.github.com/repos/openssl/openssl/releases | jq -r '.[].tag_name' | grep '^openssl-3.2.' | head -n1 | sed 's/openssl-//')---new
 xray---25.10.15---XTLS/Xray-core---release---sed 's/v//'
 nodejs---20.19.5---nodejs/node---release---echo $(curl https://api.github.com/repos/nodejs/node/releases | jq -r '.[].tag_name' | grep '^v20' | head -n1 | sed 's/v//')---new
