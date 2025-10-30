@@ -4,7 +4,7 @@ nezha-server---1.14.9---nezhahq/nezha---release---sed 's/v//'
 onedrive---2.5.7---abraunegg/onedrive---release---sed 's/v//'
 openssh---10.2.P1---openssh/openssh-portable---tag---sed 's/V_//g; s/_/./g'
 frp---0.65.0---fatedier/frp---release---sed 's/v//'
-gitea---1.24.7---go-gitea/gitea---release---sed 's/v//'
+gitea---1.25.0---go-gitea/gitea---release---sed 's/v//'
 openlist---4.1.5---OpenListTeam/OpenList---release---sed 's/v//'
 vaultwarden---1.34.3---dani-garcia/vaultwarden---release
 hysteria---2.6.5---apernet/hysteria---release---sed 's/v//' | sed 's/app\///'
