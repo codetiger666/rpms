@@ -13,7 +13,7 @@ xray---25.10.15---XTLS/Xray-core---release---sed 's/v//'
 nodejs---20.19.5---nodejs/node---release---echo $(curl https://api.github.com/repos/nodejs/node/releases | jq -r '.[].tag_name' | grep '^v20' | head -n1 | sed 's/v//')---new
 uptime-kuma---2.0.2---louislam/uptime-kuma---release
 electerm---2.3.85---electerm/electerm---release---sed 's/v//'
-new-api---0.9.18---QuantumNous/new-api---release---sed 's/v//'
+new-api---0.9.19---QuantumNous/new-api---release---sed 's/v//'
 codetiger-util---1.0.1---codetiger666/rpms---release---echo '1.0.1'---new
 minio---1.0.0---codetiger666/rpms---release---echo '1.0.0'---new
 openlist-api---4.1.0---OpenListTeam/OpenList-APIPages---release---sed 's/v//'
