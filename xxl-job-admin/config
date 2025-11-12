@@ -1,0 +1,7 @@
+JVM_XMS=56m
+JVM_XMX=128m
+SERVER_PORT=8080
+DB_URL="jdbc:mysql://127.0.0.1:3306/xxl-job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai"
+DB_USERNAME=xxl-job
+DB_PASSWORD=
+XXL_JOB_ACCESS_TOKEN=

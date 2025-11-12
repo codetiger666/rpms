@@ -1,0 +1,12 @@
+[Unit]
+Description=Xxl Job Admin start stop
+After=network-online.target
+
+[Service]
+User=xxl-job-admin
+Group=xxl-job-admin
+Type=forking
+ExecStart=/usr/local/xxl-job-admin/xxl-job-admin.sh start
+ExecStop=/usr/local/xxl-job-admin/xxl-job-admin.sh stop
+[Install]
+WantedBy=multi-user.target
