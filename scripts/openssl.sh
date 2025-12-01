@@ -10,4 +10,6 @@ program_init(){
   wget https://github.com/openssl/openssl/releases/download/openssl-${project_version}/openssl-${project_version}.tar.gz
   mkdir rpm/rpmbuild/SOURCES -p
   sudo /bin/cp openssl-${project_version}.tar.gz rpm/rpmbuild/SOURCES/openssl-${project_version}.tar.gz
+  sudo /bin/cp openssl/ct_log_list.cnf rpm/rpmbuild/SOURCES/ct_log_list.cnf
+  sudo /bin/cp openssl/openssl.cnf rpm/rpmbuild/SOURCES/openssl.cnf
 }

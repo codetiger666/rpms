@@ -10,6 +10,8 @@ Summary:        openssl编译
 License:        GPL
 URL:            https://gybyt.cn
 Source0:        https://github.com/openssl/openssl/releases/download/openssl-codetiger_version/openssl-codetiger_version.tar.gz
+Source1:        ct_log_list.cnf
+Source2:        openssl.cnf
 
 BuildRequires:  zlib-devel gcc lksctp-tools-devel
 Requires: zlib lksctp-tools
@@ -64,6 +66,8 @@ make install DESTDIR=%{buildroot}
 rm -rf %{buildroot}/usr/share/man
 rm -rf %{buildroot}/usr/share/doc
 rm -rf %{buildroot}/etc/ssl
+%{__install} -p -D -m 0644 %{SOURCE1} %{buildroot}/etc/pki/tls/ct_log_list.cnf
+%{__install} -p -D -m 0644 %{SOURCE2} %{buildroot}/etc/pki/tls/openssl.cnf
 
 # 文件列表
 %files
@@ -85,6 +89,8 @@ rm -rf %{buildroot}/etc/ssl
 %{_usr}/lib64/libssl.so.3
 %{_usr}/lib64/ossl-modules/fips.so
 %{_usr}/lib64/ossl-modules/legacy.so
+%config(noreplace) /etc/pki/tls/ct_log_list.cnf
+%config(noreplace) /etc/pki/tls/openssl.cnf
 
 # 子包openssl-devel文件列表
 %files -n openssl-devel
