@@ -7,7 +7,7 @@ program_init(){
   if [ "${project_arch}" = "aarch64" ]; then
     ARCH=arm64
   fi
-  wget https://dl.min.io/server/minio/release/linux-${ARCH}/minio -O minioBin
+  wget https://dl.min.io/server/minio/release/linux-${ARCH}/archive/minio.RELEASE.2025-04-22T22-12-26Z -O minioBin
   sudo /bin/cp minio/minio.sh rpm/rpmbuild/SOURCES
   sudo /bin/cp minioBin rpm/rpmbuild/SOURCES/minio
   sudo /bin/cp minio/config rpm/rpmbuild/SOURCES
