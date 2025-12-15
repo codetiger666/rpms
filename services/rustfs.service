@@ -1,0 +1,14 @@
+[Unit]
+Description=Rustfs start stop
+After=network-online.target
+
+[Service]
+User=rustfs
+Group=rustfs
+Type=forking
+EnvironmentFile=/usr/local/rustfs/config
+ExecStart=/usr/local/rustfs/rustfs.sh start
+ExecStop=/usr/local/rustfs/rustfs.sh stop
+
+[Install]
+WantedBy=multi-user.target

@@ -31,6 +31,7 @@ on:
             - nacos
             - eureka
             - xxl-job-admin
+            - rustfs
         version:
           description: '软件版本'
           required: true
