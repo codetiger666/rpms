@@ -30,7 +30,8 @@ AutoReqProv:    no
 # 安装后操作
 %post
 if [ $1 == 1 ]; then
-    useradd rustfs || true
+    groupadd -g 3000 -o rustfs || true
+    useradd -u 3000 -o rustfs -g rustfs -s /sbin/nologin || true
     chown -R rustfs:rustfs /usr/local/rustfs
 fi
 
