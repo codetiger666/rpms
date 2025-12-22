@@ -34,6 +34,7 @@ fi
 
 # 安装
 %install
+npm config set legacy-peer-deps true
 npm install
 npm run build
 %{__mkdir} -p %{buildroot}/usr/local/electerm/app
