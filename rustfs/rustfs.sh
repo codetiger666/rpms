@@ -10,7 +10,7 @@ start)
         echo "${APP_NAME} is runing..."
         exit 0
     fi
-    ${APP_NAME} server ${DATA_PATH} > ${PROGRAM_PATH}/${APP_NAME}.log 2>&1 &
+    ${APP_NAME} ${DATA_PATH} > ${PROGRAM_PATH}/${APP_NAME}.log 2>&1 &
     echo $! > $PROGRAM_PATH/$APP_NAME.pid
     ;;
 stop)
