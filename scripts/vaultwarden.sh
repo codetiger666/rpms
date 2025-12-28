@@ -7,7 +7,7 @@ program_init(){
   if [ "${project_arch}" = "aarch64" ]; then
     ARCH=arm64
   fi
-  wget https://github.com/czyt/vaultwarden-binary/releases/download/${project_version}-extracted/vaultwarden-linux-${ARCH}-extracted.zip
+  wget https://github.com/codetiger666/vaultwarden-binary/releases/download/${project_version}-extracted/vaultwarden-linux-${ARCH}-extracted.zip
   sudo /bin/cp specs/vaultwarden.spec rpm/rpmbuild/SPECS/vaultwarden.spec
   mkdir rpm/rpmbuild/SOURCES -p
   unzip vaultwarden-linux-${ARCH}-extracted.zip -d extracted
