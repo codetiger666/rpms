@@ -1,5 +1,5 @@
 program_init(){
-  sudo sed -i "s/codetiger_version/${project_version}/g" specs/new-api.spec
+  sudo sed -i "s/codetiger_version/${project_version//-/.}/g" specs/new-api.spec
   ARCH=amd64
   if [ "${project_arch}" = "x86_64" ]; then
     ARCH=
