@@ -150,7 +150,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: ${{ github.event.inputs.program }}-${{ matrix.arch }}-${{ matrix.release }}
-          path: rpm/rpmbuild/RPMS/${{ matrix.arch }}/${{ github.event.inputs.program }}*-${{ github.event.inputs.version }}-*.el${{ matrix.release }}.${{ matrix.arch }}.rpm
+          path: rpm/rpmbuild/RPMS/${{ matrix.arch }}/${{ github.event.inputs.program }}*.el${{ matrix.release }}.${{ matrix.arch }}.rpm
 
       
       - name: send tg message
@@ -211,7 +211,7 @@ jobs:
               then
                 sudo rm -f redhat/$release/$arch/${{ github.event.inputs.program }}*.$arch.rpm
               fi
-              sudo /bin/cp -ra artifacts/${{ github.event.inputs.program }}-$arch-$release/${{ github.event.inputs.program }}*-${{ github.event.inputs.version }}-*.el$release.$arch.rpm redhat/$release/$arch
+              sudo /bin/cp -ra artifacts/${{ github.event.inputs.program }}-$arch-$release/${{ github.event.inputs.program }}*.el$release.$arch.rpm redhat/$release/$arch
             done
           done
           rm -rf $GITHUB_WORKSPACE/artifacts
