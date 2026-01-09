@@ -53,6 +53,7 @@ fi
 %{_usr}/local/xxl-job-admin/xxl-job-admin.sh
 %{_usr}/local/xxl-job-admin/xxl-job-admin.jar
 %{_usr}/lib/systemd/system/xxl-job-admin.service
+%{_usr}/local/xxl-job-admin/logback.xml
 %config(noreplace) %{_usr}/local/xxl-job-admin/config
 %doc
 
