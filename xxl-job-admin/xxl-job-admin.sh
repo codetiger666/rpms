@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 PROGRAM_PATH=$(dirname "$(realpath "$0")")
-JAVA_HOME=/usr/local/jdk/11
+JAVA_HOME=/usr/local/jdk/21
 APP_NAME=xxl-job-admin
 
 source $PROGRAM_PATH/config
@@ -12,7 +12,7 @@ start)
         exit 0
     fi
     cd $PROGRAM_PATH
-    ${JAVA_HOME}/bin/java -Xms${JVM_XMS} -Xmx${JVM_XMX} -jar ${APP_NAME}.jar --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD} --xxl.job.accessToken=${XXL_JOB_ACCESS_TOKEN} --server.port=${SERVER_PORT} > ${PROGRAM_PATH}/${APP_NAME}.log 2>&1 &
+    ${JAVA_HOME}/bin/java -Xms${JVM_XMS} -Xmx${JVM_XMX} -jar ${APP_NAME}.jar --spring.datasource.url=${DB_URL} --spring.datasource.username=${DB_USERNAME} --spring.datasource.password=${DB_PASSWORD} --xxl.job.accessToken=${XXL_JOB_ACCESS_TOKEN} --server.port=${SERVER_PORT} --logging.config=${PROGRAM_PATH}/logback.xml > ${PROGRAM_PATH}/${APP_NAME}.log 2>&1 &
     echo $! > $PROGRAM_PATH/$APP_NAME.pid
     ;;
 stop)

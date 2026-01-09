@@ -9,6 +9,7 @@ Source0:        https://github.com/codetiger666/xxl-job/releases/download/%{Vers
 Source1:        xxl-job-admin.sh
 Source2:        config
 Source3:        xxl-job-admin.service
+Source4:        logback.xml
 
 Requires:       codetiger-util >= 1.0.0
     
@@ -24,6 +25,7 @@ AutoReqProv:    no
 %{__install} -p -D -m 0755 %{SOURCE1} %{buildroot}%{_usr}/local/xxl-job-admin/xxl-job-admin.sh
 %{__install} -p -D -m 0644 %{SOURCE2} %{buildroot}%{_usr}/local/xxl-job-admin/config
 %{__install} -p -D -m 0644 %{SOURCE3} %{buildroot}%{_usr}/lib/systemd/system/xxl-job-admin.service
+%{__install} -p -D -m 0644 %{SOURCE4} %{buildroot}%{_usr}/local/xxl-job-admin/logback.xml
 # 安装后操作
 %post
 if [ $1 == 1 ]; then

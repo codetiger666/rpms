@@ -4,6 +4,7 @@ program_init(){
   sudo /bin/cp xxl-job-admin/xxl-job-admin.sh rpm/rpmbuild/SOURCES
   sudo /bin/cp xxl-job-admin.jar rpm/rpmbuild/SOURCES
   sudo /bin/cp xxl-job-admin/config rpm/rpmbuild/SOURCES
+  sudo /bin/cp xxl-job-admin/logback.xml rpm/rpmbuild/SOURCES
   sudo /bin/cp specs/xxl-job-admin.spec rpm/rpmbuild/SPECS/xxl-job-admin.spec
   sudo /bin/cp services/xxl-job-admin.service rpm/rpmbuild/SOURCES
 }
