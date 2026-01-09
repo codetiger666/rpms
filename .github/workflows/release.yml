@@ -262,7 +262,7 @@ jobs:
         run: |
           # 替换版本
           echo '开始替换版本'
-          sed -i "s/${{ github.event.inputs.program }}---[0-9A-Za-z.]*/${{ github.event.inputs.program }}---${{ github.event.inputs.version }}/" version
+          perl -i -pe "s/${{ github.event.inputs.program }}---((?!---)[0-9A-Za-z.\-])*/${{ github.event.inputs.program }}---${{ github.event.inputs.version }}/" version
           echo '替换版本完成'
           git add .
           git commit -m "chore: ${{ github.event.inputs.program }} bump version to ${{ github.event.inputs.version }}"
