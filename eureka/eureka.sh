@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 PROGRAM_PATH=$(dirname "$(realpath "$0")")
-JAVA_HOME=/usr/local/jdk/11
+JAVA_HOME=/usr/local/jdk/21
 APP_NAME=eureka-server
 
 source $PROGRAM_PATH/config
