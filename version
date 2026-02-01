@@ -3,7 +3,7 @@ nezha-agent---1.15.0---nezhahq/agent---release---sed 's/v//'
 nezha-server---1.14.14---nezhahq/nezha---release---sed 's/v//'
 onedrive---2.5.10---abraunegg/onedrive---release---sed 's/v//'
 openssh---10.2.P1---openssh/openssh-portable---tag---sed 's/V_//g; s/_/./g'
-frp---0.66.0---fatedier/frp---release---sed 's/v//'
+frp---0.67.0---fatedier/frp---release---sed 's/v//'
 gitea---1.25.4---go-gitea/gitea---release---sed 's/v//'
 openlist---4.1.9---OpenListTeam/OpenList---release---sed 's/v//'
 vaultwarden---1.35.2---dani-garcia/vaultwarden---release
