@@ -9,7 +9,7 @@ openlist---4.1.10---OpenListTeam/OpenList---release---sed 's/v//'
 vaultwarden---1.35.2---dani-garcia/vaultwarden---release
 hysteria---2.7.0---apernet/hysteria---release---sed 's/v//' | sed 's/app\///'
 openssl---3.2.6---openssl/openssl---release---echo $(curl https://api.github.com/repos/openssl/openssl/releases | jq -r '.[].tag_name' | grep '^openssl-3.2.' | head -n1 | sed 's/openssl-//')---new
-xray---26.1.31---XTLS/Xray-core---release---sed 's/v//'
+xray---26.2.2---XTLS/Xray-core---release---sed 's/v//'
 nodejs---20.20.0---nodejs/node---release---echo $(curl https://api.github.com/repos/nodejs/node/releases | jq -r '.[].tag_name' | grep '^v20' | head -n1 | sed 's/v//')---new
 uptime-kuma---2.0.2---louislam/uptime-kuma---release
 electerm---2.5.6---electerm/electerm---release---sed 's/v//'
