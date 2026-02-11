@@ -6,7 +6,7 @@ openssh---10.2.P1---openssh/openssh-portable---tag---sed 's/V_//g; s/_/./g'
 frp---0.67.0---fatedier/frp---release---sed 's/v//'
 gitea---1.25.4---go-gitea/gitea---release---sed 's/v//'
 openlist---4.1.10---OpenListTeam/OpenList---release---sed 's/v//'
-vaultwarden---1.35.2---dani-garcia/vaultwarden---release
+vaultwarden---1.35.3---dani-garcia/vaultwarden---release
 hysteria---2.7.0---apernet/hysteria---release---sed 's/v//' | sed 's/app\///'
 openssl---3.2.6---openssl/openssl---release---echo $(curl https://api.github.com/repos/openssl/openssl/releases | jq -r '.[].tag_name' | grep '^openssl-3.2.' | head -n1 | sed 's/openssl-//')---new
 xray---26.2.6---XTLS/Xray-core---release---sed 's/v//'
