@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>自编译软件仓库</title>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"/>
+  <style>
+    /* 确保父容器不裁剪弹出菜单 */
+    #app,
+    .file-manager,
+    .list-grid {
+      overflow: visible !important;
+    }
+
+    .file-manager {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100vh;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+
+    .path-bar {
+      background: white;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .section { margin-bottom: 20px; }
+    .section-title {
+      font-size: 14px; font-weight: bold; margin-bottom: 8px;
+    }
+    .list-grid {
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
+      gap: 15px;
+      background: white;
+      padding: 15px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .file-item {
+      text-align: center;
+      padding: 10px; border-radius: 4px;
+      cursor: pointer; transition: all .3s;
+    }
+    .file-item:hover { background: #f5f5f5; }
+
+    .file-icon { font-size: 48px; }
+    .folder-icon { color: #ffc107; }
+    .file-name {
+      margin-top: 8px; word-break: break-all; font-size: 12px;
+    }
+
+    /* 整体菜单容器 */
+    .context-menu {
+      position: fixed !important;
+      z-index: 10000 !important;
+      min-width: 160px;
+      background: rgba(255,255,255,0.8) !important;
+      backdrop-filter: blur(5px);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      padding: 4px 0;
+      overflow: visible !important;
+    }
+
+    /* 统一半透明+毛玻璃菜单项 */
+    .context-menu .el-menu-item {
+      display: block;
+      width: calc(100% - 16px);
+      margin: 4px 8px;
+      padding: 8px 12px !important;
+      background: rgba(255,255,255,0.4) !important;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 6px;
+      transition: background .2s ease;
+      box-sizing: border-box;
+    }
+    .context-menu .el-menu-item i {
+      margin-right: 6px;
+    }
+    .context-menu .el-menu-item:hover {
+      background: rgba(255,255,255,0.6) !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="file-manager">
+      <!-- 路径导航 -->
+      <el-breadcrumb class="path-bar" separator="/">
+        <el-breadcrumb-item
+          v-for="(item, i) in pathItems"
+          :key="i"
+          @click.native="navigateTo(i)">
+          {{ item }}
+        </el-breadcrumb-item>
+      </el-breadcrumb>
+
+      <!-- 文件夹区 -->
+      <div class="section" v-if="folders.length">
+        <div class="section-title">文件夹</div>
+        <div class="list-grid">
+          <div
+            v-for="f in folders"
+            :key="f.path"
+            class="file-item"
+            @dblclick="openFolder(f)"
+            @contextmenu.prevent="showContextMenu(f,$event)"
+
+            @touchstart="onTouchStart(f, $event)"
+            @touchend="onTouchEnd"
+            @touchmove="onTouchMove"
+          >
+            <i class="file-icon el-icon-folder folder-icon"></i>
+            <div class="file-name">{{ f.name }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 文件区 -->
+      <div class="section" v-if="files.length">
+        <div class="section-title">文件</div>
+        <div class="list-grid">
+          <div
+            v-for="f in files"
+            :key="f.path"
+            class="file-item"
+            @contextmenu.prevent="showContextMenu(f,$event)"
+
+            @touchstart="onTouchStart(f, $event)"
+            @touchend="onTouchEnd"
+            @touchmove="onTouchMove"
+          >
+            <i class="file-icon el-icon-document"></i>
+            <div class="file-name">{{ f.name }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右键 / 长按 菜单 -->
+    <el-menu
+      class="context-menu"
+      v-show="contextMenu.visible"
+      :style="{
+        left: contextMenu.x + 'px',
+        top:  contextMenu.y + 'px'
+      }"
+      @select="handleMenuClick">
+      <el-menu-item
+        index="download"
+        v-if="contextMenu.target?.isFile">
+        <i class="el-icon-download"></i> 下载
+      </el-menu-item>
+      <el-menu-item
+        index="open"
+        v-if="!contextMenu.target?.isFile">
+        <i class="el-icon-folder-opened"></i> 打开
+      </el-menu-item>
+    </el-menu>
+  </div>
+
+  <script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    // 可替换为国内镜像，例如：https://ghproxy.com/https://api.github.com
+    const apiBase = 'https://api.github.com';
+    const repo    = 'codetiger666/rpms';
+    const branch  = 'release';
+
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          currentPath: '',
+          allItems: [],
+          contextMenu: {
+            visible: false,
+            x: 0,
+            y: 0,
+            target: null
+          },
+          longPressTimer: null
+        };
+      },
+      computed: {
+        pathItems() {
+          const parts = this.currentPath.split('/').filter(p => p);
+          return ['root', ...parts];
+        },
+        // 区分文件夹和文件
+        folders() { return this.allItems.filter(i => !i.isFile); },
+        files()   { return this.allItems.filter(i => i.isFile); }
+      },
+      methods: {
+        // 拉取文件列表
+        async loadFiles(path = '') {
+          try {
+            const url = `${apiBase}/repos/${repo}/contents/${path}?ref=${branch}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            this.allItems = data
+              .filter(i => !['index.html','README.md'].includes(i.name))
+              .map(i => ({
+                name: i.name,
+                path: i.path,
+                isFile: i.type === 'file',
+                url: i.download_url
+              }));
+          } catch (e) {
+            console.error(e);
+            this.$message.error('加载文件列表失败');
+          }
+        },
+        // 桌面端右键菜单
+        showContextMenu(item, event) {
+          this.contextMenu.target = item;
+          this.contextMenu.x = event.clientX;
+          this.contextMenu.y = event.clientY;
+          this.contextMenu.visible = true;
+        },
+        // 移动端长按开始
+        onTouchStart(item, event) {
+          this.contextMenu.target = item;
+          clearTimeout(this.longPressTimer);
+          this.longPressTimer = setTimeout(() => {
+            const touch = event.touches[0];
+            this.contextMenu.x = touch.clientX;
+            this.contextMenu.y = touch.clientY;
+            this.contextMenu.visible = true;
+          }, 600);
+        },
+        onTouchEnd() {
+          clearTimeout(this.longPressTimer);
+        },
+        onTouchMove() {
+          clearTimeout(this.longPressTimer);
+        },
+        // 菜单项选择
+        handleMenuClick(command) {
+          this.contextMenu.visible = false;
+          const t = this.contextMenu.target;
+          if (command === 'download' && t.isFile) {
+            window.open(t.url);
+          }
+          if (command === 'open' && !t.isFile) {
+            this.openFolder(t);
+          }
+        },
+        // 打开文件夹
+        openFolder(item) {
+          this.currentPath = item.path;
+          this.loadFiles(item.path);
+        },
+        // 面包屑导航
+        navigateTo(index) {
+          const parts = this.pathItems.slice(1, index + 1);
+          this.currentPath = parts.join('/');
+          this.loadFiles(this.currentPath);
+        }
+      },
+      mounted() {
+        this.loadFiles();
+        // 点击空白处关闭菜单
+        document.addEventListener('click', () => {
+          this.contextMenu.visible = false;
+        });
+      }
+    });
+  </script>
+</body>
+</html>
