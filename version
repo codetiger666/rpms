@@ -19,4 +19,4 @@ minio---2025.04.22---codetiger666/rpms---release---echo '1.0.0'---new
 openlist-api---4.1.0---OpenListTeam/OpenList-APIPages---release---sed 's/v//'
 copilot-proxies---0.1.14---ripperTs/github-copilot-proxies---release---curl -s https://gitee.com/api/v5/repos/ripperTs/github-copilot-proxies/releases/latest | jq -r '.tag_name' | sed 's/v//'---new
 xxl-job-admin---3.3.2---codetiger666/xxl-job---release
-zashboard---2.6.1---Zephyruso/zashboard---release---sed 's/v//'
+zashboard---2.7.0---Zephyruso/zashboard---release---sed 's/v//'
