@@ -1,3 +1,4 @@
+%global __brp_check_rpaths %{nil}
 %define prefix /usr/local/nginx
 Name:          openresty
 Version:        codetiger_version
@@ -13,8 +14,19 @@ Source3:        default.conf
 Source4:        stream.conf.example
 Source5:        ssl.conf.example
 
-BuildRequires:  gcc make pcre-devel zlib-devel libxml2-devel libxslt-devel gd-devel geoip-devel libatomic_ops-devel openssl-devel perl-devel
-Requires:       pcre openssl libxml2 libxslt gd geoip perl
+BuildRequires:  gcc make zlib-devel libxml2-devel libxslt-devel gd-devel geoip-devel libatomic_ops-devel openssl-devel perl-devel
+# release 10
+%if 0%{?rhel} >= 10
+BuildRequires: pcre2-devel
+%else
+BuildRequires: pcre-devel
+%endif
+%if 0%{?rhel} >= 10
+BuildRequires: pcre2
+%else
+BuildRequires: pcre
+%endif
+Requires:       openssl libxml2 libxslt gd geoip perl
 Requires:       codetiger-util >= 1.0.0
 
 # 描述

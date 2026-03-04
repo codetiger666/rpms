@@ -1,4 +1,7 @@
 PERLVERSION=5.32
+if [ "${os_release}" -gt "9" ]; then
+  PERLVERSION=5.40
+fi
 
 program_init(){
   cd rpm
