@@ -1,6 +1,6 @@
 program_init(){
+  wget https://github.com/rustfs/rustfs/releases/download/${project_version}/rustfs-linux-${project_arch}-musl-v${project_version}.zip -O rustfs.zip
   sudo sed -i "s/codetiger_version/${project_version//-/.}/g" specs/rustfs.spec
-  wget https://dl.rustfs.com/artifacts/rustfs/release/rustfs-linux-${project_arch}-musl-latest.zip -O rustfs.zip
   unzip rustfs.zip -d ./rustfsBinDir
   sudo /bin/cp rustfs/rustfs.sh rpm/rpmbuild/SOURCES
   sudo /bin/cp rustfsBinDir/rustfs rpm/rpmbuild/SOURCES/rustfs
