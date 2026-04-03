@@ -2,7 +2,7 @@ openresty---1.29.2.3---openresty/openresty---release---curl -s https://openresty
 nezha-agent---2.0.2---nezhahq/agent---release---sed 's/v//'
 nezha-server---2.0.6---nezhahq/nezha---release---sed 's/v//'
 onedrive---2.5.10---abraunegg/onedrive---release---sed 's/v//'
-openssh---10.2.P1---openssh/openssh-portable---tag---sed 's/V_//g; s/_/./g'
+openssh---10.3.P1---openssh/openssh-portable---tag---sed 's/V_//g; s/_/./g'
 frp---0.68.0---fatedier/frp---release---sed 's/v//'
 gitea---1.25.5---go-gitea/gitea---release---sed 's/v//'
 openlist---4.1.10---OpenListTeam/OpenList---release---sed 's/v//'
