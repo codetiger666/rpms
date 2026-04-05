@@ -1,6 +1,6 @@
 openresty---1.29.2.3---openresty/openresty---release---curl -s https://openresty.org/en/download.html | grep -oP '(?<=OpenResty\s).+?(?=<\/a><span)' | head -n 1---new
 nezha-agent---2.0.2---nezhahq/agent---release---sed 's/v//'
-nezha-server---2.0.6---nezhahq/nezha---release---sed 's/v//'
+nezha-server---2.0.7---nezhahq/nezha---release---sed 's/v//'
 onedrive---2.5.10---abraunegg/onedrive---release---sed 's/v//'
 openssh---10.3.P1---openssh/openssh-portable---tag---sed 's/V_//g; s/_/./g'
 frp---0.68.0---fatedier/frp---release---sed 's/v//'
