@@ -19,5 +19,5 @@ minio---RELEASE.2026-04-17T00-00-00Z---pgsty/minio---release
 openlist-api---4.1.0---OpenListTeam/OpenList-APIPages---release---sed 's/v//'
 copilot-proxies---0.1.14---ripperTs/github-copilot-proxies---release---curl -s https://gitee.com/api/v5/repos/ripperTs/github-copilot-proxies/releases/latest | jq -r '.tag_name' | sed 's/v//'---new
 xxl-job-admin---3.4.0---codetiger666/xxl-job---release---sed 's/v//'
-zashboard---3.5.0---Zephyruso/zashboard---release---sed 's/v//'
+zashboard---3.5.1---Zephyruso/zashboard---release---sed 's/v//'
 rustfs---1.0.0-alpha.97---rustfs/rustfs---tag---curl -s https://api.github.com/repos/rustfs/rustfs/releases?per_page=1 | jq -r '.[0].tag_name'---new
