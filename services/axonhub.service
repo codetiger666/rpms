@@ -1,0 +1,16 @@
+[Unit]
+Description=AxonHub Service
+After=network.target
+
+[Service]
+Type=forking
+User=axonhub
+Group=axonhub
+ExecStart=/usr/local/axonhub/axonhub.sh start
+ExecStop=/usr/local/axonhub/axonhub.sh stop
+ExecReload=/usr/local/axonhub/axonhub.sh restart
+Restart=always
+WorkingDirectory=/usr/local/axonhub
+
+[Install]
+WantedBy=multi-user.target

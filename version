@@ -21,3 +21,4 @@ copilot-proxies---0.1.14---ripperTs/github-copilot-proxies---release---curl -s h
 xxl-job-admin---3.4.0---codetiger666/xxl-job---release---sed 's/v//'
 zashboard---3.5.1---Zephyruso/zashboard---release---sed 's/v//'
 rustfs---1.0.0-alpha.99---rustfs/rustfs---tag---curl -s https://api.github.com/repos/rustfs/rustfs/releases?per_page=1 | jq -r '.[0].tag_name'---new
+axonhub---0.9.37---looplj/axonhub---release---sed 's/v//'

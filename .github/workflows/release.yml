@@ -34,6 +34,7 @@ on:
             - rustfs
             - zashboard
             - curl
+            - axonhub
         version:
           description: '软件版本'
           required: true
