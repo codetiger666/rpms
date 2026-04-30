@@ -1,0 +1,16 @@
+[Unit]
+Description=Octopus Service
+After=network.target
+
+[Service]
+Type=forking
+User=octopus
+Group=octopus
+ExecStart=/usr/local/octopus/octopus.sh start
+ExecStop=/usr/local/octopus/octopus.sh stop
+ExecReload=/usr/local/octopus/octopus.sh restart
+Restart=always
+WorkingDirectory=/usr/local/octopus
+
+[Install]
+WantedBy=multi-user.target

@@ -22,3 +22,4 @@ xxl-job-admin---3.4.0---codetiger666/xxl-job---release---sed 's/v//'
 zashboard---3.5.1---Zephyruso/zashboard---release---sed 's/v//'
 rustfs---1.0.0-beta.1---rustfs/rustfs---tag---curl -s https://api.github.com/repos/rustfs/rustfs/releases?per_page=1 | jq -r '.[0].tag_name'---new
 axonhub---0.9.38---looplj/axonhub---release---sed 's/v//'
+octopus---0.9.26---bestruirui/octopus---release---sed 's/v//'

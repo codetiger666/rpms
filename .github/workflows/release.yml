@@ -35,6 +35,7 @@ on:
             - zashboard
             - curl
             - axonhub
+            - octopus
         version:
           description: '软件版本'
           required: true
