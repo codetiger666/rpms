@@ -11,6 +11,7 @@ Source2:        config
 Source3:        nacos.service
 Source4:        application.properties
 Source5:        logback.xml
+Source6:        plugins
 
 Requires:       codetiger-util >= 1.0.0
     
@@ -22,8 +23,10 @@ AutoReqProv:    no
 # 安装
 %install
 %{__mkdir} -p %{buildroot}/usr/local/nacos
+%{__mkdir} -p %{buildroot}/usr/local/nacos/plugins
 %{__install} -p -D -m 0644 %{SOURCE0}  %{buildroot}/usr/local/nacos/nacos-server.jar
 %{__install} -p -D -m 0755 %{SOURCE1} %{buildroot}%{_usr}/local/nacos/nacos.sh
+cp -ra %{SOURCE6}/* %{buildroot}%{_usr}/local/nacos/plugins
 %{__install} -p -D -m 0644 %{SOURCE2} %{buildroot}%{_usr}/local/nacos/config
 %{__install} -p -D -m 0644 %{SOURCE3} %{buildroot}%{_usr}/lib/systemd/system/nacos.service
 %{__install} -p -D -m 0644 %{SOURCE4} %{buildroot}%{_usr}/local/nacos/application.properties
@@ -54,6 +57,7 @@ fi
 %files
 %{_usr}/local/nacos/nacos.sh
 %{_usr}/local/nacos/nacos-server.jar
+%{_usr}/local/nacos/plugins
 %{_usr}/lib/systemd/system/nacos.service
 %config(noreplace) %{_usr}/local/nacos/config
 %config(noreplace) %{_usr}/local/nacos/application.properties

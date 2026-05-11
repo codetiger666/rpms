@@ -1,6 +1,15 @@
 #!/usr/bin/bash
 PROGRAM_PATH=$(dirname "$(realpath "$0")")
-JAVA_HOME=/usr/local/jdk/11
+JAVA_HOME=/usr/local/jdk/21
+JAVA_OPT="-Xms${JVM_XMS} -Xmx${JVM_XMX} \
+-Dnacos.standalone=true -Dnacos.home=${PROGRAM_PATH} \
+-Dloader.path=${PROGRAM_PATH}/plugins \
+--add-opens=java.base/java.lang=ALL-UNNAMED \
+--add-opens=java.base/java.lang.reflect=ALL-UNNAMED \
+--add-opens=java.base/java.util=ALL-UNNAMED"
+PROGRAM_OPT="--logging.config=${PROGRAM_PATH}/logback.xml \
+--spring.config.additional-location=file:$PROGRAM_PATH/ \
+nacos.nacos -m standalone"
 APP_NAME=nacos-server
 
 source $PROGRAM_PATH/config
@@ -12,7 +21,7 @@ start)
         exit 0
     fi
     cd $PROGRAM_PATH
-    ${JAVA_HOME}/bin/java -Xms${JVM_XMS} -Xmx${JVM_XMX} -Dnacos.standalone=true -Dnacos.home=${DATA_PATH} -jar ${APP_NAME}.jar --logging.config=${PROGRAM_PATH}/logback.xml --spring.config.additional-location=file:$PROGRAM_PATH/ nacos.nacos -m standalone > ${PROGRAM_PATH}/${APP_NAME}.log 2>&1 &
+    ${JAVA_HOME}/bin/java ${JAVA_OPT} -jar ${APP_NAME}.jar ${PROGRAM_OPT} > ${PROGRAM_PATH}/${APP_NAME}.log 2>&1 &
     echo $! > $PROGRAM_PATH/$APP_NAME.pid
     ;;
 stop)
