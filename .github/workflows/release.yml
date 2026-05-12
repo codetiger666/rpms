@@ -195,6 +195,12 @@ jobs:
         uses: actions/download-artifact@main
         with:
           path: artifacts
+      
+      - name: set ${{ github.event.inputs.program }} host
+        run: |
+          echo "${{ secrets.HOSTS_CONFIG }}" | sudo tee -a /etc/hosts
+          echo "--- Hosts configured ---"
+          cat /etc/hosts
 
       # 初始化环境变量
       - name: init-env
@@ -204,42 +210,83 @@ jobs:
           source $HOME/.profile
 
       - name: upload ${{ github.event.inputs.program }}
+        id: upload_rpms
         run: |
           source $HOME/.profile
           archs=("x86_64" "aarch64")
           releases=("9" "10")
+          GIT_SSL_NO_VERIFY=true git clone ${{ secrets.large_file_repo_url }} large_file
           git pull
           for arch in "${archs[@]}"; do
             for release in "${releases[@]}"; do
-              sudo mkdir -p redhat/$release/$arch/
+              size=$(du -sb artifacts/*${{ github.event.inputs.program }}-$arch-$release/*${{ github.event.inputs.program }}*.el$release.$arch.rpm | awk '{print $1}')
+              echo "rpms_size=$size" >> $GITHUB_OUTPUT
               if [ "${{ github.event.inputs.remove }}" = "true" ];
               then
-                sudo rm -f redhat/$release/$arch/*${{ github.event.inputs.program }}*.$arch.rpm
+                if [ "$size" -gt 104857600 ]; then
+                  sudo mkdir -p large_file/$release/$arch/
+                  sudo rm -f large_file/$release/$arch/*${{ github.event.inputs.program }}*.$arch.rpm
+                else
+                  sudo mkdir -p redhat/$release/$arch/
+                  sudo rm -f redhat/$release/$arch/*${{ github.event.inputs.program }}*.$arch.rpm
+                fi
               fi
-              sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$arch-$release/*${{ github.event.inputs.program }}*.el$release.$arch.rpm redhat/$release/$arch
+              if [ "$size" -gt 104857600 ]; then
+                sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$arch-$release/*${{ github.event.inputs.program }}*.el$release.$arch.rpm large_file/$release/$arch
+              else
+                sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$arch-$release/*${{ github.event.inputs.program }}*.el$release.$arch.rpm redhat/$release/$arch
+              fi
             done
           done
           rm -rf $GITHUB_WORKSPACE/artifacts
           rpms=`docker run -itd -v $GITHUB_WORKSPACE:/centos_rpms ghcr.io/codetiger666/images/rocky:9`
-          for release in "${releases[@]}"; do
+          if [ "$size" -gt 104857600 ]; then
+            for release in "${releases[@]}"; do
+            for arch in "${archs[@]}"; do
+              docker exec -i $rpms createrepo /centos_rpms/large_file/$release/$arch
+            done
+            done
+          else
+            for release in "${releases[@]}"; do
             for arch in "${archs[@]}"; do
               docker exec -i $rpms createrepo /centos_rpms/redhat/$release/$arch
             done
-          done
-
+            done
+          fi
+          
       - name: git add
         run: |
-          git pull
-          git config --local user.email ${{ secrets.email }}
-          git config --local user.name "codetiger666"
-          # 创建一个新的孤立分支
-          git checkout --orphan temp_main
-          # 添加所有文件并进行提交
-          git add -A
-          git commit -m "update"
-          git branch -D release
-          git branch -m release
-          git push -f origin release
+          rpms_size=${{ steps.upload_rpms.outputs.rpms_size }}
+          if [ "$rpms_size" -gt 104857600 ]; then
+            cd large_file
+            git config http.sslVerify false
+            git pull
+            git lfs track "*.rpm"
+            git config --local user.email ${{ secrets.email }}
+            git config --local user.name "codetiger666"
+            git lfs prune
+            # 创建一个新的孤立分支
+            git checkout --orphan temp_main
+            # 添加所有文件并进行提交
+            git add -A
+            git commit -m "update"
+            git branch -D main
+            git branch -m main
+            git push -f origin main
+          else
+            rm -rf large_file
+            git pull
+            git config --local user.email ${{ secrets.email }}
+            git config --local user.name "codetiger666"
+            # 创建一个新的孤立分支
+            git checkout --orphan temp_main
+            # 添加所有文件并进行提交
+            git add -A
+            git commit -m "update"
+            git branch -D release
+            git branch -m release
+            git push -f origin release
+          fi
 
   update:
     name: update-version-${{ github.event.inputs.program }}
