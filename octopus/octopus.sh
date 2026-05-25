@@ -11,7 +11,7 @@ start)
         exit 0
     fi
     cd $PROGRAM_PATH
-    octopus > ${PROGRAM_PATH}/${APP_NAME}.log 2>&1 &
+    octopus start> ${PROGRAM_PATH}/${APP_NAME}.log 2>&1 &
     echo $! > $PROGRAM_PATH/$APP_NAME.pid
     ;;
 stop)

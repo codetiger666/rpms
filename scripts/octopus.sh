@@ -9,7 +9,7 @@ program_init(){
     ARCH=arm64
   fi
   # 从GitHub发布页面下载octopus二进制文件
-  wget https://github.com/bestruirui/octopus/releases/download/v${project_version}/octopus-linux-${ARCH}.zip -O octopus.zip
+  wget https://github.com/Hureru/octopus/releases/download/v${project_version}/octopus-linux-${ARCH}.zip -O octopus.zip
   sudo mkdir -p octopusDir
   sudo unzip octopus.zip -d octopusDir
   sudo /bin/cp octopus/octopus.sh rpm/rpmbuild/SOURCES

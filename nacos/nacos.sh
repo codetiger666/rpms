@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 PROGRAM_PATH=$(dirname "$(realpath "$0")")
+source $PROGRAM_PATH/config
 JAVA_HOME=/usr/local/jdk/21
 JAVA_OPT="-Xms${JVM_XMS} -Xmx${JVM_XMX} \
 -Dnacos.standalone=true -Dnacos.home=${PROGRAM_PATH} \
@@ -11,8 +12,6 @@ PROGRAM_OPT="--logging.config=${PROGRAM_PATH}/logback.xml \
 --spring.config.additional-location=file:$PROGRAM_PATH/ \
 nacos.nacos -m standalone"
 APP_NAME=nacos-server
-
-source $PROGRAM_PATH/config
 
 case "$1" in
 start)
