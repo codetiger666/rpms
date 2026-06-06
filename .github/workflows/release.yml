@@ -215,7 +215,8 @@ jobs:
           source $HOME/.profile
           archs=("x86_64" "aarch64")
           releases=("9" "10")
-          GIT_SSL_NO_VERIFY=true git clone ${{ secrets.large_file_repo_url }} large_file
+          GIT_SSL_NO_VERIFY=true git clone ${{ secrets.large_file_repo_url }} large_file || true
+          mkdir large_file || true
           git pull
           for arch in "${archs[@]}"; do
             for release in "${releases[@]}"; do
