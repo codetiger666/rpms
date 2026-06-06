@@ -1,5 +1,5 @@
 program_init(){
-  sudo sed -i "s/codetiger_version/${project_version}/g" specs/axonhub.spec
+  sudo sed -i "s/codetiger_version/${project_version//-/.}/g" specs/axonhub.spec
   
   # 根据架构确定下载URL
   ARCH=amd64
