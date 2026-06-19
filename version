@@ -15,7 +15,7 @@ uptime-kuma---2.4.0---louislam/uptime-kuma---release
 electerm---3.15.58---electerm/electerm---release---sed 's/v//'
 new-api---1.0.0-rc.12---QuantumNous/new-api---release---sed 's/v//'
 codetiger-util---1.0.1---codetiger666/rpms---release---echo '1.0.1'---new
-minio---RELEASE.2026-04-17T00-00-00Z---pgsty/minio---release
+minio---RELEASE.2026-06-18T00-00-00Z---pgsty/minio---release
 openlist-api---4.1.0---OpenListTeam/OpenList-APIPages---release---sed 's/v//'
 copilot-proxies---0.1.14---ripperTs/github-copilot-proxies---release---curl -s https://gitee.com/api/v5/repos/ripperTs/github-copilot-proxies/releases/latest | jq -r '.tag_name' | sed 's/v//'---new
 xxl-job-admin---3.4.1---codetiger666/xxl-job---release---sed 's/v//'
