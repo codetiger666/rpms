@@ -261,11 +261,10 @@ jobs:
           if [ "$rpms_size" -gt 104857600 ]; then
             cd large_file
             git config http.sslVerify false
-            git pull
+            git pull origin main 2>/dev/null || true
             git lfs track "*.rpm"
             git config --local user.email ${{ secrets.email }}
             git config --local user.name "codetiger666"
-            git lfs prune
             # 创建一个新的孤立分支
             git checkout --orphan temp_main
             # 添加所有文件并进行提交
@@ -274,6 +273,11 @@ jobs:
             git branch -D main
             git branch -m main
             git push -f origin main
+            # 清理历史LFS文件，防止残留占用空间
+            git lfs push --all origin main
+            git lfs prune --verify-remote --force
+            git reflog expire --expire=now --all
+            git gc --aggressive --prune=now
           else
             rm -rf large_file
             git pull
