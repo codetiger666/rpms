@@ -220,7 +220,7 @@ jobs:
           git pull
           for arch in "${archs[@]}"; do
             for release in "${releases[@]}"; do
-              size=$(du -sb artifacts/*${{ github.event.inputs.program }}-$arch-$release/*${{ github.event.inputs.program }}*.el$release.$arch.rpm | awk '{print $1}')
+              size=$(du -sb artifacts/*${{ github.event.inputs.program }}-$arch-$release/*${{ github.event.inputs.program }}*.el$release.$arch.rpm 2>/dev/null | tail -n1 | awk '{print $1}')
               if [ "${{ github.event.inputs.remove }}" = "true" ];
               then
                 if [ "$size" -gt 104857600 ]; then
