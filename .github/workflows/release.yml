@@ -221,7 +221,6 @@ jobs:
           for arch in "${archs[@]}"; do
             for release in "${releases[@]}"; do
               size=$(du -sb artifacts/*${{ github.event.inputs.program }}-$arch-$release/*${{ github.event.inputs.program }}*.el$release.$arch.rpm | awk '{print $1}')
-              echo "rpms_size=$size" >> $GITHUB_OUTPUT
               if [ "${{ github.event.inputs.remove }}" = "true" ];
               then
                 if [ "$size" -gt 104857600 ]; then
@@ -239,6 +238,7 @@ jobs:
               fi
             done
           done
+          echo "rpms_size=$size" >> $GITHUB_OUTPUT
           rm -rf $GITHUB_WORKSPACE/artifacts
           rpms=`docker run -itd -v $GITHUB_WORKSPACE:/centos_rpms ghcr.io/codetiger666/images/rocky:9`
           if [ "$size" -gt 104857600 ]; then
