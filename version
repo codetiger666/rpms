@@ -21,6 +21,6 @@ copilot-proxies---0.1.14---ripperTs/github-copilot-proxies---release---curl -s h
 xxl-job-admin---3.4.2---codetiger666/xxl-job---release---sed 's/v//'
 zashboard---3.18.0---Zephyruso/zashboard---release---sed 's/v//'
 rustfs---1.0.0-rc.1---rustfs/rustfs---tag---curl -s https://api.github.com/repos/rustfs/rustfs/releases?per_page=1 | jq -r '.[0].tag_name'---new
-axonhub---1.0.0-beta6---looplj/axonhub---release---sed 's/v//'
+axonhub---1.0.0-beta7---looplj/axonhub---release---sed 's/v//'
 octopus---0.8.40---Hureru/octopus---release---sed 's/v//'
 nacos---3.2.3---alibaba/nacos---release
