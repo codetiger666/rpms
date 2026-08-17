@@ -1,0 +1,13 @@
+[Unit]
+Description=Silo start stop
+After=network-online.target
+
+[Service]
+User=silo
+Group=silo
+Type=forking
+ExecStart=/usr/local/silo/silo.sh start
+ExecStop=/usr/local/silo/silo.sh stop
+
+[Install]
+WantedBy=multi-user.target

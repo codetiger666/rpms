@@ -1,6 +1,6 @@
 #!/bin/bash
 PROGRAM_PATH=$(dirname "$(realpath "$0")")
-APP_NAME=minio
+APP_NAME=silo
 
 source $PROGRAM_PATH/config
 

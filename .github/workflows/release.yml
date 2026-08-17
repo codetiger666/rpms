@@ -25,7 +25,7 @@ on:
             - electerm
             - new-api
             - codetiger-util
-            - minio
+            - silo
             - openlist-api
             - copilot-proxies
             - nacos

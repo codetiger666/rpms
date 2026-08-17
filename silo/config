@@ -1,0 +1,7 @@
+#!/bin/bash
+export DATA_PATH=/usr/local/silo/data
+export MINIO_ROOT_USER=minioadmin
+export MINIO_ROOT_PASSWORD=minioadmin
+export SILO_ADDRESS=127.0.0.1:20500
+export SILO_CONSOLE_ADDRESS=127.0.0.1:20501
+export MINIO_BROWSER_REDIRECT_URL=127.0.0.1:20501
