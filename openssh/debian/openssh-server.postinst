@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "configure" ]; then
+    if [ -e /etc/ssh/ssh_host_rsa_key ]; then
+        chmod 0600 /etc/ssh/ssh_host_*_key
+        chown -R root:root /etc/ssh
+    else
+        ssh-keygen -A
+    fi
+fi
+
+#DEBHELPER#

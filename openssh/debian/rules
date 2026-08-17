@@ -1,0 +1,27 @@
+#!/usr/bin/make -f
+# 编译规则，configure/make/make install
+export DH_VERBOSE = 1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc/ssh \
+		--with-selinux
+
+override_dh_auto_build:
+	make -j$$(nproc)
+
+override_dh_auto_install:
+	make install DESTDIR=$(CURDIR)/debian/tmp
+	rm -rf  $(CURDIR)/debian/tmp/etc/ssh/sshd_config
+	install -p -D -m 0644 debian/sshd.service $(CURDIR)/debian/tmp/usr/lib/systemd/system/sshd.service
+	install -p -D -m 0644 debian/sshd_config $(CURDIR)/debian/tmp/etc/ssh/sshd_config
+	dh_install -popenssh
+	dh_install -popenssh-client
+	dh_install -popenssh-server
+
+override_dh_usrlocal:

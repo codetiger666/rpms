@@ -1,0 +1,22 @@
+Source: openssh
+Section: web
+Priority: optional
+Maintainer: codetiger
+Build-Depends: debhelper-compat (= 10), gcc, make, zlib1g-dev, libssl-dev, libselinux-dev
+Standards-Version: 4.5.0
+Homepage: https://111179.xyz
+
+Package: openssh
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, 
+Description: openssh编译
+
+Package: openssh-client
+Architecture: any
+Depends: openssh (= ${binary:Version}), ${misc:Depends}
+Description: openssh-clients编译
+
+Package: openssh-server
+Architecture: any
+Depends: openssh-client (= ${binary:Version}), ${misc:Depends}
+Description: openssh-server编译

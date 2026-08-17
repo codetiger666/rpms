@@ -1,0 +1,9 @@
+# openssh-server安装文件列表
+usr/lib/systemd/system/sshd.service usr/lib/systemd/system/
+usr/libexec/sftp-server usr/libexec/
+usr/libexec/ssh-keysign usr/libexec/
+usr/libexec/ssh-pkcs11-helper usr/libexec/
+usr/libexec/ssh-sk-helper usr/libexec/
+usr/libexec/sshd-session usr/libexec/
+usr/sbin/sshd usr/sbin/
+etc/ssh/sshd_config etc/ssh/

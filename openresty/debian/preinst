@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "install" ] || [ "$1" = "upgrade" ]; then
+    if ! getent passwd nginx > /dev/null 2>&1; then
+        useradd nginx -s /sbin/nologin || true
+    fi
+fi
+
+#DEBHELPER#

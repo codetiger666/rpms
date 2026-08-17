@@ -1,0 +1,15 @@
+#!/bin/sh
+# 卸载后清理
+set -e
+
+if [ "$1" = "purge" ]; then
+    rm -rf /var/tmp/nginx/proxy
+    rm -rf /var/tmp/nginx/client_body
+    rm -rf /lib/systemd/system/nginx.service
+    rm -rf /var/tmp/nginx
+    rm -rf /var/log/nginx
+    userdel nginx 2>/dev/null || true
+    groupdel nginx 2>/dev/null || true
+fi
+
+#DEBHELPER#

@@ -1,0 +1,349 @@
+name: release-deb
+on:
+  workflow_dispatch:
+      inputs:
+        program:
+          description: '软件名称'
+          required: true
+          type: choice
+          options:
+            - openresty
+            - openssh
+        version:
+          description: '软件版本'
+          required: true
+          default: '1.0'
+        remove:
+          description: '是否删除历史版本'
+          required: false
+          default: 'true'
+          type: choice
+          options:
+            - 'true'
+            - 'false'
+        ssh:
+          description: '是否开启ssh调试'
+          required: true
+          default: 'false'
+          type: choice
+          options:
+            - 'true'
+            - 'false'
+
+env:
+  REMOVE_WORKFLOW_RUNS: true
+
+jobs:
+
+  build:
+    name: build-rpms-${{ github.event.inputs.program }}-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.release }}
+    runs-on: ${{ matrix.arch == 'x86_64' && 'ubuntu-latest' || matrix.arch == 'aarch64' && 'ubuntu-24.04-arm' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - debian/eol
+        arch:
+          - x86_64
+          - aarch64
+        release:
+          - buster
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Initialization environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo rm -rf /etc/localtime
+          sudo ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+          # sudo apt remove php* dotnet* google* 
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /etc/mysql \
+            /etc/php
+
+      # 初始化环境变量
+      - name: init-env
+        run: |
+          echo "export project_program=${{ github.event.inputs.program }}" >> $HOME/.profile
+          echo "export project_version=${{ github.event.inputs.version }}" >> $HOME/.profile
+          os_name=${{ matrix.os }}
+          echo "export os_name=${{ matrix.os }}" >> $HOME/.profile
+          ARTIFACT_OS_NAME="${os_name//\//-}"
+          echo "ARTIFACT_OS_NAME=${ARTIFACT_OS_NAME}" >> $GITHUB_ENV
+          echo "export os_release=${{ matrix.release }}" >> $HOME/.profile
+          echo "export project_arch=${{ matrix.arch }}" >> $HOME/.profile
+          source $HOME/.profile
+
+      - name: run-redhat ${{ github.event.inputs.program }}-${{matrix.os}}-${{ matrix.arch }}
+        # 出错继续
+        continue-on-error: true
+        run: |
+          mkdir rpm
+          case ${{ matrix.arch }} in
+            aarch64)
+              echo "使用arm64编译"
+              ;;
+            x86_64)
+              echo "使用x86编译"
+              ;;
+            *)
+              echo "未知架构，请检查"
+              exit 0
+              ;;
+          esac
+          centos=`docker run -itd -v /opt:/opt ${{ matrix.os }}:${{ matrix.release }}`
+          echo "export centos=$centos" >> $HOME/.profile
+          source $HOME/.profile
+
+      - name: init ${{ github.event.inputs.program }}-${{matrix.os}}-${{ matrix.arch }}
+        run: |
+          source $HOME/.profile
+          source init/common.sh
+          if [ -f "./scripts/${{ github.event.inputs.program }}-deb.sh" ];
+          then
+            source ./scripts/${{ github.event.inputs.program }}-deb.sh
+            program_init
+          fi
+
+      - name: SSH connection to Actions
+        uses: P3TERX/ssh2actions@main
+        if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+        env:
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+
+      # 编译
+      - name: build ${{ github.event.inputs.program }}-${{ matrix.arch }}
+        run: |
+          source $HOME/.profile
+          docker stop $centos
+          docker start $centos
+          docker exec -i $centos apt update -y
+          docker exec -i $centos apt install curl wget vim devscripts -y
+          docker exec -i $centos mk-build-deps -i  --tool='apt-get -y -q' -r /opt/deb_build/${{ github.event.inputs.program }}-${{ github.event.inputs.version }}/debian/control
+          docker exec -i -w /opt/deb_build/${{ github.event.inputs.program }}-${{ github.event.inputs.version }} $centos dpkg-buildpackage -us -uc -b
+
+      # 上传文件
+      - name:  upload ${{ github.event.inputs.program }}-${{ matrix.arch }}
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ github.event.inputs.program }}-${{ env.ARTIFACT_OS_NAME }}-${{ matrix.arch }}-${{ matrix.release }}
+          path: /opt/deb_build/${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*.deb
+
+      
+      - name: send tg message
+        if: failure()
+        run: |
+          arch=${{ matrix.arch }}
+          source $HOME/.profile
+          text="\\\\[${project_program//-/\\\\-}\\\\] \\\\[❌ 编译失败\\\\]\n版本\`${project_version//./\\\\.}\`\n架构\`${arch//_/\\\\_}\`"
+          content=$(cat <<EOF
+          {
+            "chat_id": "${{ secrets.TG_BOT_USER_ID }}",
+            "text": "$text",
+            "parse_mode": "MarkdownV2"
+          }
+          EOF
+          )
+          source $HOME/.profile
+          curl -X POST \
+          --url https://api.telegram.org/bot${{ secrets.TG_BOT_KEY }}/sendMessage \
+          --header 'Accept: */*' \
+          --header 'Accept-Encoding: gzip, deflate, br' \
+          --header 'Connection: keep-alive' \
+          --header 'Content-Type: application/json' \
+          --data "$content"
+
+  upload:
+    name: upload-rpms-${{ github.event.inputs.program }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: ${{ github.event.inputs.program }} checkout_rpm
+        uses: actions/checkout@v2
+        with:
+          ref: release
+
+      - name: download ${{ github.event.inputs.program }} artifact
+        uses: actions/download-artifact@main
+        with:
+          path: artifacts
+      
+      - name: set ${{ github.event.inputs.program }} host
+        run: |
+          echo "${{ secrets.HOSTS_CONFIG }}" | sudo tee -a /etc/hosts
+          echo "--- Hosts configured ---"
+          cat /etc/hosts
+
+      # 初始化环境变量
+      - name: init-env
+        run: |
+          echo "export project_program=${{ github.event.inputs.program }}" >> $HOME/.profile
+          echo "export project_version=${{ github.event.inputs.version }}" >> $HOME/.profile
+          source $HOME/.profile
+
+      - name: upload ${{ github.event.inputs.program }}
+        id: upload_rpms
+        run: |
+          source $HOME/.profile
+          oss=("debian")
+          archs=("x86_64" "aarch64")
+          releases=("buster")
+          GIT_SSL_NO_VERIFY=true git clone ${{ secrets.large_file_repo_url }} large_file || true
+          mkdir large_file || true
+          git pull
+          for os in "${oss[@]}"; do
+            for arch in "${archs[@]}"; do
+              if [ "$arch" = "x86_64" ]; then
+                ori_arch=amd64
+              fi
+              if [ "$arch" = "aarch64" ]; then
+                ori_arch=arm64
+              fi
+              for release in "${releases[@]}"; do
+                size=$(du -sb artifacts/*${{ github.event.inputs.program }}-$os*-$arch-$release/*${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*.deb 2>/dev/null | tail -n1 | awk '{print $1}' || 0)
+                if [ "${{ github.event.inputs.remove }}" = "true" ];
+                then
+                  if [ "$size" -gt 104857600 ]; then
+                    sudo mkdir -p large_file/$os/dists/$release/main/binary-$ori_arch/
+                    sudo rm -f large_file/$os/dists/$release/main/binary-$ori_arch/*${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*$ori_arch.deb
+                  else
+                    sudo mkdir -p $os/dists/$release/main/binary-$ori_arch/
+                    sudo rm -f $os/dists/$release/main/binary-$ori_arch/*${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*$ori_arch.deb
+                  fi
+                fi
+                if [ "$size" -gt 104857600 ]; then
+                  sudo mkdir -p large_file/$os/dists/$release/main/binary-$ori_arch/
+                  sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$os*-$arch-$release/*${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*$ori_arch.deb large_file/$os/dists/$release/main/binary-$ori_arch/
+                else
+                  sudo mkdir -p $os/dists/$release/main/binary-$ori_arch/
+                  sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$os*-$arch-$release/*${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*$ori_arch.deb $os/dists/$release/main/binary-$ori_arch/
+                fi
+              done
+            done
+          done
+          echo "debs_size=$size" >> $GITHUB_OUTPUT
+          rm -rf $GITHUB_WORKSPACE/artifacts
+          if [ "$size" -gt 104857600 ]; then
+            for release in "${releases[@]}"; do
+            for os in "${oss[@]}"; do
+            for arch in "${archs[@]}"; do
+              if [ "$arch" = "x86_64" ]; then
+                ori_arch=amd64
+              fi
+              if [ "$arch" = "aarch64" ]; then
+                ori_arch=arm64
+              fi
+              cd $GITHUB_WORKSPACE/large_file/$os && sudo bash -c "dpkg-scanpackages --multiversion dists/$release/main/binary-$ori_arch/ /dev/null > dists/$release/main/binary-$ori_arch/Packages" || true
+              cd $GITHUB_WORKSPACE/large_file/$os/dists/$release/main/binary-$ori_arch/ && sudo bash -c 'cat Packages | gzip -9c > Packages.gz'  || true
+            done
+            done
+            cd $GITHUB_WORKSPACE/large_file/$os
+            sudo bash -c 'apt-ftparchive -o APT::FTPArchive::Release::Origin="Codetiger" -o APT::FTPArchive::Release::Label="CodeTiger Debian Repository" -o APT::FTPArchive::Release::Suite="buster" -o APT::FTPArchive::Release::Codename="buster" -o APT::FTPArchive::Release::Architectures="amd64 arm64" -o APT::FTPArchive::Release::Components="main" release dists/buster > dists/buster/Release'
+            done
+          else
+            for os in "${oss[@]}"; do
+            for release in "${releases[@]}"; do
+            for arch in "${archs[@]}"; do
+              if [ "$arch" = "x86_64" ]; then
+                ori_arch=amd64
+              fi
+              if [ "$arch" = "aarch64" ]; then
+                ori_arch=arm64
+              fi
+              cd $GITHUB_WORKSPACE/$os && sudo bash -c "dpkg-scanpackages --multiversion dists/$release/main/binary-$ori_arch/ /dev/null > dists/$release/main/binary-$ori_arch/Packages" || true
+              cd $GITHUB_WORKSPACE/$os/dists/$release/main/binary-$ori_arch/ && sudo bash -c 'cat Packages | gzip -9c > Packages.gz' || true
+            done
+            done
+            cd $GITHUB_WORKSPACE/$os
+            sudo bash -c 'apt-ftparchive -o APT::FTPArchive::Release::Origin="Codetiger" -o APT::FTPArchive::Release::Label="CodeTiger Debian Repository" -o APT::FTPArchive::Release::Suite="buster" -o APT::FTPArchive::Release::Codename="buster" -o APT::FTPArchive::Release::Architectures="amd64 arm64" -o APT::FTPArchive::Release::Components="main" release dists/buster > dists/buster/Release'
+            done
+          fi
+          
+      - name: git add
+        run: |
+          rpms_size=${{ steps.upload_rpms.outputs.rpms_size }}
+          if [ "$rpms_size" -gt 104857600 ]; then
+            cd large_file
+            git config http.sslVerify false
+            git pull origin main 2>/dev/null || true
+            git lfs track "*.rpm"
+            git config --local user.email ${{ secrets.email }}
+            git config --local user.name "codetiger666"
+            # 创建一个新的孤立分支
+            git checkout --orphan temp_main
+            # 添加所有文件并进行提交
+            git add -A
+            git commit -m "update"
+            git branch -D main
+            git branch -m main
+            git push -f origin main
+            # 清理历史LFS文件，防止残留占用空间
+            git lfs push --all origin main
+            git lfs prune --verify-remote --force
+            git reflog expire --expire=now --all
+            git gc --aggressive --prune=now
+          else
+            rm -rf large_file
+            git pull
+            git config --local user.email ${{ secrets.email }}
+            git config --local user.name "codetiger666"
+            # 创建一个新的孤立分支
+            git checkout --orphan temp_main
+            # 添加所有文件并进行提交
+            git add -A
+            git commit -m "update"
+            git branch -D release
+            git branch -m release
+            git push -f origin release
+          fi
+
+  update:
+    name: update-version-${{ github.event.inputs.program }}
+    runs-on: ubuntu-latest
+    needs: upload
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      # 初始化环境变量
+      - name: init-env
+        run: |
+          echo "export project_program=${{ github.event.inputs.program }}" >> $HOME/.profile
+          echo "export project_version=${{ github.event.inputs.version }}" >> $HOME/.profile
+          echo "export project_arch=${{ matrix.arch }}" >> $HOME/.profile
+          source $HOME/.profile
+
+      - name: git init
+        run: |
+          git config --global user.email ${{ secrets.email }}
+          git config --global user.name "codetiger666"
+          git config pull.rebase true
+
+      - name: update version
+        run: |
+          # 替换版本
+          echo '开始替换版本'
+          perl -i -pe "s/${{ github.event.inputs.program }}---((?!---)[0-9A-Za-z.\-])*/${{ github.event.inputs.program }}---${{ github.event.inputs.version }}/" version
+          echo '替换版本完成'
+          git add .
+          git commit -m "chore: ${{ github.event.inputs.program }} bump version to ${{ github.event.inputs.version }}"
+          git pull && git push
+      
+      - name: send tg message
+        run: |
+          source $HOME/.profile
+          curl -X POST \
+          --url https://api.telegram.org/bot${{ secrets.TG_BOT_KEY }}/sendMessage \
+          --header 'Accept: */*' \
+          --header 'Accept-Encoding: gzip, deflate, br' \
+          --header 'Connection: keep-alive' \
+          --header 'Content-Type: application/json' \
+          --data "{
+          \"chat_id\": \"${{ secrets.TG_BOT_USER_ID }}\",
+          \"text\": \"\\\\[${project_program//-/\\\\-}\\\\] \\\\[✅ 编译成功\\\\]\n版本\`${project_version//./\\\\.}\`\",
+          \"parse_mode\": \"MarkdownV2\"
+          }"

@@ -1,0 +1,17 @@
+Source: openresty
+Section: web
+Priority: optional
+Maintainer: codetiger
+Build-Depends: debhelper-compat (= 10), gcc, make, zlib1g-dev, libxml2-dev, libxslt1-dev, libgd-dev, libgeoip-dev, libatomic-ops-dev, libssl-dev, libperl-dev, libpcre2-dev
+Standards-Version: 4.5.0
+Homepage: https://111179.xyz
+
+Package: openresty
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: OpenResty self-compiled package
+ OpenResty is a full-fledged web platform that integrates the standard
+ Nginx core, LuaJIT, many carefully written Lua libraries, lots of
+ high quality 3rd-party Nginx modules, and most of their external
+ dependencies. This package is a self-compiled version with additional
+ modules including ngx_upstream_jdomain and nginx-upstream-dynamic-servers.

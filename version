@@ -1,10 +1,10 @@
 openresty---1.31.1.1---openresty/openresty---release---curl -s https://openresty.org/en/download.html | grep -oP '(?<=OpenResty\s).+?(?=<\/a><span)' | head -n 1---new
 nezha-agent---2.3.3---nezhahq/agent---release---sed 's/v//'
-nezha-server---2.3.4---nezhahq/nezha---release---sed 's/v//'
+nezha-server---2.3.6---nezhahq/nezha---release---sed 's/v//'
 onedrive---2.5.11---abraunegg/onedrive---release---sed 's/v//'
 openssh---10.5.P1---openssh/openssh-portable---tag---sed 's/V_//g; s/_/./g'
-frp---0.70.1---fatedier/frp---release---sed 's/v//'
-gitea---1.27.1---go-gitea/gitea---release---sed 's/v//'
+frp---0.71.0---fatedier/frp---release---sed 's/v//'
+gitea---1.27.2---go-gitea/gitea---release---sed 's/v//'
 openlist---4.2.5---OpenListTeam/OpenList---release---sed 's/v//'
 vaultwarden---1.37.1---dani-garcia/vaultwarden---release
 hysteria---2.12.1---apernet/hysteria---release---sed 's/v//' | sed 's/app\///'
@@ -12,15 +12,15 @@ openssl---3.2.6---openssl/openssl---release---echo $(curl https://api.github.com
 xray---26.3.27---XTLS/Xray-core---release---sed 's/v//'
 nodejs---20.20.2---nodejs/node---release---echo $(curl https://api.github.com/repos/nodejs/node/releases | jq -r '.[].tag_name' | grep '^v20' | head -n1 | sed 's/v//')---new
 uptime-kuma---2.5.0---louislam/uptime-kuma---release
-electerm---5.0.6---electerm/electerm---release---sed 's/v//'
+electerm---5.1.20---electerm/electerm---release---sed 's/v//'
 new-api---1.0.0-rc.24---QuantumNous/new-api---release---sed 's/v//'
 codetiger-util---1.0.1---codetiger666/rpms---release---echo '1.0.1'---new
 minio---RELEASE.2026-08-04T00-00-00Z---pgsty/minio---release
 openlist-api---4.1.0---OpenListTeam/OpenList-APIPages---release---sed 's/v//'
 copilot-proxies---0.1.14---ripperTs/github-copilot-proxies---release---curl -s https://gitee.com/api/v5/repos/ripperTs/github-copilot-proxies/releases/latest | jq -r '.tag_name' | sed 's/v//'---new
 xxl-job-admin---3.4.2---codetiger666/xxl-job---release---sed 's/v//'
-zashboard---3.18.0---Zephyruso/zashboard---release---sed 's/v//'
-rustfs---1.0.0-rc.1---rustfs/rustfs---tag---curl -s https://api.github.com/repos/rustfs/rustfs/releases?per_page=1 | jq -r '.[0].tag_name'---new
+zashboard---3.19.0---Zephyruso/zashboard---release---sed 's/v//'
+rustfs---1.0.0-rc.2-preview.1---rustfs/rustfs---tag---curl -s https://api.github.com/repos/rustfs/rustfs/releases?per_page=1 | jq -r '.[0].tag_name'---new
 axonhub---1.0.0-beta7---looplj/axonhub---release---sed 's/v//'
 octopus---0.8.40---Hureru/octopus---release---sed 's/v//'
 nacos---3.2.3---alibaba/nacos---release

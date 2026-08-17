@@ -1,0 +1,9 @@
+# openssh-client安装文件列表
+usr/bin/scp usr/bin/
+usr/bin/sftp usr/bin/
+usr/bin/ssh usr/bin/
+usr/bin/ssh-add usr/bin/
+usr/bin/ssh-agent usr/bin/
+usr/bin/ssh-keyscan usr/bin/
+usr/libexec/sshd-auth usr/libexec/
+etc/ssh/ssh_config etc/ssh/

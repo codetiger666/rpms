@@ -1,0 +1,12 @@
+#!/bin/sh
+# 卸载前停止服务
+set -e
+
+if [ "$1" = "remove" ]; then
+    if [ -f /usr/lib/systemd/system/nginx.service ]; then
+        systemctl stop nginx.service 2>/dev/null || true
+        systemctl disable nginx.service 2>/dev/null || true
+    fi
+fi
+
+#DEBHELPER#
