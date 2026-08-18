@@ -1,0 +1,15 @@
+[Unit]
+Description=Gitea Runner Service
+After=network.target
+
+[Service]
+Type=forking
+User=gitea-runner
+Group=gitea-runner
+Restart=on-failure
+RestartSec=5s
+ExecStart=/usr/local/gitea-runner/gitea-runner.sh start
+ExecStop=/usr/local/gitea-runner/gitea-runner.sh stop
+
+[Install]
+WantedBy=multi-user.target
