@@ -1,0 +1,10 @@
+[Unit]
+Description=Onedrive Watch Dog Timer
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=5min
+Unit=onedrive-watch.service
+
+[Install]
+WantedBy=timers.target

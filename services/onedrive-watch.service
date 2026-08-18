@@ -1,0 +1,10 @@
+After=network.target
+
+[Service]
+Type=forking
+User=root
+Group=root
+ExecStart=/usr/local/onedrive/watch-dog.sh
+
+[Install]
+WantedBy=multi-user.target

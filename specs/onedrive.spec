@@ -10,6 +10,9 @@ Source1:        onedrive.service
 Source2:        config
 Source3:        onedrive.sh
 Source4:        sync_list
+Source5:        onedrive-watch-dog.sh
+Source6:        onedrive-watch.service
+Source7:        onedrive-watch.timer
 
 BuildRequires:  sqlite-devel dbus-devel
 Requires:       sqlite dbus
@@ -38,6 +41,9 @@ rm -rf %{buildroot}/usr/lib/systemd/user/onedrive.service
 %{__install} -p -D -m 0644 %{SOURCE2} %{buildroot}/usr/local/onedrive/conf/config
 %{__install} -p -D -m 0644 %{SOURCE4} %{buildroot}/usr/local/onedrive/conf/sync_list
 %{__install} -p -D -m 0755 %{SOURCE3} %{buildroot}/usr/local/onedrive/onedrive.sh
+%{__install} -p -D -m 0755 %{SOURCE5} %{buildroot}/usr/local/onedrive/onedrive-watch-dog.sh
+%{__install} -p -D -m 0644 %{SOURCE6} %{buildroot}/usr/lib/systemd/system/onedrive-watch.service
+%{__install} -p -D -m 0644 %{SOURCE7} %{buildroot}/usr/lib/systemd/system/onedrive-watch.timer
 
 # 安装后操作
 %post
@@ -69,6 +75,9 @@ fi
 %{_usr}/local/etc/logrotate.d/onedrive
 %{_usr}/lib/systemd/system/onedrive.service
 %{_usr}/local/onedrive/onedrive.sh
+%{_usr}/local/onedrive/onedrive-watch-dog.sh
+%{_usr}/lib/systemd/system/onedrive-watch.service
+%{_usr}/lib/systemd/system/onedrive-watch.timer
 %config(noreplace) %{_usr}/local/onedrive/conf/config
 %config(noreplace) %{_usr}/local/onedrive/conf/sync_list
 
