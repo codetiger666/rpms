@@ -8,6 +8,7 @@ User=gitea-runner
 Group=gitea-runner
 Restart=on-failure
 RestartSec=5s
+WorkingDirectory=/usr/local/gitea-runner
 ExecStart=/usr/local/gitea-runner/gitea-runner.sh start
 ExecStop=/usr/local/gitea-runner/gitea-runner.sh stop
 
