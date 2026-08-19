@@ -1,10 +1,12 @@
+[Unit]
+Description=Onedrive Watch Service
 After=network.target
 
 [Service]
 Type=forking
 User=root
 Group=root
-ExecStart=/usr/local/onedrive/watch-dog.sh
+ExecStart=/usr/local/onedrive/onedrive-watch-dog.sh
 
 [Install]
 WantedBy=multi-user.target
