@@ -25,3 +25,4 @@ axonhub---1.0.0-beta7---looplj/axonhub---release---sed 's/v//'
 octopus---0.8.40---Hureru/octopus---release---sed 's/v//'
 nacos---3.2.3---alibaba/nacos---release
 gitea-runner---3.1.0---gitea/runner---release---curl -s https://gitea.com/api/v1/repos/gitea/runner/releases/latest | jq -r '.tag_name' | sed 's/v//'---new
+
