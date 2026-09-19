@@ -1,0 +1,71 @@
+Package: openresty
+Version: 1.31.1.1-1
+Architecture: arm64
+Maintainer: codetiger
+Installed-Size: 9602
+Depends: libc6 (>= 2.28), libgcc1 (>= 1:4.2), libgd3 (>= 2.1.0~alpha~), libgeoip1, libpcre2-8-0 (>= 10.32), libperl5.28 (>= 5.28.0), libssl1.1 (>= 1.1.1), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/buster/main/binary-arm64/openresty_1.31.1.1-1_arm64.deb
+Size: 1947468
+MD5sum: cfbe4b1a90d07795859249f33abc2c60
+SHA1: 4d25a909737a008985f0d637a7257e64af5cb385
+SHA256: 5dad2641b35b3f84a14f4dbb86d5f851655b3cabbc35e262aadc4b48a4b040dd
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenResty self-compiled package
+ OpenResty is a full-fledged web platform that integrates the standard
+ Nginx core, LuaJIT, many carefully written Lua libraries, lots of
+ high quality 3rd-party Nginx modules, and most of their external
+ dependencies. This package is a self-compiled version with additional
+ modules including ngx_upstream_jdomain and nginx-upstream-dynamic-servers.
+
+Package: openssh
+Version: 2:10.5.P1-1
+Architecture: arm64
+Maintainer: codetiger
+Installed-Size: 1300
+Depends: libc6 (>= 2.26), libselinux1 (>= 2.0.65), libssl1.1 (>= 1.1.1), zlib1g (>= 1:1.1.4)
+Filename: dists/buster/main/binary-arm64/openssh_10.5.P1-1_arm64.deb
+Size: 342972
+MD5sum: 79586167b53beb54fa97a433c224f89d
+SHA1: 90a38a7511d51ec3e4b354a94d8ded587140fab3
+SHA256: ed419a0851d9f02f38f4ff6a634f2cb5e7ba234fbf69efc2e2f4daa6ab04d241
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh编译
+
+Package: openssh-client
+Source: openssh
+Version: 2:10.5.P1-1
+Architecture: arm64
+Maintainer: codetiger
+Installed-Size: 3519
+Depends: openssh (= 2:10.5.P1-1)
+Filename: dists/buster/main/binary-arm64/openssh-client_10.5.P1-1_arm64.deb
+Size: 812116
+MD5sum: 41dcfb0875f2f6a6d7a6e1a6e41e463b
+SHA1: 67cb4feb3d6121060ad3b9fa568011bfb6893ebc
+SHA256: d7627b381b6ec6cf882ebc9cf1e6f58a17a88b6fdb70c24eda7bdd422309c041
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh-clients编译
+
+Package: openssh-server
+Source: openssh
+Version: 2:10.5.P1-1
+Architecture: arm64
+Maintainer: codetiger
+Installed-Size: 2810
+Depends: openssh-client (= 2:10.5.P1-1)
+Filename: dists/buster/main/binary-arm64/openssh-server_10.5.P1-1_arm64.deb
+Size: 673576
+MD5sum: ef491e0dcd7b4330c4ff572d29553b3c
+SHA1: 19a9462529384f7bfeae75442633b88897e2bd20
+SHA256: f3f933b06030126394fbbdc8980c67693ef658c61b07e4f1a54cfbc01fab2d4e
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh-server编译
+
