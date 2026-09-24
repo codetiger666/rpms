@@ -107,9 +107,15 @@ fi
 %files
 %defattr(-,root,root,0755)
 %{_usr}/lib64/perl5/perllocal.pod
-%{_usr}/local/lib64/perl5/codetiger_perl_version/auto/nginx/.packlist
-%{_usr}/local/lib64/perl5/codetiger_perl_version/auto/nginx/nginx.so
-%{_usr}/local/lib64/perl5/codetiger_perl_version/nginx.pm
+%if 0%{?rhel} >= 9
+%{_usr}/local/lib64/perl5/*/auto/nginx/.packlist
+%{_usr}/local/lib64/perl5/*/auto/nginx/nginx.so
+%{_usr}/local/lib64/perl5/*/nginx.pm
+%else
+%{_usr}/local/lib64/perl5/auto/nginx/nginx.so
+%{_usr}/local/lib64/perl5/auto/nginx/.packlist
+%{_usr}/local/lib64/perl5/nginx.pm
+%endif
 %{_usr}/local/share/man/man3/nginx.3pm
 %{_sbindir}/nginx
 %{_usr}/local/nginx/
