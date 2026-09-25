@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "configure" ]; then
+    if ! getent passwd redis > /dev/null 2>&1; then
+        useradd redis -s /sbin/nologin || true
+    fi
+    mkdir -p /etc/redis
+    mkdir -p /var/log/redis
+    chown redis:redis /var/log/redis
+    mkdir -p /var/lib/redis
+    chown redis:redis /var/lib/redis
+fi
+
+#DEBHELPER#

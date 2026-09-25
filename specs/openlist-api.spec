@@ -10,7 +10,6 @@ Source1:        openlist-api.service
 Source2:        openlist-api.sh
 Source3:        .env
 
-Requires:       codetiger-util >= 1.0.0
 Requires:       nodejs
 
 %description

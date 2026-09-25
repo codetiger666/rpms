@@ -10,7 +10,6 @@ Source1:        nezha-server.service
 Source2:        nezha-server.sh
 Source3:        server.yaml
 
-Requires:       codetiger-util >= 1.0.0
 
 %description
 

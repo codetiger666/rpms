@@ -10,7 +10,6 @@ Source1:        octopus.sh
 Source2:        config
 Source3:        octopus.service
 
-Requires:       codetiger-util >= 1.0.0
     
 # 禁用依赖推断
 AutoReqProv:    no

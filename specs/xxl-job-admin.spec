@@ -11,7 +11,6 @@ Source2:        config
 Source3:        xxl-job-admin.service
 Source4:        logback.xml
 
-Requires:       codetiger-util >= 1.0.0
     
 # 禁用依赖推断
 AutoReqProv:    no

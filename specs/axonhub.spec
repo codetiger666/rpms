@@ -10,7 +10,6 @@ Source1:        axonhub.sh
 Source2:        config
 Source3:        axonhub.service
 
-Requires:       codetiger-util >= 1.0.0
     
 # 禁用依赖推断
 AutoReqProv:    no

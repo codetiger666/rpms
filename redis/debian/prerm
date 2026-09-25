@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "remove" ]; then
+    if [ -f /usr/lib/systemd/system/redis.service ]; then
+        systemctl stop redis.service 2>/dev/null || true
+        systemctl disable redis.service 2>/dev/null || true
+    fi
+fi
+
+#DEBHELPER#

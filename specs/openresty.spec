@@ -27,7 +27,6 @@ BuildRequires: pcre2
 BuildRequires: pcre
 %endif
 Requires:       openssl libxml2 libxslt gd geoip perl
-Requires:       codetiger-util >= 1.0.0
 
 # 描述
 %description

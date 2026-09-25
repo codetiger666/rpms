@@ -10,7 +10,6 @@ Source1:        gitea-runner.sh
 Source2:        config
 Source3:        gitea-runner.service
 
-Requires:       codetiger-util >= 1.0.0
     
 # 禁用依赖推断
 AutoReqProv:    no

@@ -36,6 +36,7 @@ on:
             - curl
             - axonhub
             - octopus
+            - redis
             - gitea-runner
         version:
           description: '软件版本'
@@ -123,6 +124,7 @@ jobs:
           source $HOME/.profile
           docker cp $GITHUB_WORKSPACE/.rpmmacros $centos:/root/.rpmmacros
           docker exec -i $centos rpmdev-setuptree
+          docker exec -i $centos dnf install systemd-devel -y
           docker cp $GITHUB_WORKSPACE/.rpmmacros $centos:/root/.rpmmacros
 
       - name: init ${{ github.event.inputs.program }}-${{ matrix.arch }}

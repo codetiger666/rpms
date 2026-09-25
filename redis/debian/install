@@ -1,0 +1,10 @@
+# 安装文件列表
+usr/bin/redis-server usr/bin/
+usr/bin/redis-cli usr/bin/
+usr/bin/redis-sentinel usr/bin/
+usr/bin/redis-benchmark usr/bin/
+usr/bin/redis-check-aof usr/bin/
+usr/bin/redis-check-rdb usr/bin/
+usr/lib/systemd/system/redis.service usr/lib/systemd/system/
+etc/redis/redis.conf etc/redis/
+etc/redis/sentinel.conf etc/redis/

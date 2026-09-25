@@ -1,0 +1,24 @@
+#!/usr/bin/make -f
+# 编译规则，configure/make/make install
+export DH_VERBOSE = 1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+
+override_dh_auto_build:
+	make -j$$(nproc)
+
+override_dh_auto_install:
+	make install PREFIX=$(CURDIR)/debian/tmp/usr
+	mkdir -p $(CURDIR)/debian/tmp/etc/redis
+	install -p -D -m 0644 redis.conf $(CURDIR)/debian/tmp/etc/redis/redis.conf
+	install -p -D -m 0644 sentinel.conf $(CURDIR)/debian/tmp/etc/redis/sentinel.conf
+	install -p -D -m 0644 debian/redis.service $(CURDIR)/debian/tmp/usr/lib/systemd/system/redis.service
+
+override_dh_usrlocal:
+
+override_dh_auto_test:
+	@echo "容器构建环境下跳过测试"

@@ -6,7 +6,6 @@ Summary:        zashboard编译
 License:        GPL
 URL:            https://gybyt.cn
 
-Requires:       codetiger-util >= 1.0.0
 Source0:        zashboard
     
 # 禁用依赖推断

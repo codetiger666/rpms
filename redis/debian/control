@@ -1,0 +1,15 @@
+Source: redis
+Section: web
+Priority: optional
+Maintainer: codetiger
+Build-Depends: debhelper-compat (= 10), gcc, make
+Standards-Version: 4.5.0
+Homepage: https://111179.xyz
+
+Package: redis
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.

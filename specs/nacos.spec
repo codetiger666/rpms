@@ -13,7 +13,6 @@ Source4:        application.properties
 Source5:        logback.xml
 Source6:        plugins
 
-Requires:       codetiger-util >= 1.0.0
     
 # 禁用依赖推断
 AutoReqProv:    no

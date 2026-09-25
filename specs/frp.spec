@@ -9,7 +9,6 @@ Source0:        https://github.com/fatedier/frp/releases/download/v%{version}/%{
 Source1:        frpc.service
 Source2:        frps.service
 
-Requires:       codetiger-util >= 1.0.0
     
 %description
 

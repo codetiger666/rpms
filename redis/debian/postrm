@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "purge" ]; then
+    rm -f /usr/lib/systemd/system/redis.service
+    userdel redis 2>/dev/null || true
+    groupdel redis 2>/dev/null || true
+fi
+
+#DEBHELPER#

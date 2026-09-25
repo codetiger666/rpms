@@ -11,7 +11,6 @@ Source2:        .env
 Source3:        vaultwarden.service
 Source4:        web-vault
 
-Requires:       codetiger-util >= 1.0.0
 
 %description
 

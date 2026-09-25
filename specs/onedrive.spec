@@ -16,7 +16,6 @@ Source7:        onedrive-watch.timer
 
 BuildRequires:  sqlite-devel dbus-devel
 Requires:       sqlite dbus
-Requires:       codetiger-util >= 1.0.0
 
 # 描述
 %description

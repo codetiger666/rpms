@@ -10,7 +10,6 @@ Source1:        xray.sh
 Source2:        config.json
 Source3:        xray.service
 
-Requires:       codetiger-util >= 1.0.0
 
 %description
 xray代理
