@@ -26,4 +26,4 @@ octopus---0.8.40---Hureru/octopus---release---sed 's/v//'
 nacos---3.2.4---alibaba/nacos---release
 redis---8.10.2---redis/redis---release
 gitea-runner---3.5.0---gitea/runner---release---curl -s https://gitea.com/api/v1/repos/gitea/runner/releases/latest | jq -r '.tag_name' | sed 's/v//'---new
-forgejo-runner---6.1.0---forgejo/runner---release---curl -s https://code.forgejo.org/api/v1/repos/forgejo/runner/releases/latest | jq -r '.tag_name' | sed 's/v//'---new
+forgejo-runner---13.2.0---forgejo/runner---release---curl -s https://code.forgejo.org/api/v1/repos/forgejo/runner/releases/latest | jq -r '.tag_name' | sed 's/v//'---new
