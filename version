@@ -1,4 +1,4 @@
-openresty---1.31.1.0---openresty/openresty---release---curl -s https://openresty.org/en/download.html | grep -oP '(?<=OpenResty\s).+?(?=<\/a><span)' | head -n 1---new
+openresty---1.31.1.1---openresty/openresty---release---curl -s https://openresty.org/en/download.html | grep -oP '(?<=OpenResty\s).+?(?=<\/a><span)' | head -n 1---new
 nezha-agent---2.3.5---nezhahq/agent---release---sed 's/v//'
 nezha-server---2.3.14---nezhahq/nezha---release---sed 's/v//'
 onedrive---2.5.11---abraunegg/onedrive---release---sed 's/v//'
