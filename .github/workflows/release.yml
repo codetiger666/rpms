@@ -39,6 +39,7 @@ on:
             - octopus
             - redis
             - gitea-runner
+            - forgejo-runner
         version:
           description: '软件版本'
           required: true

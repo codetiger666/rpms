@@ -1,0 +1,16 @@
+[Unit]
+Description=Forgejo Runner Service
+After=network.target
+
+[Service]
+Type=forking
+User=forgejo-runner
+Group=forgejo-runner
+Restart=on-failure
+RestartSec=5s
+WorkingDirectory=/usr/local/forgejo-runner
+ExecStart=/usr/local/forgejo-runner/forgejo-runner.sh start
+ExecStop=/usr/local/forgejo-runner/forgejo-runner.sh stop
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,22 @@
+log:
+  level: error
+
+runner:
+  capacity: 1
+  timeout: 3h
+  fetch_timeout: 5s
+  fetch_interval: 2s
+  labels:
+    - "ubuntu-latest:docker://code.forgejo.org/forgejo-runner-images:ubuntu-latest"
+    - "ubuntu-24.04:docker://code.forgejo.org/forgejo-runner-images:ubuntu-24.04"
+    - "ubuntu-22.04:docker://code.forgejo.org/forgejo-runner-images:ubuntu-22.04"
+
+cache:
+  enabled: false
+
+container:
+  privileged: false
+  bind_workdir: false
+
+host:
+  workdir_parent:
