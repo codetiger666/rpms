@@ -20,6 +20,7 @@ jobs:
       
       - name: get new version
         run: |
+          export TZ=Asia/Shanghai
           source init/common.sh
           while IFS= read -r line; do
           # 跳过空行
@@ -48,12 +49,12 @@ jobs:
           temp_version=$new_version
           new_version=$(apply_handle "$handle" "$new_version" "$new")
           if [[ -z "$new_version" ]]; then
-            echo "未获取到最新版本，跳过当前循环"
+            echo "[$(date '+%Y-%m-%d %H:%M:%S')] 未获取到最新版本，跳过当前循环"
             continue
           fi
-          echo -e "\n$program获取到的最新版本${new_version}"
+          echo -e "\n[$(date '+%Y-%m-%d %H:%M:%S')] $program获取到的最新版本${new_version}"
           if [ "$version" = "$new_version" ]; then
-              echo "$program最新版本已经编译过"
+              echo "[$(date '+%Y-%m-%d %H:%M:%S')] $program最新版本已经编译过"
               curl -X POST \
               --url https://api.telegram.org/bot${{ secrets.TG_BOT_KEY }}/sendMessage \
               --header 'Accept: */*' \
@@ -78,40 +79,40 @@ jobs:
               sleep 60
               continue
             else
-              run_workflow=$(curl https://api.github.com/repos/codetiger666/rpms/actions/runs | jq '.workflow_runs[] | select(.name == "release")' | jq 'select(.status == "queued" or .status == "in_progress")')
+              run_workflow=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/codetiger666/rpms/actions/runs?per_page=100" | jq '.workflow_runs[] | select((.name == "release" or .name == "release-deb") and (.status == "queued" or .status == "in_progress"))')
               while true; do
                 # 如果变量 a 为空，跳过当前循环
                 if [ -z "$run_workflow" ]; then
                   break
                 fi
-                echo "当前有编译任务进行中，等待30s后重试"
+                echo "[$(date '+%Y-%m-%d %H:%M:%S')] 当前有编译任务进行中，等待30s后重试"
                 sleep 30
-                run_workflow=$(curl https://api.github.com/repos/codetiger666/rpms/actions/runs | jq '.workflow_runs[] | select(.name == "release")' | jq 'select(.status == "queued" or .status == "in_progress")')
+                run_workflow=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/codetiger666/rpms/actions/runs?per_page=100" | jq '.workflow_runs[] | select((.name == "release" or .name == "release-deb") and (.status == "queued" or .status == "in_progress"))')
               done
               curl -X POST \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/${{ github.repository }}/actions/workflows/release.yml/dispatches \
               -d "{\"ref\":\"main\",\"inputs\":{\"program\":\"$program\",\"version\":\"$new_version\",\"remove\":\"true\",\"ssh\":\"false\"}}"
-              echo "$program触发编译版本(RPM):${new_version}"
+              echo "[$(date '+%Y-%m-%d %H:%M:%S')] $program触发编译版本(RPM):${new_version}"
               # 等待 release.yml 执行完毕，再触发 release-deb.yml
-              sleep 15
-              run_release_workflow=$(curl https://api.github.com/repos/codetiger666/rpms/actions/runs | jq '.workflow_runs[] | select(.name == "release")' | jq 'select(.status == "queued" or .status == "in_progress")')
+              sleep 30
+              run_release_workflow=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/codetiger666/rpms/actions/runs?per_page=100" | jq '.workflow_runs[] | select((.name == "release" or .name == "release-deb") and (.status == "queued" or .status == "in_progress"))')
               while true; do
                 if [ -z "$run_release_workflow" ]; then
                   break
                 fi
-                echo "release.yml 编译任务进行中，等待30s后检查"
+                echo "[$(date '+%Y-%m-%d %H:%M:%S')] release.yml 编译任务进行中，等待30s后检查"
                 sleep 30
-                run_release_workflow=$(curl https://api.github.com/repos/codetiger666/rpms/actions/runs | jq '.workflow_runs[] | select(.name == "release")' | jq 'select(.status == "queued" or .status == "in_progress")')
+                run_release_workflow=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/codetiger666/rpms/actions/runs?per_page=100" | jq '.workflow_runs[] | select((.name == "release" or .name == "release-deb") and (.status == "queued" or .status == "in_progress"))')
               done
-              echo "release.yml 编译完成，开始触发 release-deb.yml"
+              echo "[$(date '+%Y-%m-%d %H:%M:%S')] release.yml 编译完成，开始触发 release-deb.yml"
               curl -X POST \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/${{ github.repository }}/actions/workflows/release-deb.yml/dispatches \
               -d "{\"ref\":\"main\",\"inputs\":{\"program\":\"$program\",\"version\":\"$new_version\",\"remove\":\"true\",\"ssh\":\"false\"}}"
-              echo "$program触发编译版本(DEB):${new_version}"
+              echo "[$(date '+%Y-%m-%d %H:%M:%S')] $program触发编译版本(DEB):${new_version}"
               curl -X POST \
               --url https://api.telegram.org/bot${{ secrets.TG_BOT_KEY }}/sendMessage \
               --header 'Accept: */*' \
