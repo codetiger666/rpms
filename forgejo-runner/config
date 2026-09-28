@@ -7,9 +7,9 @@ runner:
   fetch_timeout: 5s
   fetch_interval: 2s
   labels:
-    - "ubuntu-latest:docker://code.forgejo.org/forgejo-runner-images:ubuntu-latest"
-    - "ubuntu-24.04:docker://code.forgejo.org/forgejo-runner-images:ubuntu-24.04"
-    - "ubuntu-22.04:docker://code.forgejo.org/forgejo-runner-images:ubuntu-22.04"
+    - "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:act-latest"
+    - "ubuntu-22.04:docker://ghcr.io/catthehacker/ubuntu:act-22.04"
+    - "ubuntu-24.04:docker://ghcr.io/catthehacker/ubuntu:act-24.04"
 
 cache:
   enabled: false
@@ -20,3 +20,11 @@ container:
 
 host:
   workdir_parent:
+
+server:
+  connections:
+    forgejo:
+      url: https://example.com/
+      uuid: c9e50be9-a7c3-4aee-ba35-624c4ff8c519
+      token: 6634bb58be0db23cc013a2e72dd1828ae0257cf
+      fetch_interval: 30s
