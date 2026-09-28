@@ -1,0 +1,15 @@
+[Unit]
+Description=Forgejo Service
+After=network.target
+
+[Service]
+Type=forking
+User=forgejo
+Group=forgejo
+Restart=on-failure
+RestartSec=5s
+ExecStart=/usr/local/forgejo/forgejo.sh start
+ExecStop=/usr/local/forgejo/forgejo.sh stop
+
+[Install]
+WantedBy=multi-user.target

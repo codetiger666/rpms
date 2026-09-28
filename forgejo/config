@@ -1,0 +1,2 @@
+WORK_PATH=/usr/local/forgejo/data
+WORK_PORT=20505
