@@ -1,0 +1,163 @@
+Package: openresty
+Version: 1.31.1.1-1
+Architecture: amd64
+Maintainer: codetiger
+Installed-Size: 9742
+Depends: libc6 (>= 2.28), libgcc1 (>= 1:3.3), libgd3 (>= 2.1.0~alpha~), libgeoip1, libpcre2-8-0 (>= 10.32), libperl5.28 (>= 5.28.0), libssl1.1 (>= 1.1.1), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/buster/main/binary-amd64/openresty_1.31.1.1-1_amd64.deb
+Size: 2019792
+MD5sum: aa55dd5690d14ca5c3fc6d5f0c7f1dc0
+SHA1: 5975a9b7257159bec6c5b2877e9591d69d530f3b
+SHA256: 89e2a901fd5f777d7df81ee4bcbcc127557f5052f76c0012b6de0c146d9c9503
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenResty self-compiled package
+ OpenResty is a full-fledged web platform that integrates the standard
+ Nginx core, LuaJIT, many carefully written Lua libraries, lots of
+ high quality 3rd-party Nginx modules, and most of their external
+ dependencies. This package is a self-compiled version with additional
+ modules including ngx_upstream_jdomain and nginx-upstream-dynamic-servers.
+
+Package: openresty-dbgsym
+Source: openresty
+Version: 1.31.1.1-1
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: codetiger
+Installed-Size: 2927
+Depends: openresty (= 1.31.1.1-1)
+Filename: dists/buster/main/binary-amd64/openresty-dbgsym_1.31.1.1-1_amd64.deb
+Size: 2481100
+MD5sum: ca18a7354267a923fda0228b88ca4434
+SHA1: bce4447735efbb337d5bab7f6013b2b646c0f34f
+SHA256: ccf29987ed1afa753d5b42c27a8457e361be6e19974355d784fea3c7b4bc88b1
+Section: debug
+Priority: optional
+Description: debug symbols for openresty
+Build-Ids: 033e6a0374f0b887956eec296dba0d4ee2a7ff56 1a4c05a1da32686797acdd0d42afcf184b2d2641 28d0ea8e339a5416533a9ee6dfaab37555e208c6 2e119d7526faeea81bfa77387198f989264941fb a71594f6aae080dc3752a2133c36122b08f6e6cb b09a86e1cc8dbdd95a613ec0831dee8ab88ce2dd e7a7617ed796b08a13c8e93d8cc5991f8ddb6ca3 f51e2ca7f295f8f360d680cb3176d49e62910cf3
+
+Package: openssh
+Version: 2:10.5.P1-1
+Architecture: amd64
+Maintainer: codetiger
+Installed-Size: 1336
+Depends: libc6 (>= 2.26), libselinux1 (>= 2.0.65), libssl1.1 (>= 1.1.1), zlib1g (>= 1:1.1.4)
+Filename: dists/buster/main/binary-amd64/openssh_10.5.P1-1_amd64.deb
+Size: 363924
+MD5sum: 12a6c7c9fab00f3e12e77c79fc44006d
+SHA1: 0b04e3db9a3fa8a3f858e11165f4c815e220b3ef
+SHA256: d7d00e516444a862c2830323681322f59793a46404fe80f6317d810d8f0ad28a
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh编译
+
+Package: openssh-client
+Source: openssh
+Version: 2:10.5.P1-1
+Architecture: amd64
+Maintainer: codetiger
+Installed-Size: 3740
+Depends: openssh (= 2:10.5.P1-1)
+Filename: dists/buster/main/binary-amd64/openssh-client_10.5.P1-1_amd64.deb
+Size: 873180
+MD5sum: 4a9c35e61f2e8799ec9bc559aca6cb65
+SHA1: 705c9f576485b7c8fcef2baff74e7b4e6b4f2c34
+SHA256: 6c7e90746921f88f3c9d9f263d3ec891f3e8958fa71bfa81b37e96c7fe0d29b7
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh-clients编译
+
+Package: openssh-server
+Source: openssh
+Version: 2:10.5.P1-1
+Architecture: amd64
+Maintainer: codetiger
+Installed-Size: 2978
+Depends: openssh-client (= 2:10.5.P1-1)
+Filename: dists/buster/main/binary-amd64/openssh-server_10.5.P1-1_amd64.deb
+Size: 722852
+MD5sum: 45d516921ec01b7f1c6dcd91a41982a6
+SHA1: db735de24545d878d43d98fa81db8b0184ce4e6a
+SHA256: 67e70f29a1464fc43e253585d0724327d99a2ee034c68b707a4a041eabcc0f11
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh-server编译
+
+Package: redis
+Version: 8.10.2-1
+Architecture: amd64
+Maintainer: codetiger
+Installed-Size: 6289
+Depends: libc6 (>= 2.28)
+Filename: dists/buster/main/binary-amd64/redis_8.10.2-1_amd64.deb
+Size: 1651004
+MD5sum: 5e6bae2d5567d15e1f1cb68f71c943bf
+SHA1: 20ce0adb86273158a104372bd3396771bbd83e60
+SHA256: 988c185a2305d576c5134bad828abe59b3810e819d9ac47744470990e9c9d583
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.
+
+Package: redis
+Version: 8.8.3-1
+Architecture: amd64
+Maintainer: codetiger
+Installed-Size: 6142
+Depends: libc6 (>= 2.28)
+Filename: dists/buster/main/binary-amd64/redis_8.8.3-1_amd64.deb
+Size: 1595004
+MD5sum: b24226fe53a321d4f689b156079e6bc1
+SHA1: 4c1f261a8e532de3ed411d3e4c786a7eb5527633
+SHA256: 6ca8f84009534ece820d03269e1189e8a861710e800751521b4d11748cd0f560
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.
+
+Package: redis-dbgsym
+Source: redis
+Version: 8.10.2-1
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: codetiger
+Installed-Size: 12304
+Depends: redis (= 8.10.2-1)
+Filename: dists/buster/main/binary-amd64/redis-dbgsym_8.10.2-1_amd64.deb
+Size: 10029240
+MD5sum: 7e0f30a3f4eb903bb96a5913b2d10046
+SHA1: 105b293c707f3e7258347b5a9abdbce014bf32b8
+SHA256: 1e5f7a11dd02231cc999ce1c63ccf3a503ff44ecf7a9976f28b816a2eb89a4fc
+Section: debug
+Priority: optional
+Description: debug symbols for redis
+Build-Ids: 87f6cd997c74f7bb7fffe1c4142e8cd90ffecf0d bf36bb6cfa4bdd554f44f1db02b1d3dc1959eaab f4d1422640c293da01f8e7e56c6ef4f62b211beb
+
+Package: redis-dbgsym
+Source: redis
+Version: 8.8.3-1
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: codetiger
+Installed-Size: 12092
+Depends: redis (= 8.8.3-1)
+Filename: dists/buster/main/binary-amd64/redis-dbgsym_8.8.3-1_amd64.deb
+Size: 9818064
+MD5sum: d668bd3ef42b75dde0864ed59699b7ec
+SHA1: 00ab9730ecb411b0109ee7deaa848731ab98c1ff
+SHA256: e721bfa835aa2bfe20b30c1f17fe49e8c8e1ed9c6f557502a481aaa5a56314ef
+Section: debug
+Priority: optional
+Description: debug symbols for redis
+Build-Ids: 9814424ac126cf68bb58089becb6abdb6576631a cfa706fba35c0be34a0e362918f406155bf7722e f27ea7f5670c3c3cfab2b824ae337032a0de9ee2
+
