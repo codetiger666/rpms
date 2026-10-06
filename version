@@ -7,7 +7,7 @@ frp---0.71.0---fatedier/frp---release---sed 's/v//'
 gitea---28.0.0---go-gitea/gitea---release---sed 's/v//'
 forgejo---16.0.5---forgejo/forgejo---release---curl -s https://code.forgejo.org/api/v1/repos/forgejo/forgejo/releases/latest | jq -r '.tag_name' | sed 's/v//'---new
 openlist---4.2.6---OpenListTeam/OpenList---release---sed 's/v//'
-vaultwarden---1.37.3---dani-garcia/vaultwarden---release
+vaultwarden---1.37.4---dani-garcia/vaultwarden---release
 hysteria---2.13.0---apernet/hysteria---release---sed 's/v//' | sed 's/app\///'
 openssl---3.2.6---openssl/openssl---release---echo $(curl https://api.github.com/repos/openssl/openssl/releases | jq -r '.[].tag_name' | grep '^openssl-3.2.' | head -n1 | sed 's/openssl-//')---new
 xray---26.3.27---XTLS/Xray-core---release---sed 's/v//'
