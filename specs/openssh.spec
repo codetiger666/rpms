@@ -23,6 +23,7 @@ openssh编译
 %package -n openssh-clients
 Summary:      openssh-clients
 Requires: openssh = %{version}
+Requires: openssh-openssl-libs = %{version}-%{release}
 
 # 描述
 %description -n openssh-clients
@@ -31,11 +32,19 @@ openssh-clients编译
 # 子包openssh-server定义
 %package -n openssh-server
 Summary:      openssh-server
-Requires: openssh-clients = %{version}
+Requires: openssh-clients = %{version}-%{release}
 
 # 描述
 %description -n openssh-server
 openssh-server编译
+
+# 子包openssl libs定义
+%package -n openssh-openssl-libs
+Summary:      OpenSSL libraries for openssh
+Provides: openssh-openssl-libs = %{version}-%{release}
+
+%description -n openssh-openssl-libs
+Custom OpenSSL libraries bundled with openssh
 
 %prep
 %setup -q
@@ -43,32 +52,66 @@ cp %{SOURCE3} %{_builddir}
 cd %{_builddir}
 tar -xf %{SOURCE3}
 cd openssl-codetiger_openssl_version
-./config no-shared --prefix=/usr/local/ssh/openssl --openssldir=/usr/local/ssh/openssl
-make -j6 && make install
-#echo -e "/usr/local/ssh/openssl/lib64\n/usr/local/ssh/openssl/lib" > /etc/ld.so.conf.d/opensslcodetiger_openssl_version.conf
-#/sbin/ldconfig
+
+# 根据架构自动选择库目录 (x86_64=lib, aarch64=lib64)
+%if "%{_lib}" == "lib64"
+OPENSSL_LIBDIR=lib64
+%else
+OPENSSL_LIBDIR=lib
+%endif
+
+# 编译OpenSSL为共享库，支持跨架构
+./config --prefix=/usr/local/ssh/openssl \
+    --openssldir=/usr/local/ssh/openssl \
+    --libdir=/usr/local/ssh/openssl/$OPENSSL_LIBDIR \
+    shared \
+    zlib
+make -j$(nproc)
+make install_sw
 
 # 编译
 %build
-LDFLAGS="-L/usr/local/ssh/openssl/lib64 -L/usr/local/ssh/openssl/lib -Wl,-Bstatic -lssl -lcrypto -Wl,-Bdynamic" && \
-CFLAGS="-I/usr/local/ssh/openssl/include" && \
+# 根据架构自动选择库目录
+%if "%{_lib}" == "lib64"
+OPENSSL_LIBDIR=lib64
+%else
+OPENSSL_LIBDIR=lib
+%endif
+
+export CPPFLAGS="-I/usr/local/ssh/openssl/include"
+export LDFLAGS="-L/usr/local/ssh/openssl/$OPENSSL_LIBDIR -Wl,-rpath,/usr/local/ssh/openssl/$OPENSSL_LIBDIR"
+export CFLAGS="$CPPFLAGS"
+
 ./configure \
   --prefix=/usr \
   --sysconfdir=/etc/ssh \
   --with-ssl-dir=/usr/local/ssh/openssl \
   --with-selinux
-make -j6
+make -j$(nproc)
 
 # 安装
 %install
 make install DESTDIR=%{buildroot}
 rm -rf %{buildroot}/etc/ssh/sshd_config
-#mkdir -p %{buildroot}/usr/local/ssh
-#/bin/cp -r /usr/local/ssh/openssl %{buildroot}/usr/local/ssh/openssl
+
+# 根据架构自动选择库目录
+%if "%{_lib}" == "lib64"
+OPENSSL_LIBDIR=lib64
+%else
+OPENSSL_LIBDIR=lib
+%endif
+
+# 从/usr/local/ssh/openssl目录复制库到RPM包
+mkdir -p %{buildroot}/usr/local/ssh/openssl/$OPENSSL_LIBDIR
+mkdir -p %{buildroot}/usr/local/ssh/openssl/include
+
+# 只复制so文件（共享库），保留符号链接(-P参数)
+cp -P /usr/local/ssh/openssl/$OPENSSL_LIBDIR/libcrypto.so* %{buildroot}/usr/local/ssh/openssl/$OPENSSL_LIBDIR/
+cp -P /usr/local/ssh/openssl/$OPENSSL_LIBDIR/libssl.so* %{buildroot}/usr/local/ssh/openssl/$OPENSSL_LIBDIR/
+cp -r /usr/local/ssh/openssl/include/openssl %{buildroot}/usr/local/ssh/openssl/include/
+
 %{__install} -p -D -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/sshd.service
 %{__install} -p -D -m 0644 %{SOURCE2} %{buildroot}/etc/ssh/sshd_config
-#rm -rf /etc/ld.so.conf.d/opensslcodetiger_openssl_version.conf
-#/sbin/ldconfig
 
 # 安装后操作
 %post -n openssh-server
@@ -132,6 +175,15 @@ fi
 %{_usr}/share/man/man1/ssh-keyscan.1.gz
 %{_usr}/share/man/man1/ssh.1.gz
 %{_usr}/share/man/man5/ssh_config.5.gz
+
+# 子包openssh-openssl-libs文件列表
+%files -n openssh-openssl-libs
+%dir /usr/local/ssh/openssl
+%dir /usr/local/ssh/openssl/%{_lib}
+%dir /usr/local/ssh/openssl/include
+/usr/local/ssh/openssl/%{_lib}/libcrypto.so*
+/usr/local/ssh/openssl/%{_lib}/libssl.so*
+/usr/local/ssh/openssl/include/openssl/
 
 # 文档
 %doc
