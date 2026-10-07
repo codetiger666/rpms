@@ -1,5 +1,7 @@
 # 自定义clients名称
 %define client_name openssh-clients
+%define __brp_check_rpaths %{nil}
+
 Name:           openssh
 Version:        codetiger_version
 Release:        1%{?dist}
