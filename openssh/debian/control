@@ -13,10 +13,15 @@ Description: openssh编译
 
 Package: openssh-client
 Architecture: any
-Depends: openssh (= ${binary:Version}), ${misc:Depends}
+Depends: openssh (= ${binary:Version}), openssh-openssl-libs (= ${binary:Version}), ${misc:Depends}
 Description: openssh-clients编译
 
 Package: openssh-server
 Architecture: any
 Depends: openssh-client (= ${binary:Version}), ${misc:Depends}
 Description: openssh-server编译
+
+Package: openssh-openssl-libs
+Architecture: any
+Depends: ${misc:Depends}
+Description: OpenSSL libraries for openssh (custom rpath build)

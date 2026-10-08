@@ -3,13 +3,37 @@
 export DH_VERBOSE = 1
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
+# 参照 rpm 的 openssl rpath 编译方式
+# 根据架构自动选择库目录 (x86_64=lib64, 其他=lib，与 rpm %{_lib} 一致)
+ifeq ($(shell uname -m),x86_64)
+OPENSSL_LIBDIR := lib64
+else
+OPENSSL_LIBDIR := lib
+endif
+OPENSSL_VERSION := $(shell ls -d openssl-* 2>/dev/null | head -n 1)
+OPENSSL_PREFIX := /usr/local/ssh/openssl
+
 %:
 	dh $@
 
 override_dh_auto_configure:
-	./configure \
+	# 1. 编译本地 OpenSSL 到 /usr/local/ssh/openssl（与 rpm %prep/%build 一致）
+	cd $(CURDIR)/$(OPENSSL_VERSION) && \
+		./config --prefix=$(OPENSSL_PREFIX) \
+			--openssldir=$(OPENSSL_PREFIX) \
+			--libdir=$(OPENSSL_PREFIX)/$(OPENSSL_LIBDIR) \
+			shared \
+			zlib && \
+		make -j$$(nproc) && \
+		make install_sw
+	# 2. 使用 rpath 链接 openssh 到本地 openssl（与 rpm LDFLAGS 一致）
+	env CPPFLAGS="-I$(OPENSSL_PREFIX)/include" \
+	    CFLAGS="-I$(OPENSSL_PREFIX)/include" \
+	    LDFLAGS="-L$(OPENSSL_PREFIX)/$(OPENSSL_LIBDIR) -Wl,-rpath,$(OPENSSL_PREFIX)/$(OPENSSL_LIBDIR)" \
+	    ./configure \
 		--prefix=/usr \
 		--sysconfdir=/etc/ssh \
+		--with-ssl-dir=$(OPENSSL_PREFIX) \
 		--with-selinux
 
 override_dh_auto_build:
@@ -18,10 +42,20 @@ override_dh_auto_build:
 override_dh_auto_install:
 	make install DESTDIR=$(CURDIR)/debian/tmp
 	rm -rf  $(CURDIR)/debian/tmp/etc/ssh/sshd_config
+	# 3. 复制 openssl 共享库到镜像（与 rpm %install 一致）
+	mkdir -p $(CURDIR)/debian/tmp/$(OPENSSL_PREFIX)/$(OPENSSL_LIBDIR)
+	mkdir -p $(CURDIR)/debian/tmp/$(OPENSSL_PREFIX)/include
+	cp -P $(OPENSSL_PREFIX)/$(OPENSSL_LIBDIR)/libcrypto.so* $(CURDIR)/debian/tmp/$(OPENSSL_PREFIX)/$(OPENSSL_LIBDIR)/
+	cp -P $(OPENSSL_PREFIX)/$(OPENSSL_LIBDIR)/libssl.so* $(CURDIR)/debian/tmp/$(OPENSSL_PREFIX)/$(OPENSSL_LIBDIR)/
+	cp -r $(OPENSSL_PREFIX)/include/openssl $(CURDIR)/debian/tmp/$(OPENSSL_PREFIX)/include/
 	install -p -D -m 0644 debian/sshd.service $(CURDIR)/debian/tmp/usr/lib/systemd/system/sshd.service
 	install -p -D -m 0644 debian/sshd_config $(CURDIR)/debian/tmp/etc/ssh/sshd_config
 	dh_install -popenssh
 	dh_install -popenssh-client
 	dh_install -popenssh-server
+
+# 4. 让 dpkg-shlibdeps 能在私有 openssl 库目录查找依赖（对应错误提示中 -l 建议）
+override_dh_shlibdeps:
+	dh_shlibdeps -- -l$(OPENSSL_PREFIX)/$(OPENSSL_LIBDIR)
 
 override_dh_usrlocal:
