@@ -1,0 +1,6 @@
+WORK_DATA=/usr/local/moontvplus/data
+WORK_PORT=3000
+WORK_HOST=localhost
+export USERNAME=user
+export PASSWORD=password
+export NEXT_PUBLIC_STORAGE_TYPE=d1

@@ -40,6 +40,7 @@ on:
             - redis
             - gitea-runner
             - forgejo-runner
+            - moontvplus
         version:
           description: '软件版本'
           required: true
@@ -149,6 +150,8 @@ jobs:
 
       # 编译
       - name: build ${{ github.event.inputs.program }}-${{ matrix.arch }}
+        # 出错继续
+        continue-on-error: true
         run: |
           source $HOME/.profile
           docker stop $centos

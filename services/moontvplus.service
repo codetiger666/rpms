@@ -1,0 +1,13 @@
+[Unit]
+Description=Moontvplus start stop
+After=network-online.target
+
+[Service]
+User=moontvplus
+Group=moontvplus
+Type=forking
+ExecStart=/usr/local/moontvplus/moontvplus.sh start
+ExecStop=/usr/local/moontvplus/moontvplus.sh stop
+
+[Install]
+WantedBy=multi-user.target
