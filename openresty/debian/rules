@@ -27,6 +27,10 @@ override_dh_auto_install:
 	install -p -D -m 0644 debian/stream.conf.example $(CURDIR)/debian/tmp/usr/local/nginx/conf.d/stream.example
 	install -p -D -m 0644 debian/ssl.conf.example $(CURDIR)/debian/tmp/usr/local/nginx/conf.d/ssl.conf.example
 	install -p -D -m 0644 debian/nginx.service $(CURDIR)/debian/tmp/lib/systemd/system/nginx.service
+	install -p -D -m 0644 debian/proxy.conf $(CURDIR)/debian/tmp/usr/local/nginx/conf/proxy.conf
+	install -p -D -m 0644 debian/websocket.conf $(CURDIR)/debian/tmp/usr/local/nginx/conf/websocket.conf
+	install -p -D -m 0644 debian/real_ip_cloudflare.conf $(CURDIR)/debian/tmp/usr/local/nginx/conf/real_ip_cloudflare.conf
+	install -p -D -m 0644 debian/ssl.conf $(CURDIR)/debian/tmp/usr/local/nginx/conf/ssl.conf
 
 override_dh_usrlocal:
 

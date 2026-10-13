@@ -13,6 +13,10 @@ Source2:        nginx.service
 Source3:        default.conf
 Source4:        stream.conf.example
 Source5:        ssl.conf.example
+Source6:        proxy.conf
+Source7:        websocket.conf
+Source8:        real_ip_cloudflare.conf
+Source9:        ssl.conf
 
 BuildRequires:  gcc make zlib-devel libxml2-devel libxslt-devel gd-devel geoip-devel libatomic_ops-devel openssl-devel perl-devel
 # release 10
@@ -52,11 +56,18 @@ make -j6
 # 安装
 %install
 make install DESTDIR=%{buildroot}
+mkdir  -p %{buildroot}%{prefix}/conf
+mkdir  -p %{buildroot}%{prefix}/conf.d
 %{__install} -p -D -m 0644 %{SOURCE1} %{buildroot}%{prefix}/nginx.conf
 %{__install} -p -D -m 0644 %{SOURCE3} %{buildroot}%{prefix}/conf.d/default.conf
 %{__install} -p -D -m 0644 %{SOURCE4} %{buildroot}%{prefix}/conf.d/stream.example
 %{__install} -p -D -m 0644 %{SOURCE5} %{buildroot}%{prefix}/conf.d/ssl.conf.example
 %{__install} -p -D -m 0644 %{SOURCE2} %{buildroot}%{_usr}/lib/systemd/system/nginx.service
+%{__install} -p -D -m 0644 %{SOURCE6} %{buildroot}%{prefix}/conf/proxy.conf
+%{__install} -p -D -m 0644 %{SOURCE7} %{buildroot}%{prefix}/conf/websocket.conf
+%{__install} -p -D -m 0644 %{SOURCE8} %{buildroot}%{prefix}/conf/real_ip_cloudflare.conf
+%{__install} -p -D -m 0644 %{SOURCE9} %{buildroot}%{prefix}/conf/ssl.conf
+
 
 # 安装前准备
 %pre

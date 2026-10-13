@@ -10,11 +10,19 @@ program_init(){
   sudo curl https://raw.githubusercontent.com/codetiger666/linux/master/scripts/linux/nginx/nginx.conf > nginx.conf
   sudo curl https://raw.githubusercontent.com/codetiger666/linux/master/scripts/linux/nginx/stream.conf.example > stream.conf.example
   sudo curl https://raw.githubusercontent.com/codetiger666/linux/master/scripts/linux/nginx/ssl.conf.example > ssl.conf.example
+  sudo curl https://raw.githubusercontent.com/codetiger666/linux/master/scripts/linux/nginx/proxy.conf > proxy.conf
+  sudo curl https://raw.githubusercontent.com/codetiger666/linux/master/scripts/linux/nginx/websocket.conf > websocket.conf
+  sudo curl https://raw.githubusercontent.com/codetiger666/linux/master/scripts/linux/nginx/real_ip_cloudflare.conf > real_ip_cloudflare.conf
+  sudo curl https://raw.githubusercontent.com/codetiger666/linux/master/scripts/linux/nginx/ssl.conf > ssl.conf
   sudo /bin/cp nginx.service openresty/debian/
   sudo /bin/cp default.conf openresty/debian/
   sudo /bin/cp nginx.conf openresty/debian/
   sudo /bin/cp stream.conf.example openresty/debian/
   sudo /bin/cp ssl.conf.example openresty/debian/
+  sudo /bin/cp proxy.conf openresty/debian/
+  sudo /bin/cp websocket.conf openresty/debian/
+  sudo /bin/cp real_ip_cloudflare.conf openresty/debian/
+  sudo /bin/cp ssl.conf openresty/debian/
   sudo wget https://openresty.org/download/openresty-${project_version}.tar.gz
   sudo mkdir -p /opt/deb_build
   sudo /bin/cp openresty-${project_version}.tar.gz /opt/deb_build/openresty_${project_version}.orig.tar.gz

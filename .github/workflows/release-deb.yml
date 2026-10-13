@@ -252,9 +252,9 @@ jobs:
               cd $GITHUB_WORKSPACE/large_file/$os && sudo bash -c "dpkg-scanpackages --multiversion dists/$release/main/binary-$ori_arch/ /dev/null > dists/$release/main/binary-$ori_arch/Packages" || true
               cd $GITHUB_WORKSPACE/large_file/$os/dists/$release/main/binary-$ori_arch/ && sudo bash -c 'cat Packages | gzip -9c > Packages.gz'  || true
             done
-            done
             cd $GITHUB_WORKSPACE/large_file/$os
-            sudo bash -c 'apt-ftparchive -o APT::FTPArchive::Release::Origin="Codetiger" -o APT::FTPArchive::Release::Label="CodeTiger ${os} Repository" -o APT::FTPArchive::Release::Suite="${release}" -o APT::FTPArchive::Release::Codename="${release}" -o APT::FTPArchive::Release::Architectures="amd64 arm64" -o APT::FTPArchive::Release::Components="main" release dists/${release} > dists/${release}/Release'
+            sudo bash -c "apt-ftparchive -o APT::FTPArchive::Release::Origin=\"Codetiger\" -o APT::FTPArchive::Release::Label=\"CodeTiger ${os} Repository\" -o APT::FTPArchive::Release::Suite=\"${release}\" -o APT::FTPArchive::Release::Codename=\"${release}\" -o APT::FTPArchive::Release::Architectures=\"amd64 arm64\" -o APT::FTPArchive::Release::Components=\"main\" release dists/${release} > dists/${release}/Release"
+            done
             done
           else
             for os in "${oss[@]}"; do
@@ -269,9 +269,9 @@ jobs:
               cd $GITHUB_WORKSPACE/$os && sudo bash -c "dpkg-scanpackages --multiversion dists/$release/main/binary-$ori_arch/ /dev/null > dists/$release/main/binary-$ori_arch/Packages" || true
               cd $GITHUB_WORKSPACE/$os/dists/$release/main/binary-$ori_arch/ && sudo bash -c 'cat Packages | gzip -9c > Packages.gz' || true
             done
-            done
             cd $GITHUB_WORKSPACE/$os
-            sudo bash -c 'apt-ftparchive -o APT::FTPArchive::Release::Origin="Codetiger" -o APT::FTPArchive::Release::Label="CodeTiger ${os} Repository" -o APT::FTPArchive::Release::Suite="${release}" -o APT::FTPArchive::Release::Codename="${release}" -o APT::FTPArchive::Release::Architectures="amd64 arm64" -o APT::FTPArchive::Release::Components="main" release dists/${release} > dists/${release}/Release'
+            sudo bash -c "apt-ftparchive -o APT::FTPArchive::Release::Origin=\"Codetiger\" -o APT::FTPArchive::Release::Label=\"CodeTiger ${os} Repository\" -o APT::FTPArchive::Release::Suite=\"${release}\" -o APT::FTPArchive::Release::Codename=\"${release}\" -o APT::FTPArchive::Release::Architectures=\"amd64 arm64\" -o APT::FTPArchive::Release::Components=\"main\" release dists/${release} > dists/${release}/Release"
+            done
             done
           fi
           
