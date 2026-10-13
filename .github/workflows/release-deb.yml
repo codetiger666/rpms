@@ -37,19 +37,23 @@ env:
 jobs:
 
   build:
-    name: build-rpms-${{ github.event.inputs.program }}-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.release }}
+    name: build-deb-${{ github.event.inputs.program }}-${{ matrix.image }}-${{ matrix.arch }}
     runs-on: ${{ matrix.arch == 'x86_64' && 'ubuntu-latest' || matrix.arch == 'aarch64' && 'ubuntu-24.04-arm' }}
 
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - debian/eol
+        image:
+          - debian/eol:buster
+          - debian/eol:bullseye
+          - debian:bookworm
+          - debian:trixie
+          - ubuntu:jammy
+          - ubuntu:noble
+          - ubuntu:rolling
         arch:
           - x86_64
           - aarch64
-        release:
-          - buster
     steps:
       - uses: actions/checkout@v2
 
@@ -70,18 +74,25 @@ jobs:
         run: |
           echo "export project_program=${{ github.event.inputs.program }}" >> $HOME/.profile
           echo "export project_version=${{ github.event.inputs.version }}" >> $HOME/.profile
-          os_name=${{ matrix.os }}
-          echo "export os_name=${{ matrix.os }}" >> $HOME/.profile
-          ARTIFACT_OS_NAME="${os_name//\//-}"
+          image="${{ matrix.image }}"
+          # image format: <os_name>:<release>  e.g. debian/eol:buster
+          echo "export image=${image}" >> $HOME/.profile
+          # 在 shell 中分割
+          os="$(echo "$image" | awk -F':' '{print $1}')"
+          release="$(echo "$image" | awk -F':' '{print $2}')"
+          echo "export os=${os}" >> $HOME/.profile
+          ARTIFACT_OS_NAME="${os//\//-}-${release}"
           echo "ARTIFACT_OS_NAME=${ARTIFACT_OS_NAME}" >> $GITHUB_ENV
-          echo "export os_release=${{ matrix.release }}" >> $HOME/.profile
+          echo "release=${release}" >> $GITHUB_ENV
+          echo "export os_release=${release}" >> $HOME/.profile
           echo "export project_arch=${{ matrix.arch }}" >> $HOME/.profile
           source $HOME/.profile
 
-      - name: run-redhat ${{ github.event.inputs.program }}-${{matrix.os}}-${{ matrix.arch }}
+      - name: run-deb ${{ github.event.inputs.program }}-${{ matrix.image }}-${{ matrix.arch }}
         # 出错继续
         continue-on-error: true
         run: |
+          source $HOME/.profile
           mkdir rpm
           case ${{ matrix.arch }} in
             aarch64)
@@ -95,11 +106,11 @@ jobs:
               exit 0
               ;;
           esac
-          centos=`docker run -itd -v /opt:/opt ${{ matrix.os }}:${{ matrix.release }}`
+          centos=`docker run -itd -v /opt:/opt ${{ matrix.image }}`
           echo "export centos=$centos" >> $HOME/.profile
           source $HOME/.profile
 
-      - name: init ${{ github.event.inputs.program }}-${{matrix.os}}-${{ matrix.arch }}
+      - name: init ${{ github.event.inputs.program }}-${{ matrix.image }}-${{ matrix.arch }}
         run: |
           source $HOME/.profile
           source init/common.sh
@@ -123,7 +134,7 @@ jobs:
           docker stop $centos
           docker start $centos
           docker exec -i $centos apt update -y
-          docker exec -i $centos apt install curl wget vim devscripts -y
+          docker exec -i $centos apt install curl wget vim devscripts equivs -y
           docker exec -i $centos mk-build-deps -i  --tool='apt-get -y -q' -r /opt/deb_build/${{ github.event.inputs.program }}-${{ github.event.inputs.version }}/debian/control
           docker exec -i -w /opt/deb_build/${{ github.event.inputs.program }}-${{ github.event.inputs.version }} $centos dpkg-buildpackage -us -uc -b
 
@@ -131,7 +142,7 @@ jobs:
       - name:  upload ${{ github.event.inputs.program }}-${{ matrix.arch }}
         uses: actions/upload-artifact@main
         with:
-          name: ${{ github.event.inputs.program }}-${{ env.ARTIFACT_OS_NAME }}-${{ matrix.arch }}-${{ matrix.release }}
+          name: ${{ github.event.inputs.program }}-${{ env.ARTIFACT_OS_NAME }}-${{ matrix.arch }}-${{ env.release }}
           path: /opt/deb_build/${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*.deb
 
       
@@ -140,7 +151,7 @@ jobs:
         run: |
           arch=${{ matrix.arch }}
           source $HOME/.profile
-          text="\\\\[${project_program//-/\\\\-}\\\\] \\\\[❌ 编译失败\\\\]\n版本\`${project_version//./\\\\.}\`\n架构\`${arch//_/\\\\_}\`"
+          text="\\\\[${project_program//-/\\\\-}\\\\] \\\\[❌ 编译失败\\\\]\n版本\`${project_version//./\\\\.}\`\n系统\`${os}\`\n架构\`${arch//_/\\\\_}\`"
           content=$(cat <<EOF
           {
             "chat_id": "${{ secrets.TG_BOT_USER_ID }}",
@@ -190,9 +201,9 @@ jobs:
         id: upload_rpms
         run: |
           source $HOME/.profile
-          oss=("debian")
+          oss=("debian" "ubuntu")
           archs=("x86_64" "aarch64")
-          releases=("buster")
+          releases=("buster" "bullseye" "bookworm" "trixie" "jammy" "noble" "rolling")
           GIT_SSL_NO_VERIFY=true git clone ${{ secrets.large_file_repo_url }} large_file || true
           mkdir large_file || true
           git pull
@@ -218,10 +229,10 @@ jobs:
                 fi
                 if [ "$size" -gt 104857600 ]; then
                   sudo mkdir -p large_file/$os/dists/$release/main/binary-$ori_arch/
-                  sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$os*-$arch-$release/*${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*$ori_arch.deb large_file/$os/dists/$release/main/binary-$ori_arch/
+                  sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$os*-$arch-$release/*${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*$ori_arch.deb large_file/$os/dists/$release/main/binary-$ori_arch/ || true
                 else
                   sudo mkdir -p $os/dists/$release/main/binary-$ori_arch/
-                  sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$os*-$arch-$release/*${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*$ori_arch.deb $os/dists/$release/main/binary-$ori_arch/
+                  sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$os*-$arch-$release/*${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*$ori_arch.deb $os/dists/$release/main/binary-$ori_arch/ || true
                 fi
               done
             done
@@ -243,7 +254,7 @@ jobs:
             done
             done
             cd $GITHUB_WORKSPACE/large_file/$os
-            sudo bash -c 'apt-ftparchive -o APT::FTPArchive::Release::Origin="Codetiger" -o APT::FTPArchive::Release::Label="CodeTiger Debian Repository" -o APT::FTPArchive::Release::Suite="buster" -o APT::FTPArchive::Release::Codename="buster" -o APT::FTPArchive::Release::Architectures="amd64 arm64" -o APT::FTPArchive::Release::Components="main" release dists/buster > dists/buster/Release'
+            sudo bash -c 'apt-ftparchive -o APT::FTPArchive::Release::Origin="Codetiger" -o APT::FTPArchive::Release::Label="CodeTiger ${os} Repository" -o APT::FTPArchive::Release::Suite="${release}" -o APT::FTPArchive::Release::Codename="${release}" -o APT::FTPArchive::Release::Architectures="amd64 arm64" -o APT::FTPArchive::Release::Components="main" release dists/${release} > dists/${release}/Release'
             done
           else
             for os in "${oss[@]}"; do
@@ -260,7 +271,7 @@ jobs:
             done
             done
             cd $GITHUB_WORKSPACE/$os
-            sudo bash -c 'apt-ftparchive -o APT::FTPArchive::Release::Origin="Codetiger" -o APT::FTPArchive::Release::Label="CodeTiger Debian Repository" -o APT::FTPArchive::Release::Suite="buster" -o APT::FTPArchive::Release::Codename="buster" -o APT::FTPArchive::Release::Architectures="amd64 arm64" -o APT::FTPArchive::Release::Components="main" release dists/buster > dists/buster/Release'
+            sudo bash -c 'apt-ftparchive -o APT::FTPArchive::Release::Origin="Codetiger" -o APT::FTPArchive::Release::Label="CodeTiger ${os} Repository" -o APT::FTPArchive::Release::Suite="${release}" -o APT::FTPArchive::Release::Codename="${release}" -o APT::FTPArchive::Release::Architectures="amd64 arm64" -o APT::FTPArchive::Release::Components="main" release dists/${release} > dists/${release}/Release'
             done
           fi
           
@@ -309,6 +320,23 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+
+      # 初始化环境变量
+      - name: init-env
+        run: |
+          echo "export project_program=${{ github.event.inputs.program }}" >> $HOME/.profile
+          echo "export project_version=${{ github.event.inputs.version }}" >> $HOME/.profile
+          image="${{ matrix.image }}"
+          # image format: <os_name>:<release>  e.g. debian/eol:buster
+          echo "export image=${image}" >> $HOME/.profile
+          # 在 shell 中分割
+          os="$(echo "$image" | awk -F':' '{print $1}')"
+          release="$(echo "$image" | awk -F':' '{print $2}')"
+          echo "export os=${os}" >> $HOME/.profile
+          ARTIFACT_OS_NAME="${os//\//-}-${release}"
+          echo "export os_release=${release}" >> $HOME/.profile
+          echo "export project_arch=${{ matrix.arch }}" >> $HOME/.profile
+          source $HOME/.profile
         
       - name: send tg message
         run: |
@@ -321,6 +349,6 @@ jobs:
           --header 'Content-Type: application/json' \
           --data "{
           \"chat_id\": \"${{ secrets.TG_BOT_USER_ID }}\",
-          \"text\": \"\\\\[${project_program//-/\\\\-}\\\\] \\\\[✅ 编译成功\\\\]\n版本\`${project_version//./\\\\.}\`\",
+          \"text\": \"\\\\[${project_program//-/\\\\-}\\\\] \\\\[✅ 编译成功\\\\]\n版本\`${project_version//./\\\\.}\`\n系统\`${os}\`\",
           \"parse_mode\": \"MarkdownV2\"
           }"
