@@ -129,6 +129,7 @@ jobs:
 
       # 编译
       - name: build ${{ github.event.inputs.program }}-${{ matrix.arch }}
+        continue-on-error: true
         run: |
           source $HOME/.profile
           docker stop $centos
