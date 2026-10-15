@@ -1,2 +1,6 @@
 /usr/local/nginx/nginx.conf
 /usr/local/nginx/conf.d/default.conf
+/usr/local/nginx/conf/proxy.conf
+/usr/local/nginx/conf/real_ip_cloudflare.conf
+/usr/local/nginx/conf/ssl.conf
+/usr/local/nginx/conf/websocket.conf
