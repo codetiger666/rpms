@@ -3,7 +3,7 @@ nezha-agent---2.3.5---nezhahq/agent---release---sed 's/v//'
 nezha-server---2.3.18---nezhahq/nezha---release---sed 's/v//'
 onedrive---2.5.11---abraunegg/onedrive---release---sed 's/v//'
 openssh---10.6.P1---openssh/openssh-portable---tag---sed 's/V_//g; s/_/./g'
-frp---0.71.0---fatedier/frp---release---sed 's/v//'
+frp---0.71.1---fatedier/frp---release---sed 's/v//'
 gitea---28.1.0---go-gitea/gitea---release---sed 's/v//'
 forgejo---16.0.6---forgejo/forgejo---release---curl -s https://code.forgejo.org/api/v1/repos/forgejo/forgejo/releases/latest | jq -r '.tag_name' | sed 's/v//'---new
 openlist---4.2.6---OpenListTeam/OpenList---release---sed 's/v//'
