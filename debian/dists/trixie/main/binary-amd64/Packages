@@ -1,0 +1,76 @@
+Package: openresty
+Version: 1.31.1.1-1
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 9843
+Depends: libc6 (>= 2.38), libcrypt1 (>= 1:4.1.0), libgcc-s1 (>= 3.3), libgd3 (>= 2.1.0~alpha~), libgeoip1t64 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libperl5.40 (>= 5.40.0), libssl3t64 (>= 3.2.0), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/trixie/main/binary-amd64/openresty_1.31.1.1-1_amd64.deb
+Size: 2033640
+MD5sum: ab3961ed2ea5661f307c8cc1646b373b
+SHA1: a2fb73177684eecf1992981a6bfb8710cdb332bb
+SHA256: 964f297139a0f9bc44bd786c270065d973bbc7050ab5ac541f7014fd8bdca932
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenResty self-compiled package
+ OpenResty is a full-fledged web platform that integrates the standard
+ Nginx core, LuaJIT, many carefully written Lua libraries, lots of
+ high quality 3rd-party Nginx modules, and most of their external
+ dependencies. This package is a self-compiled version with additional
+ modules including ngx_upstream_jdomain and nginx-upstream-dynamic-servers.
+
+Package: openresty-dbgsym
+Source: openresty
+Version: 1.31.1.1-1
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 3500
+Depends: openresty (= 1.31.1.1-1)
+Filename: dists/trixie/main/binary-amd64/openresty-dbgsym_1.31.1.1-1_amd64.deb
+Size: 2595856
+MD5sum: 7f1a8efd6239b802495eb4446351aafb
+SHA1: 782b6156ca00b2ef4e9acba0e877f40f2a4c138f
+SHA256: 99778968f504eb4a6fdb4c12aa80307b7545c0a4e800decb9cf300864a27c839
+Section: debug
+Priority: optional
+Description: debug symbols for openresty
+Build-Ids: 045f643add62a29d10e7c897d8d7b47e4dd6a17e 0bfa554e3f3878b789875e9dfaf9db8dbcb31594 2675f3e253ef7f38fd3f5182bf237efe70fce3f7 3c827bc63b71a817ad11416e33ff2cbf123cee62 455eddc5697c365b916ae91f6269f82f270a2f91 7857669d616ea6b8e9acd3c0da9c4e0eabc38571 dae0e0c0299df19456875a4c358448af28179535 f04f3fe9786de37cc00c89d0cf9d9dae07b438ac
+
+Package: redis
+Version: 8.10.2-1
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 6750
+Depends: libc6 (>= 2.38)
+Filename: dists/trixie/main/binary-amd64/redis_8.10.2-1_amd64.deb
+Size: 1764116
+MD5sum: 19f59e052cc79b86bbf06123ab7aebd5
+SHA1: bb9f0daa25f2b0cd5b55aeca3802f6690eb0ef3a
+SHA256: 5ecdd8d63cd98f36d38855a29cf47bcefd057897cbece2358c4c25ff0dc1a06b
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.
+
+Package: redis-dbgsym
+Source: redis
+Version: 8.10.2-1
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 13512
+Depends: redis (= 8.10.2-1)
+Filename: dists/trixie/main/binary-amd64/redis-dbgsym_8.10.2-1_amd64.deb
+Size: 10638792
+MD5sum: 3aedec65d1536ce2a6369f15cb756c41
+SHA1: 1c57473766e0a75ef5e0110fb52203cf928b6c16
+SHA256: 7ec102e8611740e5be3308de783244cd78aa7272c20090cbbcd94b7195081b89
+Section: debug
+Priority: optional
+Description: debug symbols for redis
+Build-Ids: 16f84776c3b9211e871c8053f83bb85ccbfe112a 7eecc8629974b44509b2458e95ba4c8a27d14c82 d999002be67edc7adc22cd08c85d0dbbe3f0fd6d
+
