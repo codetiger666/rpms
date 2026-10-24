@@ -1,0 +1,76 @@
+Package: openresty
+Version: 1.31.1.1-1
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 9797
+Depends: libc6 (>= 2.34), libcrypt1 (>= 1:4.1.0), libgcc-s1 (>= 3.3), libgd3 (>= 2.1.0~alpha~), libgeoip1 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libperl5.36 (>= 5.36.0), libssl3 (>= 3.0.0), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/bookworm/main/binary-amd64/openresty_1.31.1.1-1_amd64.deb
+Size: 2035276
+MD5sum: 65445cd8416e685a8ac608edef9c79d9
+SHA1: 82d903808a7454883512f506fea33074af24e17b
+SHA256: 803cbb6c7f3ebca84712fba71412e30f413a05bf47b99be0728316afb699b133
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenResty self-compiled package
+ OpenResty is a full-fledged web platform that integrates the standard
+ Nginx core, LuaJIT, many carefully written Lua libraries, lots of
+ high quality 3rd-party Nginx modules, and most of their external
+ dependencies. This package is a self-compiled version with additional
+ modules including ngx_upstream_jdomain and nginx-upstream-dynamic-servers.
+
+Package: openresty-dbgsym
+Source: openresty
+Version: 1.31.1.1-1
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 2971
+Depends: openresty (= 1.31.1.1-1)
+Filename: dists/bookworm/main/binary-amd64/openresty-dbgsym_1.31.1.1-1_amd64.deb
+Size: 2581212
+MD5sum: a02f7e5b442c3f1bd78adc7d69d599a9
+SHA1: a47de988d63d0a8c7b29d7450713bc85976980e0
+SHA256: 23de7db33e3481183ad0abceeccd23ff7fbd3444fc31af0529a9235e6ad8aac7
+Section: debug
+Priority: optional
+Description: debug symbols for openresty
+Build-Ids: 0e9304e274a071b7e23580326e183e0faba58f06 682e750fad2547c63ba2d8fc5b9d03e45870a5db 8509e5eda0364080bab0f3e764e20defd0b4b642 97ded34157eb078ce6738fe482c674105170d640 a1128919cd83c9da602aa43cb9d5fd948a9edae6 a9d98d4088ce388c23b495b60b309af18ab8f399 b10de11b87e45c318e21ca21f54de4b7e21aeece bfa467a5160e23549d8b72852050ffb0df0629fc
+
+Package: redis
+Version: 8.10.2-1
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 6627
+Depends: libc6 (>= 2.34)
+Filename: dists/bookworm/main/binary-amd64/redis_8.10.2-1_amd64.deb
+Size: 1746864
+MD5sum: eb4c83b5c017754a0bd14e056878cfd7
+SHA1: ed88c510d2f1f8c29f0136fa47a1974a756f4339
+SHA256: 9640b418db5b0ff5222c4dbf0ed121e685b8ac3533ec16878d5f90f6ae5117be
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.
+
+Package: redis-dbgsym
+Source: redis
+Version: 8.10.2-1
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 12225
+Depends: redis (= 8.10.2-1)
+Filename: dists/bookworm/main/binary-amd64/redis-dbgsym_8.10.2-1_amd64.deb
+Size: 10483796
+MD5sum: 6f1009053c5a4179a99a23b5c05925d1
+SHA1: 1a76b21dc7357663fa0899ceb905b116399604c5
+SHA256: 7c3b98100ac217f74117cb7b85d7de443b04641e86dab6f68aaa0dc77b5f872b
+Section: debug
+Priority: optional
+Description: debug symbols for redis
+Build-Ids: 3f78222bb234adf5b865f27bff3fda620ac4157c 40de6b52b0f9cdb1ba40b8a4f7f66f5c7ad8c3f4 da72607611f2d2e43c9ebcc7d6bea0b05a6a4f90
+
