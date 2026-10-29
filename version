@@ -19,7 +19,7 @@ codetiger-util---1.0.1---codetiger666/rpms---release---echo '1.0.1'---new
 silo---RELEASE.2026-10-26T00-00-00Z---pgsty/silo---release
 openlist-api---4.1.0---OpenListTeam/OpenList-APIPages---release---sed 's/v//'
 xxl-job-admin---3.5.0---codetiger666/xxl-job---release---sed 's/v//'
-zashboard---3.29.1---Zephyruso/zashboard---release---sed 's/v//'
+zashboard---3.30.0---Zephyruso/zashboard---release---sed 's/v//'
 rustfs---1.0.4---rustfs/rustfs---release
 axonhub---1.0.0-beta11---looplj/axonhub---release---sed 's/v//'
 octopus---0.8.40---Hureru/octopus---release---sed 's/v//'
