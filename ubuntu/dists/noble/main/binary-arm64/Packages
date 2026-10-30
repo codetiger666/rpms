@@ -1,0 +1,40 @@
+Package: openresty
+Version: 1.31.1.1-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 10026
+Depends: libc6 (>= 2.38), libcrypt1 (>= 1:4.1.0), libgcc-s1 (>= 4.2), libgd3 (>= 2.1.0~alpha~), libgeoip1t64 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libperl5.38t64 (>= 5.38.2), libssl3t64 (>= 3.0.0), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/noble/main/binary-arm64/openresty_1.31.1.1-1_arm64.deb
+Size: 2155442
+MD5sum: eab3e33358053904fd62b1601b1672b4
+SHA1: 3a7ea596bca6663fbb0a24f2107242b6987c4906
+SHA256: 5b28a528632af42e132cddacdc323b1f2dcde9cf93db02950bbe494a4bcd37c5
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenResty self-compiled package
+ OpenResty is a full-fledged web platform that integrates the standard
+ Nginx core, LuaJIT, many carefully written Lua libraries, lots of
+ high quality 3rd-party Nginx modules, and most of their external
+ dependencies. This package is a self-compiled version with additional
+ modules including ngx_upstream_jdomain and nginx-upstream-dynamic-servers.
+
+Package: redis
+Version: 8.10.2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 6532
+Depends: libc6 (>= 2.38)
+Filename: dists/noble/main/binary-arm64/redis_8.10.2-1_arm64.deb
+Size: 1923692
+MD5sum: d1657e221b3d34ebeee8c6129d53b9e1
+SHA1: 9fed5196c3c7ee1a437fc42a4dbb7bd128acb95c
+SHA256: 4ad36abb0f61cc525aa4ea84414541839ea471a96b5b2053e067a3f93ef35853
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.
+
