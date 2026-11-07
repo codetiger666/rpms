@@ -1,0 +1,40 @@
+Package: openresty
+Version: 1.31.1.1-1
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 9936
+Depends: libc6 (>= 2.38), libcrypt1 (>= 1:4.1.0), libgcc-s1 (>= 3.3), libgd3 (>= 2.1.0~alpha~), libgeoip1t64 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libperl5.40 (>= 5.40.0), libssl3t64 (>= 3.2.0), libxml2-16 (>= 2.14.1), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/rolling/main/binary-amd64/openresty_1.31.1.1-1_amd64.deb
+Size: 2178748
+MD5sum: e73d6ded100b4a6ce156c3c1f58728c7
+SHA1: 2a1c13e884d75d1513b235e621ae9c8f02645a35
+SHA256: e6d049eba9f8c495458a6e0a70968ff5327a05f7d7d3fa7f12e47b51558c69f2
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenResty self-compiled package
+ OpenResty is a full-fledged web platform that integrates the standard
+ Nginx core, LuaJIT, many carefully written Lua libraries, lots of
+ high quality 3rd-party Nginx modules, and most of their external
+ dependencies. This package is a self-compiled version with additional
+ modules including ngx_upstream_jdomain and nginx-upstream-dynamic-servers.
+
+Package: redis
+Version: 8.10.2-1
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 6799
+Depends: libc6 (>= 2.43)
+Filename: dists/rolling/main/binary-amd64/redis_8.10.2-1_amd64.deb
+Size: 1955050
+MD5sum: 23c8a2e9d99b15f04f98fbc0a787339f
+SHA1: e94a7a2ae02b3be2a06bc25c9eb71bae67b07c11
+SHA256: ea2fc50c156849b6b6c2a9db4c7b6424bbc67d5e0943d14b734f5be0a143c1cf
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.
+

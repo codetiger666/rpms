@@ -1,0 +1,37 @@
+Package: redis
+Version: 8.10.2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 6138
+Depends: libc6 (>= 2.29)
+Filename: dists/bullseye/main/binary-arm64/redis_8.10.2-1_arm64.deb
+Size: 1654776
+MD5sum: 73e57338424b1a2efaa9ee2891fa9ee7
+SHA1: 5b4f8d3d4a3fda9355fdef3438a1030401864524
+SHA256: 52a1cfe711e5160e57c5cee5dd592404543b676b15f14452e8a5355471218e98
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.
+
+Package: redis-dbgsym
+Source: redis
+Version: 8.10.2-1
+Auto-Built-Package: debug-symbols
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 12472
+Depends: redis (= 8.10.2-1)
+Filename: dists/bullseye/main/binary-arm64/redis-dbgsym_8.10.2-1_arm64.deb
+Size: 10376632
+MD5sum: b999b0e58096adfb697474e5087e8f0b
+SHA1: bc8e7ba3e5594bfc311c7453efa06e4029bd98fb
+SHA256: 026b222c1ab326c46ce4f5a0e7e723fc05696317f09f027dee78dfe2397c53f7
+Section: debug
+Priority: optional
+Description: debug symbols for redis
+Build-Ids: 192ae085a8d30b2775dd81fa5b35cf8fb2699b2a 6af3a2c53dd67707ff30e2eb26b78c3e947805b8 ae345590fd7378925afed3744e7ce62bad6a2838
+
