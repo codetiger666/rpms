@@ -21,7 +21,7 @@ openlist-api---4.1.0---OpenListTeam/OpenList-APIPages---release---sed 's/v//'
 xxl-job-admin---3.5.0---codetiger666/xxl-job---release---sed 's/v//'
 zashboard---3.30.0---Zephyruso/zashboard---release---sed 's/v//'
 rustfs---1.0.5---rustfs/rustfs---release
-axonhub---1.0.0-rc.3---looplj/axonhub---release---sed 's/v//'
+axonhub---1.0.0-rc.4---looplj/axonhub---release---sed 's/v//'
 octopus---0.8.40---Hureru/octopus---release---sed 's/v//'
 nacos---3.3.0---alibaba/nacos---release
 redis---8.10.3---redis/redis---release
