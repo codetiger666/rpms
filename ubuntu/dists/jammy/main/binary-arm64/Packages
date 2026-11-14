@@ -1,0 +1,40 @@
+Package: openresty
+Version: 1.31.1.1-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 9685
+Depends: libc6 (>= 2.34), libcrypt1 (>= 1:4.1.0), libgcc-s1 (>= 4.2), libgd3 (>= 2.1.0~alpha~), libgeoip1 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libperl5.34 (>= 5.34.0), libssl3 (>= 3.0.0~~alpha1), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/jammy/main/binary-arm64/openresty_1.31.1.1-1_arm64.deb
+Size: 2191640
+MD5sum: 6298d4ab836f79a40562d364348585fa
+SHA1: 76cad6136edb88f5a1187551126a202b02f4297a
+SHA256: 1913693f25ee426195794783c7d1727eda4df272d5d648adcd4490aecafa8e80
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenResty self-compiled package
+ OpenResty is a full-fledged web platform that integrates the standard
+ Nginx core, LuaJIT, many carefully written Lua libraries, lots of
+ high quality 3rd-party Nginx modules, and most of their external
+ dependencies. This package is a self-compiled version with additional
+ modules including ngx_upstream_jdomain and nginx-upstream-dynamic-servers.
+
+Package: redis
+Version: 8.10.2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 6227
+Depends: libc6 (>= 2.34)
+Filename: dists/jammy/main/binary-arm64/redis_8.10.2-1_arm64.deb
+Size: 1965428
+MD5sum: 1ec2372c3c5f03df96c238e0f030fd90
+SHA1: 006702c9b2bfb5ab70f353c4319518da554120af
+SHA256: 90255731deb0a3af1ccbce3cf79aa1a84dc159ef536ac106515394e508f8fe9a
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.
+
