@@ -6,6 +6,7 @@ program_init(){
   sudo /bin/cp specs/openssh.spec rpm/rpmbuild/SPECS/openssh.spec
   sudo /bin/cp services/sshd.service rpm/rpmbuild/SOURCES
   sudo /bin/cp openssh/sshd_config rpm/rpmbuild/SOURCES
+  sudo /bin/cp openssh/sshd-pam rpm/rpmbuild/SOURCES
   wget https://github.com/openssh/openssh-portable/archive/refs/tags/V_$(echo ${project_version} | sed 's/\./_/g').tar.gz
   wget https://github.com/openssl/openssl/releases/download/${OPENSSL_VERSION}/${OPENSSL_VERSION}.tar.gz
   mkdir rpm/rpmbuild/SOURCES -p

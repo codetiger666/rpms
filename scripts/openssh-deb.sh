@@ -4,6 +4,7 @@ program_init(){
   sudo sed -i "s/codetiger_openssl_version/$(echo $OPENSSL_VERSION | sed 's/openssl-//' )/g" openssh/debian/rules
   sudo /bin/cp services/sshd.service openssh/debian/
   sudo /bin/cp openssh/sshd_config openssh/debian/
+  sudo /bin/cp openssh/sshd-pam openssh/debian/
   wget https://github.com/openssh/openssh-portable/archive/refs/tags/V_$(echo ${project_version} | sed 's/\./_/g').tar.gz
   wget https://github.com/openssl/openssl/releases/download/${OPENSSL_VERSION}/${OPENSSL_VERSION}.tar.gz
   sudo mkdir -p /opt/deb_build

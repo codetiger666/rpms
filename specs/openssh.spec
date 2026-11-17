@@ -13,6 +13,8 @@ Source0:        https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-%{v
 Source1:        sshd.service
 Source2:        sshd_config
 Source3:        https://github.com/openssl/openssl/releases/download/openssl-codetiger_openssl_version/openssl-codetiger_openssl_version.tar.gz
+Source4:        sshd-pam
+
 
 BuildRequires:  zlib-devel gcc libselinux-devel
 Requires: zlib libselinux
@@ -115,6 +117,7 @@ cp -r /usr/local/ssh/openssl/include/openssl %{buildroot}/usr/local/ssh/openssl/
 
 %{__install} -p -D -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/sshd.service
 %{__install} -p -D -m 0644 %{SOURCE2} %{buildroot}/etc/ssh/sshd_config
+%{__install} -p -D -m 0644 %{SOURCE4} %{buildroot}/etc/pam.d/sshd
 
 # 安装后操作
 %post -n openssh-server
@@ -159,6 +162,7 @@ fi
 %{_usr}/share/man/man8/ssh-pkcs11-helper.8.gz
 %{_usr}/share/man/man8/ssh-sk-helper.8.gz
 %{_usr}/share/man/man8/sshd.8.gz
+/etc/pam.d/sshd
 %config(noreplace) /etc/ssh/sshd_config
 
 # 子包openssh-client文件列表

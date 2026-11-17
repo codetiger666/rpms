@@ -7,3 +7,4 @@ usr/libexec/ssh-sk-helper usr/libexec/
 usr/libexec/sshd-session usr/libexec/
 usr/sbin/sshd usr/sbin/
 etc/ssh/sshd_config etc/ssh/
+etc/pam.d/sshd etc/pam.d/
