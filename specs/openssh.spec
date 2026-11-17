@@ -87,6 +87,7 @@ export CFLAGS="$CPPFLAGS"
 ./configure \
   --prefix=/usr \
   --sysconfdir=/etc/ssh \
+   --with-pam \
   --with-ssl-dir=/usr/local/ssh/openssl \
   --with-selinux
 make -j$(nproc)
