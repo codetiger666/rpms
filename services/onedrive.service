@@ -3,6 +3,8 @@ Description=Onedrive Service
 After=network.target
 
 [Service]
+MemoryHigh=1500M
+MemoryMax=1024M
 Type=forking
 User=onedrive
 Group=onedrive
