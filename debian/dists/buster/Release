@@ -1,0 +1,31 @@
+Architectures: amd64 arm64
+Codename: buster
+Components: main
+Date: Tue, 17 Nov 2026 11:25:57 +0000
+Label: CodeTiger debian Repository
+Origin: Codetiger
+Suite: buster
+MD5Sum:
+ ca361b69b2e35a6040e1fd0d1d8d888d              166 Release
+ ef8413a3a044f8cd8068138e3c073b5c            10700 main/binary-amd64/Packages
+ 0a6b35c51d3d0b084ecab4226832684d             3332 main/binary-amd64/Packages.gz
+ fa7b223f1d0b8dc060965df938df31ec             8771 main/binary-arm64/Packages
+ 1fee65afa70178518353d0acca785259             2937 main/binary-arm64/Packages.gz
+SHA1:
+ 18ca0285990e3cd26a0a7402c1687c38491f9fe2              166 Release
+ fdedeb3fa8208d4acb0ced26d00c28332db39cc2            10700 main/binary-amd64/Packages
+ dd32c1d2f5b5c4cc58e6af1df71d0dea19108584             3332 main/binary-amd64/Packages.gz
+ ab9884d195707c0dce0c14615395eb0237414ab0             8771 main/binary-arm64/Packages
+ 013cff4f300fda7fd27c535845e4b99b2576c320             2937 main/binary-arm64/Packages.gz
+SHA256:
+ 79a5752d463c9b6c116cd120aa7e776d80e135df0acc85fd8bf5adb371924721              166 Release
+ f9bda1c30a2dd26f11f9c6f200165406b583cb40adfad858fc8a41293ece462f            10700 main/binary-amd64/Packages
+ d3c51ffe3a7061b36265e68d9fc3a2b19bb2f34e419fa225b2454f169d08a601             3332 main/binary-amd64/Packages.gz
+ 520d39ffb3085882b7f94af226a92a7b85f729dd3929b26863c1e2b1a1913e51             8771 main/binary-arm64/Packages
+ a7bdd618607f1ab5291b1eeba943f0ecebe709764a09173aed5dafe1195d0410             2937 main/binary-arm64/Packages.gz
+SHA512:
+ e6b2684e9c565cf45b7f580f713db2e5511a904f5b2e83a32baff1ccc0093df9c48d487ff8ac8107e8bbf4f7e120facf1b2a92693946294aebc515fc2052e2f0              166 Release
+ 75553c5919268db0a23ca67320fb650f54826645e545ec5f63163ab6a9d23cab5a7b9397ed37084ccb5e9fafe75e96a3892acd194b7f1211edb6dd28a243d34f            10700 main/binary-amd64/Packages
+ fb1eb9751ffa620342bb05c67ba20b121d27fff24339cd4bd69dd336f60828c49e45229f1c07f5b6f772799681baaf3e4e68d3790c4cd41c753f386c8e7b7d6e             3332 main/binary-amd64/Packages.gz
+ ed5d433a3bf5166176ac0e9751b8d8d6ac8c4f739e8054925809490915769c8501b0ee8ef9ea51164bfda4c6e93c5a5b65095052d0bb77e40fc2a6dad4c07bdf             8771 main/binary-arm64/Packages
+ 7a98ff6310917477a91ad22a383b0542d754796254114341cb34cb52ad83d2de2bdaef6c960d7dac7b839e48ba2ad82a43f13c2087ac91ad012243fae8e6443d             2937 main/binary-arm64/Packages.gz

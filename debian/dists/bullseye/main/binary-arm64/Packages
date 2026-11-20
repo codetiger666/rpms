@@ -1,0 +1,76 @@
+Package: openresty
+Version: 1.31.8.1-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 9822
+Depends: libc6 (>= 2.29), libcrypt1 (>= 1:4.1.0), libgcc-s1 (>= 4.2), libgd3 (>= 2.1.0~alpha~), libgeoip1 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libperl5.32 (>= 5.32.0~rc1), libssl1.1 (>= 1.1.1), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/bullseye/main/binary-arm64/openresty_1.31.8.1-1_arm64.deb
+Size: 1989588
+MD5sum: 30ca0ed6b6c88b9a99e70b3e720d71e3
+SHA1: 26bd5d347174d515d698f80fb96546a5b7677c62
+SHA256: 6a04735ca5bab7546a5a274ec84a53ae54329cad8adc41e87770b0e8e97e52cd
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenResty self-compiled package
+ OpenResty is a full-fledged web platform that integrates the standard
+ Nginx core, LuaJIT, many carefully written Lua libraries, lots of
+ high quality 3rd-party Nginx modules, and most of their external
+ dependencies. This package is a self-compiled version with additional
+ modules including ngx_upstream_jdomain and nginx-upstream-dynamic-servers.
+
+Package: openresty-dbgsym
+Source: openresty
+Version: 1.31.8.1-1
+Auto-Built-Package: debug-symbols
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 3138
+Depends: openresty (= 1.31.8.1-1)
+Filename: dists/bullseye/main/binary-arm64/openresty-dbgsym_1.31.8.1-1_arm64.deb
+Size: 2650076
+MD5sum: 8a80900ddef2530bd485d56e96dc75ac
+SHA1: b57bdf3a088684679f8abcc996a09d5a073f59ff
+SHA256: 8e8548cd4b5a2854dfd6fd4d9b9fdf4196fc4e10ebdcd1df20e10def68bbbc8d
+Section: debug
+Priority: optional
+Description: debug symbols for openresty
+Build-Ids: 0b871930f448023599f09fe10120929304e19ad0 28f829f16dddb9c27f886970a0a8e616ccdaadb6 50b3d6a3eb4eef036026ef216970a7a80569a96e 8dcc99dfdea9681b21b86d3802ef3eb3bb1af44e a2dcd742c4a5d474bdbd973b5e0824a340dc5814 b0bc925da57667fb306f8282c931ba96bf215ce4 be20012bc1d9e9b406b5dd6a95b766d588449ce2 e56def8c41563e47bc92e4a2224da1c20b3d6c15
+
+Package: redis
+Version: 8.10.2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 6138
+Depends: libc6 (>= 2.29)
+Filename: dists/bullseye/main/binary-arm64/redis_8.10.2-1_arm64.deb
+Size: 1654776
+MD5sum: 73e57338424b1a2efaa9ee2891fa9ee7
+SHA1: 5b4f8d3d4a3fda9355fdef3438a1030401864524
+SHA256: 52a1cfe711e5160e57c5cee5dd592404543b676b15f14452e8a5355471218e98
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.
+
+Package: redis-dbgsym
+Source: redis
+Version: 8.10.2-1
+Auto-Built-Package: debug-symbols
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 12472
+Depends: redis (= 8.10.2-1)
+Filename: dists/bullseye/main/binary-arm64/redis-dbgsym_8.10.2-1_arm64.deb
+Size: 10376632
+MD5sum: b999b0e58096adfb697474e5087e8f0b
+SHA1: bc8e7ba3e5594bfc311c7453efa06e4029bd98fb
+SHA256: 026b222c1ab326c46ce4f5a0e7e723fc05696317f09f027dee78dfe2397c53f7
+Section: debug
+Priority: optional
+Description: debug symbols for redis
+Build-Ids: 192ae085a8d30b2775dd81fa5b35cf8fb2699b2a 6af3a2c53dd67707ff30e2eb26b78c3e947805b8 ae345590fd7378925afed3744e7ce62bad6a2838
+
