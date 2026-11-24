@@ -171,7 +171,7 @@ jobs:
           --data "$content"
 
   upload:
-    name: upload-rpms-${{ github.event.inputs.program }}
+    name: upload-deb-${{ github.event.inputs.program }}
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -204,7 +204,7 @@ jobs:
           source $HOME/.profile
 
       - name: upload ${{ github.event.inputs.program }}
-        id: upload_rpms
+        id: upload_debs
         run: |
           source $HOME/.profile
           oss=("debian" "ubuntu")
@@ -227,18 +227,18 @@ jobs:
                 then
                   if [ "$size" -gt 104857600 ]; then
                     sudo mkdir -p large_file/$os/dists/$release/main/binary-$ori_arch/
-                    sudo rm -f large_file/$os/dists/$release/main/binary-$ori_arch/*${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*$ori_arch.deb
+                    sudo rm -f large_file/$os/dists/$release/main/binary-$ori_arch/*${{ github.event.inputs.program }}*.deb
                   else
                     sudo mkdir -p $os/dists/$release/main/binary-$ori_arch/
-                    sudo rm -f $os/dists/$release/main/binary-$ori_arch/*${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*$ori_arch.deb
+                    sudo rm -f $os/dists/$release/main/binary-$ori_arch/*${{ github.event.inputs.program }}*.deb
                   fi
                 fi
                 if [ "$size" -gt 104857600 ]; then
                   sudo mkdir -p large_file/$os/dists/$release/main/binary-$ori_arch/
-                  sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$os*-$arch-$release/*${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*$ori_arch.deb large_file/$os/dists/$release/main/binary-$ori_arch/ || true
+                  sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$os*-$arch-$release/*${{ github.event.inputs.program }}*.deb large_file/$os/dists/$release/main/binary-$ori_arch/ || true
                 else
                   sudo mkdir -p $os/dists/$release/main/binary-$ori_arch/
-                  sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$os*-$arch-$release/*${{ github.event.inputs.program }}*_${{ github.event.inputs.version }}*$ori_arch.deb $os/dists/$release/main/binary-$ori_arch/ || true
+                  sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$os*-$arch-$release/*${{ github.event.inputs.program }}*.deb $os/dists/$release/main/binary-$ori_arch/ || true
                 fi
               done
             done
@@ -283,8 +283,8 @@ jobs:
           
       - name: git add
         run: |
-          rpms_size=${{ steps.upload_rpms.outputs.rpms_size }}
-          if [ "$rpms_size" -gt 104857600 ]; then
+          debs_size=${{ steps.upload_debs.outputs.debs_size }}
+          if [ "$debs_size" -gt 104857600 ]; then
             cd large_file
             git config http.sslVerify false
             git pull origin main 2>/dev/null || true
@@ -304,6 +304,11 @@ jobs:
             git lfs prune --verify-remote --force
             git reflog expire --expire=now --all
             git gc --aggressive --prune=now
+            curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.LARGE_GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/rpms_large_file/actions/workflows/pages.yml/dispatches \
+            -d "{\"ref\":\"main\"}"
           else
             rm -rf large_file
             git pull

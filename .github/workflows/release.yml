@@ -233,15 +233,15 @@ jobs:
               if [ "${{ github.event.inputs.remove }}" = "true" ];
               then
                 if [ "$size" -gt 104857600 ]; then
-                  sudo mkdir -p large_file/$release/$arch/
-                  sudo rm -f large_file/$release/$arch/*${{ github.event.inputs.program }}*.$arch.rpm
+                  sudo mkdir -p large_file/redhat/$release/$arch/
+                  sudo rm -f large_file/redhat/$release/$arch/*${{ github.event.inputs.program }}*.$arch.rpm
                 else
                   sudo mkdir -p redhat/$release/$arch/
                   sudo rm -f redhat/$release/$arch/*${{ github.event.inputs.program }}*.$arch.rpm
                 fi
               fi
               if [ "$size" -gt 104857600 ]; then
-                sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$arch-$release/*${{ github.event.inputs.program }}*.el$release.$arch.rpm large_file/$release/$arch || true
+                sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$arch-$release/*${{ github.event.inputs.program }}*.el$release.$arch.rpm large_file/redhat/$release/$arch || true
               else
                 sudo /bin/cp -ra artifacts/*${{ github.event.inputs.program }}-$arch-$release/*${{ github.event.inputs.program }}*.el$release.$arch.rpm redhat/$release/$arch || true
               fi
@@ -253,7 +253,7 @@ jobs:
           if [ "$size" -gt 104857600 ]; then
             for release in "${releases[@]}"; do
             for arch in "${archs[@]}"; do
-              docker exec -i $rpms createrepo /centos_rpms/large_file/$release/$arch
+              docker exec -i $rpms createrepo /centos_rpms/large_file/redhat/$release/$arch
             done
             done
           else
@@ -287,6 +287,12 @@ jobs:
             git lfs prune --verify-remote --force
             git reflog expire --expire=now --all
             git gc --aggressive --prune=now
+            echo "[$(date '+%Y-%m-%d %H:%M:%S')] release.yml 编译完成，开始触发 large file pages"
+            curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.LARGE_GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/codetiger666/rpms_large_file/actions/workflows/pages.yml/dispatches \
+            -d "{\"ref\":\"main\"}"
           else
             rm -rf large_file
             git pull
