@@ -137,7 +137,7 @@ jobs:
           docker stop $centos
           docker start $centos
           docker exec -i $centos apt update -y
-          docker exec -i $centos apt install curl wget vim devscripts equivs -y
+          docker exec -i $centos apt install curl wget vim devscripts equivs libpam0g-dev -y
           docker exec -i $centos mk-build-deps -i  --tool='apt-get -y -q' -r /opt/deb_build/${{ github.event.inputs.program }}-${{ github.event.inputs.version }}/debian/control
           docker exec -i -w /opt/deb_build/${{ github.event.inputs.program }}-${{ github.event.inputs.version }} $centos dpkg-buildpackage -us -uc -b
 
