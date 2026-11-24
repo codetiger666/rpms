@@ -131,6 +131,8 @@ jobs:
           docker cp $GITHUB_WORKSPACE/.rpmmacros $centos:/root/.rpmmacros
 
       - name: init ${{ github.event.inputs.program }}-${{ matrix.arch }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
         run: |
           source $HOME/.profile
           source init/common.sh
