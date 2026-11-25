@@ -1,0 +1,12 @@
+Source: nginx
+Section: web
+Priority: optional
+Maintainer: codetiger <admin@111179.xyz>
+Build-Depends: debhelper-compat (= 10), gcc, make, zlib1g-dev, libxml2-dev, libxslt1-dev, libgd-dev, libgeoip-dev, libatomic-ops-dev, libssl-dev, libpcre2-dev
+Standards-Version: 4.5.0
+Homepage: https://111179.xyz
+
+Package: nginx
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: nginx ("engine x") is an HTTP web server, reverse proxy, content cache, load balancer, TCP/UDP proxy server, and mail proxy server. Originally written by Igor Sysoev and distributed under the 2-clause BSD License.

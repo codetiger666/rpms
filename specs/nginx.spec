@@ -1,0 +1,128 @@
+%global __brp_check_rpaths %{nil}
+%define prefix /usr/local/nginx
+Name:          nginx
+Version:        codetiger_version
+Release:        1%{?dist}
+Summary:        nginx编译
+
+License:        GPL
+URL:            https://gybyt.cn
+Source0:        https://github.com/nginx/nginx/releases/download/release-%{version}/nginx-%{version}.tar.gz
+Source1:        nginx.conf
+Source2:        nginx.service
+Source3:        default.conf
+Source4:        stream.conf.example
+Source5:        ssl.conf.example
+Source6:        proxy.conf
+Source7:        websocket.conf
+Source8:        real_ip_cloudflare.conf
+Source9:        ssl.conf
+
+BuildRequires:  gcc make zlib-devel libxml2-devel libxslt-devel gd-devel geoip-devel libatomic_ops-devel openssl-devel
+# release 10
+%if 0%{?rhel} >= 10
+BuildRequires: pcre2-devel
+%else
+BuildRequires: pcre-devel
+%endif
+%if 0%{?rhel} >= 10
+BuildRequires: pcre2
+%else
+BuildRequires: pcre
+%endif
+Requires:       openssl libxml2 libxslt gd geoip
+
+# 描述
+%description
+openresty自编译
+
+# 编译前准备
+%prep
+%setup -q
+
+# 编译
+%build
+CFLAGS="-fPIC" ./configure --prefix=/usr/local/nginx --sbin-path=/usr/sbin/nginx --conf-path=/usr/local/nginx/conf/nginx.conf --pid-path=/var/run/nginx.pid \
+--error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --lock-path=/var/lock/nginx.lock --with-http_gunzip_module \
+--with-pcre --with-pcre-jit --with-ld-opt="-Wl,-E" --with-http_realip_module --with-http_secure_link_module --with-http_slice_module \
+--with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-http_addition_module --with-http_xslt_module \
+--with-http_image_filter_module --with-http_geoip_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gzip_static_module \
+--with-http_auth_request_module --with-http_random_index_module --with-select_module --with-poll_module --with-file-aio --with-http_degradation_module --with-libatomic \
+--http-client-body-temp-path=/var/tmp/nginx/client_body --http-proxy-temp-path=/var/tmp/nginx/proxy --http-fastcgi-temp-path=/var/tmp/nginx/fastcgi \
+--http-uwsgi-temp-path=/var/tmp/nginx/uwsgi --http-scgi-temp-path=/var/tmp/nginx/scgi --with-stream --with-stream_ssl_module --with-stream_realip_module \
+--with-stream_geoip_module --with-stream_ssl_preread_module --with-mail --with-mail_ssl_module
+make -j6
+
+# 安装
+%install
+make install DESTDIR=%{buildroot}
+mkdir  -p %{buildroot}%{prefix}/conf
+mkdir  -p %{buildroot}%{prefix}/conf/conf.d
+%{__install} -p -D -m 0644 %{SOURCE1} %{buildroot}%{prefix}/conf/nginx.conf
+%{__install} -p -D -m 0644 %{SOURCE3} %{buildroot}%{prefix}/conf/conf.d/default.conf
+%{__install} -p -D -m 0644 %{SOURCE4} %{buildroot}%{prefix}/conf/conf.d/stream.example
+%{__install} -p -D -m 0644 %{SOURCE5} %{buildroot}%{prefix}/conf/conf.d/ssl.conf.example
+%{__install} -p -D -m 0644 %{SOURCE2} %{buildroot}%{_usr}/lib/systemd/system/nginx.service
+%{__install} -p -D -m 0644 %{SOURCE6} %{buildroot}%{prefix}/conf/proxy.conf
+%{__install} -p -D -m 0644 %{SOURCE7} %{buildroot}%{prefix}/conf/websocket.conf
+%{__install} -p -D -m 0644 %{SOURCE8} %{buildroot}%{prefix}/conf/real_ip_cloudflare.conf
+%{__install} -p -D -m 0644 %{SOURCE9} %{buildroot}%{prefix}/conf/ssl.conf
+
+
+# 安装前准备
+%pre
+if [ $1 == 1 ]; then
+   useradd nginx -s /sbin/nologin || true
+fi
+
+# 安装后操作
+%post
+if [ $1 == 1 ]; then
+    mkdir -p /var/tmp/nginx/proxy
+    mkdir -p /var/tmp/nginx/client_body
+    mkdir -p /var/tmp/nginx/proxy_cache
+    mkdir -p /var/tmp/nginx/uwsgi
+    mkdir -p /var/tmp/nginx/proxy_cache/enginx
+    mkdir -p /var/tmp/nginx/fastcgi
+    mkdir -p /var/tmp/nginx/scgi
+    mkdir -p /var/tmp/nginx/proxy_temp
+    chown -R nginx:nginx /var/tmp/nginx
+    mkdir -p /var/log/nginx
+    chown -R nginx:nginx /var/log/nginx
+    mkdir -p /usr/local/nginx/conf/conf.d
+    mkdir -p /home/wwwlogs || true
+fi
+
+# 卸载前准备
+%preun
+if [ $1 == 0 ]; then
+    if [ -f /usr/lib/systemd/system/nginx.service ]; then
+    %systemd_preun nginx.service
+    fi
+fi
+
+# 卸载后步骤
+%postun
+if [ $1 == 0 ]; then
+    rm -rf /var/tmp/nginx/proxy
+    rm -rf /var/tmp/nginx/client_body
+    rm -rf /usr/lib/systemd/system/nginx.service
+    rm -rf /var/tmp/nginx
+    rm -rf /var/log/nginx
+    userdel nginx || true
+    groupdel nginx || true
+fi
+
+# 文件列表
+%files
+%defattr(-,root,root,0755)
+%{_sbindir}/nginx
+%{_usr}/local/nginx/
+%config(noreplace) %{_usr}/local/nginx/conf/*.conf
+%config(noreplace) %{_usr}/local/nginx/conf/conf.d/*.conf
+%{_usr}/lib/systemd/system/nginx.service
+# 文档
+%doc
+
+# 更改日志
+%changelog

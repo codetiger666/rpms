@@ -3,7 +3,7 @@
 set -e
 
 if [ "$1" = "remove" ]; then
-    if [ -f /usr/lib/systemd/system/nginx.service ]; then
+    if [ -f /lib/systemd/system/nginx.service ]; then
         systemctl stop nginx.service 2>/dev/null || true
         systemctl disable nginx.service 2>/dev/null || true
     fi

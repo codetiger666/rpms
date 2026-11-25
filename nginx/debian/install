@@ -1,0 +1,4 @@
+# 安装文件列表
+usr/sbin/nginx usr/sbin/
+usr/local/nginx/ usr/local/
+lib/systemd/system/nginx.service /lib/systemd/system/

@@ -8,6 +8,7 @@ on:
           type: choice
           options:
             - openresty
+            - nginx
             - nezha-agent
             - nezha-server
             - onedrive
