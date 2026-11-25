@@ -116,17 +116,6 @@ fi
 # 文件列表
 %files
 %defattr(-,root,root,0755)
-%{_usr}/lib64/perl*/perllocal.pod
-%if 0%{?rhel} >= 9
-%{_usr}/local/lib64/perl*/*/auto/nginx/.packlist
-%{_usr}/local/lib64/perl*/*/auto/nginx/nginx.so
-%{_usr}/local/lib64/perl*/*/nginx.pm
-%else
-%{_usr}/local/lib64/perl*/auto/nginx/nginx.so
-%{_usr}/local/lib64/perl*/auto/nginx/.packlist
-%{_usr}/local/lib64/perl*/nginx.pm
-%endif
-%{_usr}/local/share/man/man3/nginx.3pm
 %{_sbindir}/nginx
 %{_usr}/local/nginx/
 %config(noreplace) %{_usr}/local/nginx/conf/*.conf
