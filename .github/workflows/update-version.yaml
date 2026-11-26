@@ -55,6 +55,18 @@ jobs:
           new_version=$(apply_handle "$handle" "$new_version" "$new")
           if [[ -z "$new_version" ]]; then
             echo "[$(date '+%Y-%m-%d %H:%M:%S')] 未获取到最新版本，跳过当前循环"
+            reqData=$(jq -cn \
+                --arg chatId "${{ secrets.TG_BOT_USER_ID }}" \
+                --arg project_program "$project_program" \
+                --arg arch "$arch" \
+                '{
+                    chat_id: $chatId,
+                    text: (
+                        "\\[" + ($project_program | gsub("-"; "\\-")) + "\\] \\[🟡 未获取到新版本，跳过处理\\]"
+                    ),
+                    parse_mode: "MarkdownV2"
+                }')
+                send_telegram_message "${{ secrets.TG_BOT_KEY }}" "$reqData"
             continue
           fi
           echo -e "\n[$(date '+%Y-%m-%d %H:%M:%S')] $program获取到的最新版本${new_version}"
