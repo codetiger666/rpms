@@ -155,23 +155,23 @@ jobs:
         run: |
           arch=${{ matrix.arch }}
           source $HOME/.profile
-          text="\\\\[${project_program//-/\\\\-}\\\\] \\\\[❌ 编译失败\\\\]\n版本\`${project_version//./\\\\.}\`\n系统\`${os}\`\n架构\`${arch//_/\\\\_}\`"
-          content=$(cat <<EOF
-          {
-            "chat_id": "${{ secrets.TG_BOT_USER_ID }}",
-            "text": "$text",
-            "parse_mode": "MarkdownV2"
-          }
-          EOF
-          )
-          source $HOME/.profile
-          curl -X POST \
-          --url https://api.telegram.org/bot${{ secrets.TG_BOT_KEY }}/sendMessage \
-          --header 'Accept: */*' \
-          --header 'Accept-Encoding: gzip, deflate, br' \
-          --header 'Connection: keep-alive' \
-          --header 'Content-Type: application/json' \
-          --data "$content"
+          reqData=$(jq -cn \
+          --arg chatId "${{ secrets.TG_BOT_USER_ID }}" \
+          --arg project_program "$project_program" \
+          --arg project_version "$project_version" \
+          --arg os "$os" \
+          --arg arch "$arch" \
+          '{
+              chat_id: $chatId,
+              text: (
+                  "\\[" + ($project_program | gsub("-"; "\\-")) + "\\] \\[❌ 编译失败\\]\n" +
+                  "版本`" + ($project_version | gsub("\\."; "\\.")) + "`\n" +
+                  "系统`" + $os + "`\n" +
+                  "架构`" + ($arch | gsub("_"; "\\_")) + "`"
+              ),
+              parse_mode: "MarkdownV2"
+          }')
+          send_telegram_message "${{ secrets.TG_BOT_KEY }}" "$reqData"
 
   upload:
     name: upload-deb-${{ github.event.inputs.program }}
@@ -355,14 +355,18 @@ jobs:
       - name: send tg message
         run: |
           source $HOME/.profile
-          curl -X POST \
-          --url https://api.telegram.org/bot${{ secrets.TG_BOT_KEY }}/sendMessage \
-          --header 'Accept: */*' \
-          --header 'Accept-Encoding: gzip, deflate, br' \
-          --header 'Connection: keep-alive' \
-          --header 'Content-Type: application/json' \
-          --data "{
-          \"chat_id\": \"${{ secrets.TG_BOT_USER_ID }}\",
-          \"text\": \"\\\\[${project_program//-/\\\\-}\\\\] \\\\[✅ 编译成功\\\\]\n版本\`${project_version//./\\\\.}\`\n系统\`${os}\`\",
-          \"parse_mode\": \"MarkdownV2\"
-          }"
+          reqData=$(jq -cn \
+          --arg chatId "${{ secrets.TG_BOT_USER_ID }}" \
+          --arg project_program "$project_program" \
+          --arg project_version "$project_version" \
+          --arg arch "$arch" \
+          '{
+              chat_id: $chatId,
+              text: (
+                  "\\[" + ($project_program | gsub("-"; "\\-")) + "\\] \\[✅ 编译成功\\]\n" +
+                  "版本`" + ($project_version | gsub("\\."; "\\.")) + "`\n" +
+                  "包类型: deb"
+              ),
+              parse_mode: "MarkdownV2"
+          }')
+          send_telegram_message "${{ secrets.TG_BOT_KEY }}" "$reqData"

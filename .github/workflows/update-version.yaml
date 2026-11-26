@@ -19,6 +19,10 @@ jobs:
           git config pull.rebase false
       
       - name: get new version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          chatId: ${{ secrets.TG_BOT_USER_ID }}
+          tgContentBotKey: ${{ secrets.TG_CONTENT_BOT_KEY }}
         run: |
           export TZ=Asia/Shanghai
           source init/common.sh
@@ -38,6 +42,7 @@ jobs:
           IFS=$'\x1F' read -r program version repo location handle new <<< "$formatted_line"
           # 去除 key 和 value 两边的空白（可选）
           program=$(echo "$program" | xargs)
+          export project_program=$program
           version=$(echo "$version" | xargs)
           new_version=
           pkgVersion=$(apply_handle "$handle" "$new_version")
@@ -55,85 +60,187 @@ jobs:
           echo -e "\n[$(date '+%Y-%m-%d %H:%M:%S')] $program获取到的最新版本${new_version}"
           if [ "$version" = "$new_version" ]; then
               echo "[$(date '+%Y-%m-%d %H:%M:%S')] $program最新版本已经编译过"
-              curl -X POST \
-              --url https://api.telegram.org/bot${{ secrets.TG_BOT_KEY }}/sendMessage \
-              --header 'Accept: */*' \
-              --header 'Accept-Encoding: gzip, deflate, br' \
-              --header 'Connection: keep-alive' \
-              --header 'Content-Type: application/json' \
-              --data "{
-              \"chat_id\": \"${{ secrets.TG_BOT_USER_ID }}\",
-              \"text\": \"\\\\[${program//-/\\\\-}\\\\] \\\\[⭕ 已经编译完成\\\\]\n版本:\`${new_version//./\\\\.}\`\",
-              \"parse_mode\": \"MarkdownV2\",
-              \"reply_markup\": {
-                  \"inline_keyboard\": [
-                      [
+              reqData=$(jq -cn \
+              --arg chatId "${{ secrets.TG_BOT_USER_ID }}" \
+              --arg program "$program" \
+              --arg new_version "$new_version" \
+              --arg repo "$repo" \
+              --arg temp_version "$temp_version" \
+              '{
+                  chat_id: $chatId,
+                  text: (
+                      "\\[" + ($program | gsub("-"; "\\-")) + "\\] \\[⭕ 已经编译完成\\]\n" +
+                      "版本:`" + ($new_version | gsub("\\."; "\\.")) + "`"
+                  ),
+                  parse_mode: "MarkdownV2",
+                  reply_markup: {
+                      inline_keyboard: [
+                          [
                               {
-                                  \"text\": \"${program} $new_version更新日志\",
-                                  \"url\": \"https://github.com/$repo/releases/tag/$temp_version\"
+                                  text: ($program + " " + $new_version + "更新日志"),
+                                  url: ("https://github.com/" + $repo + "/releases/tag/" + $temp_version)
                               }
+                          ]
                       ]
-                  ]
-              }
-              }"
-              sleep 60
+                  }
+              }')
+              send_telegram_message "${{ secrets.TG_BOT_KEY }}" "$reqData"
+              sleep 10
               continue
             else
-              run_workflow=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/codetiger666/rpms/actions/runs?per_page=100" | jq '.workflow_runs[] | select((.name == "release" or .name == "release-deb") and (.status == "queued" or .status == "in_progress"))')
+              run_workflow=$(github_api_request "https://api.github.com/repos/${{ github.repository }}/actions/runs?per_page=100" GET | jq '.workflow_runs[] | select((.name == "release" or .name == "release-deb") and (.status == "queued" or .status == "in_progress"))')
               while true; do
                 # 如果变量 a 为空，跳过当前循环
                 if [ -z "$run_workflow" ]; then
                   break
                 fi
                 echo "[$(date '+%Y-%m-%d %H:%M:%S')] 当前有编译任务进行中，等待30s后重试"
-                sleep 30
-                run_workflow=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/codetiger666/rpms/actions/runs?per_page=100" | jq '.workflow_runs[] | select((.name == "release" or .name == "release-deb") and (.status == "queued" or .status == "in_progress"))')
+                reqData=$(jq -cn \
+                --arg chatId "${{ secrets.TG_BOT_USER_ID }}" \
+                --arg project_program "$project_program" \
+                --arg project_version "$project_version" \
+                --arg arch "$arch" \
+                '{
+                    chat_id: $chatId,
+                    text: (
+                        "\\[" + ($project_program | gsub("-"; "\\-")) + "\\] \\[🟡 等待编译\\]\n" +
+                        "版本`" + ($project_version | gsub("\\."; "\\.")) + "`\n" +
+                        "当前有任务正在编译中，等待60s后继续"
+                    ),
+                    parse_mode: "MarkdownV2"
+                }')
+                send_telegram_message "${{ secrets.TG_BOT_KEY }}" "$reqData"
+                sleep 60
+                run_workflow=$(github_api_request "https://api.github.com/repos/${{ github.repository }}/actions/runs?per_page=100" GET | jq '.workflow_runs[] | select((.name == "release" or .name == "release-deb") and (.status == "queued" or .status == "in_progress"))')
               done
-              curl -X POST \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Accept: application/vnd.github.v3+json" \
-              https://api.github.com/repos/${{ github.repository }}/actions/workflows/release.yml/dispatches \
-              -d "{\"ref\":\"main\",\"inputs\":{\"program\":\"$program\",\"version\":\"$new_version\",\"remove\":\"true\",\"ssh\":\"false\"}}"
+              reqData=$(jq -cn \
+              --arg chatId "${{ secrets.TG_BOT_USER_ID }}" \
+              --arg program "$program" \
+              --arg new_version "$new_version" \
+              --arg repo "$repo" \
+              --arg temp_version "$temp_version" \
+              '{
+                  ref: "main",
+                  inputs: {
+                    program: $program,
+                    version: $new_version,
+                    remove: "true",
+                    ssh: "false"
+                  },
+              }')
+              github_api_request "https://api.github.com/repos/${{ github.repository }}/actions/workflows/release.yml/dispatches" POST $reqData
               echo "[$(date '+%Y-%m-%d %H:%M:%S')] $program触发编译版本(RPM):${new_version}"
+              reqData=$(jq -cn \
+              --arg chatId "${{ secrets.TG_BOT_USER_ID }}" \
+              --arg program "$program" \
+              --arg new_version "$new_version" \
+              --arg repo "$repo" \
+              --arg temp_version "$temp_version" \
+              '{
+                  chat_id: $chatId,
+                  text: (
+                      "\\[" + ($program | gsub("-"; "\\-")) + "\\] \\[🟢 触发编译\\]\n" +
+                      "版本:`" + ($new_version | gsub("\\."; "\\.")) + "`\n" + 
+                      "包类型: rpm"
+                  ),
+                  parse_mode: "MarkdownV2",
+                  reply_markup: {
+                      inline_keyboard: [
+                          [
+                              {
+                                  text: ($program + " " + $new_version + "更新日志"),
+                                  url: ("https://github.com/" + $repo + "/releases/tag/" + $temp_version)
+                              }
+                          ]
+                      ]
+                  }
+              }')
+              send_telegram_message "${{ secrets.TG_BOT_KEY }}" "$reqData"
               # 等待 release.yml 执行完毕，再触发 release-deb.yml
-              sleep 30
-              run_release_workflow=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/codetiger666/rpms/actions/runs?per_page=100" | jq '.workflow_runs[] | select((.name == "release" or .name == "release-deb") and (.status == "queued" or .status == "in_progress"))')
+              sleep 60
+              reqData=$(jq -cn \
+              --arg chatId "${{ secrets.TG_BOT_USER_ID }}" \
+              --arg program "$program" \
+              --arg new_version "$new_version" \
+              --arg repo "$repo" \
+              --arg temp_version "$temp_version" \
+              '{
+                  ref: "main",
+                  inputs: {
+                    program: $program,
+                    version: $new_version,
+                    remove: "true",
+                    ssh: "false"
+                  },
+              }')
+              run_release_workflow=$(github_api_request "https://api.github.com/repos/${{ github.repository }}/actions/runs?per_page=100" GET | jq '.workflow_runs[] | select((.name == "release" or .name == "release-deb") and (.status == "queued" or .status == "in_progress"))')
               while true; do
                 if [ -z "$run_release_workflow" ]; then
                   break
                 fi
-                echo "[$(date '+%Y-%m-%d %H:%M:%S')] release.yml 编译任务进行中，等待30s后检查"
-                sleep 30
-                run_release_workflow=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/codetiger666/rpms/actions/runs?per_page=100" | jq '.workflow_runs[] | select((.name == "release" or .name == "release-deb") and (.status == "queued" or .status == "in_progress"))')
+                echo "[$(date '+%Y-%m-%d %H:%M:%S')] release.yml 编译任务进行中，等待60s后检查"
+                reqData=$(jq -cn \
+                --arg chatId "${{ secrets.TG_BOT_USER_ID }}" \
+                --arg project_program "$project_program" \
+                --arg project_version "$project_version" \
+                --arg arch "$arch" \
+                '{
+                    chat_id: $chatId,
+                    text: (
+                        "\\[" + ($project_program | gsub("-"; "\\-")) + "\\] \\[🟡 等待编译\\]\n" +
+                        "版本`" + ($project_version | gsub("\\."; "\\.")) + "`\n" +
+                        "当前有任务正在编译中，等待60s后继续"
+                    ),
+                    parse_mode: "MarkdownV2"
+                }')
+                send_telegram_message "${{ secrets.TG_BOT_KEY }}" "$reqData"
+                sleep 60
+                run_release_workflow=$(github_api_request "https://api.github.com/repos/${{ github.repository }}/actions/runs?per_page=100" GET | jq '.workflow_runs[] | select((.name == "release" or .name == "release-deb") and (.status == "queued" or .status == "in_progress"))')
               done
               echo "[$(date '+%Y-%m-%d %H:%M:%S')] release.yml 编译完成，开始触发 release-deb.yml"
-              curl -X POST \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Accept: application/vnd.github.v3+json" \
-              https://api.github.com/repos/${{ github.repository }}/actions/workflows/release-deb.yml/dispatches \
-              -d "{\"ref\":\"main\",\"inputs\":{\"program\":\"$program\",\"version\":\"$new_version\",\"remove\":\"true\",\"ssh\":\"false\"}}"
+              reqData=$(jq -cn \
+              --arg chatId "${{ secrets.TG_BOT_USER_ID }}" \
+              --arg program "$program" \
+              --arg new_version "$new_version" \
+              --arg repo "$repo" \
+              --arg temp_version "$temp_version" \
+              '{
+                  ref: "main",
+                  inputs: {
+                    program: $program,
+                    version: $new_version,
+                    remove: "true",
+                    ssh: "false"
+                  },
+              }')
+              github_api_request "https://api.github.com/repos/${{ github.repository }}/actions/workflows/release-deb.yml/dispatches" POST $reqData || true
               echo "[$(date '+%Y-%m-%d %H:%M:%S')] $program触发编译版本(DEB):${new_version}"
-              curl -X POST \
-              --url https://api.telegram.org/bot${{ secrets.TG_BOT_KEY }}/sendMessage \
-              --header 'Accept: */*' \
-              --header 'Accept-Encoding: gzip, deflate, br' \
-              --header 'Connection: keep-alive' \
-              --header 'Content-Type: application/json' \
-              --data "{
-              \"chat_id\": \"${{ secrets.TG_BOT_USER_ID }}\",
-              \"text\": \"\\\\[${program//-/\\\\-}\\\\] \\\\[🟢 触发编译\\\\]\n版本：\`${new_version//./\\\\.}\`\",
-              \"parse_mode\": \"MarkdownV2\",
-              \"reply_markup\": {
-                  \"inline_keyboard\": [
-                      [
+              reqData=$(jq -cn \
+              --arg chatId "${{ secrets.TG_BOT_USER_ID }}" \
+              --arg program "$program" \
+              --arg new_version "$new_version" \
+              --arg repo "$repo" \
+              --arg temp_version "$temp_version" \
+              '{
+                  chat_id: $chatId,
+                  text: (
+                      "\\[" + ($program | gsub("-"; "\\-")) + "\\] \\[🟢 触发编译\\]\n" +
+                      "版本:`" + ($new_version | gsub("\\."; "\\.")) + "`\n" + 
+                      "包类型: deb"
+                  ),
+                  parse_mode: "MarkdownV2",
+                  reply_markup: {
+                      inline_keyboard: [
+                          [
                               {
-                                  \"text\": \"${program}$new_version更新日志\",
-                                  \"url\": \"https://github.com/$repo/releases/tag/$temp_version\"
+                                  text: ($program + " " + $new_version + "更新日志"),
+                                  url: ("https://github.com/" + $repo + "/releases/tag/" + $temp_version)
                               }
+                          ]
                       ]
-                  ]
-              }
-              }"
-              sleep 60
+                  }
+              }')
+              send_telegram_message "${{ secrets.TG_BOT_KEY }}" "$reqData"
+              sleep 10
             fi
           done < version
