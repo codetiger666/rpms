@@ -9,13 +9,19 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 override_dh_auto_configure:
 
 override_dh_auto_build:
-	make -j$$(nproc)
+	make USE_SYSTEMD=yes MALLOC=jemalloc BUILD_TLS=yes -j$$(nproc)
 
 override_dh_auto_install:
 	make install PREFIX=$(CURDIR)/debian/tmp/usr
-	mkdir -p $(CURDIR)/debian/tmp/etc/redis
-	install -p -D -m 0644 redis.conf $(CURDIR)/debian/tmp/etc/redis/redis.conf
-	install -p -D -m 0644 sentinel.conf $(CURDIR)/debian/tmp/etc/redis/sentinel.conf
+	password=$(openssl rand -hex 32)
+	if grep -qE '^[[:space:]]*requirepass[[:space:]]+' redis.conf; then
+		sed -i -E "s|^[[:space:]]*requirepass[[:space:]]+.*|requirepass $password|" redis.conf
+	else
+		echo "requirepass $password" >> redis.conf
+	fi
+	mkdir -p $(CURDIR)/debian/tmp/usr/local/redis
+	install -p -D -m 0644 redis.conf $(CURDIR)/debian/tmp/usr/local/redis/redis.conf
+	install -p -D -m 0644 sentinel.conf $(CURDIR)/debian/tmp/usr/local/redis/sentinel.conf
 	install -p -D -m 0644 debian/redis.service $(CURDIR)/debian/tmp/usr/lib/systemd/system/redis.service
 
 override_dh_usrlocal:

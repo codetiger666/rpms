@@ -20,14 +20,20 @@ redis自编译
 
 # 编译
 %build
-make USE_SYSTEMD=yes MALLOC=jemalloc -j6
+make USE_SYSTEMD=yes MALLOC=jemalloc BUILD_TLS=yes -j6
 
 # 安装
 %install
 make install PREFIX=%{buildroot}/usr
-%{__mkdir} -p %{buildroot}/etc/redis
-%{__install} -p -D -m 0644 redis.conf %{buildroot}/etc/redis/redis.conf
-%{__install} -p -D -m 0644 sentinel.conf %{buildroot}/etc/redis/sentinel.conf
+%{__mkdir} -p %{buildroot}/usr/local/redis
+password=$(openssl rand -hex 32)
+if grep -qE '^[[:space:]]*requirepass[[:space:]]+' redis.conf; then
+    sed -i -E "s|^[[:space:]]*requirepass[[:space:]]+.*|requirepass $password|" redis.conf
+else
+    echo "requirepass $password" >> redis.conf
+fi
+%{__install} -p -D -m 0644 redis.conf %{buildroot}/usr/local/redis/redis.conf
+%{__install} -p -D -m 0644 sentinel.conf %{buildroot}/usr/local/redis/sentinel.conf
 %{__install} -p -D -m 0644 %{SOURCE1} %{buildroot}%{_usr}/lib/systemd/system/redis.service
 
 # 安装后操作
@@ -39,6 +45,7 @@ if [ $1 == 1 ]; then
     mkdir -p /var/lib/redis
     chown -R redis:redis /var/log/redis
     chown -R redis:redis /var/lib/redis
+    chown -R redis:redis /usr/local/redis
 fi
 
 # 卸载前准备
@@ -65,8 +72,8 @@ fi
 /usr/bin/redis-benchmark
 /usr/bin/redis-check-aof
 /usr/bin/redis-check-rdb
-%config(noreplace) /etc/redis/redis.conf
-%config(noreplace) /etc/redis/sentinel.conf
+%config(noreplace) /usr/local/redis/redis.conf
+%config(noreplace) /usr/local/redis/sentinel.conf
 %{_usr}/lib/systemd/system/redis.service
 # 文档
 %doc

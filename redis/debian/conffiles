@@ -1,2 +1,2 @@
-/etc/redis/redis.conf
-/etc/redis/sentinel.conf
+/usr/local/redis/redis.conf
+/usr/local/redis/sentinel.conf

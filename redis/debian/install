@@ -6,5 +6,5 @@ usr/bin/redis-benchmark usr/bin/
 usr/bin/redis-check-aof usr/bin/
 usr/bin/redis-check-rdb usr/bin/
 usr/lib/systemd/system/redis.service usr/lib/systemd/system/
-etc/redis/redis.conf etc/redis/
-etc/redis/sentinel.conf etc/redis/
+usr/local/redis/redis.conf usr/local/redis/
+usr/local/redis/sentinel.conf usr/local/redis/
