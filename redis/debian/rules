@@ -22,7 +22,7 @@ override_dh_auto_install:
 	mkdir -p $(CURDIR)/debian/tmp/usr/local/redis
 	install -p -D -m 0644 redis.conf $(CURDIR)/debian/tmp/usr/local/redis/redis.conf
 	install -p -D -m 0644 sentinel.conf $(CURDIR)/debian/tmp/usr/local/redis/sentinel.conf
-	install -p -D -m 0644 debian/redis.service $(CURDIR)/debian/tmp/usr/lib/systemd/system/redis.service
+	install -p -D -m 0644 debian/redis.service $(CURDIR)/debian/tmp/lib/systemd/system/redis.service
 
 override_dh_usrlocal:
 
