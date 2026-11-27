@@ -13,11 +13,11 @@ override_dh_auto_build:
 
 override_dh_auto_install:
 	make install PREFIX=$(CURDIR)/debian/tmp/usr
-	password=$(openssl rand -hex 32)
-	if grep -qE '^[[:space:]]*requirepass[[:space:]]+' redis.conf; then
-		sed -i -E "s|^[[:space:]]*requirepass[[:space:]]+.*|requirepass $password|" redis.conf
-	else
-		echo "requirepass $password" >> redis.conf
+	password=$$(openssl rand -hex 32); \
+	if grep -qE '^[[:space:]]*requirepass[[:space:]]+' redis.conf; then \
+		sed -i -E "s|^[[:space:]]*requirepass[[:space:]]+.*|requirepass $$password|" redis.conf; \
+	else \
+		echo "requirepass $$password" >> redis.conf; \
 	fi
 	mkdir -p $(CURDIR)/debian/tmp/usr/local/redis
 	install -p -D -m 0644 redis.conf $(CURDIR)/debian/tmp/usr/local/redis/redis.conf
