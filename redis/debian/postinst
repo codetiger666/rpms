@@ -7,10 +7,10 @@ if [ "$1" = "configure" ]; then
     fi
     mkdir -p /etc/redis
     mkdir -p /var/log/redis
-    chown redis:redis /var/log/redis
+    chown redis:redis -R /var/log/redis
     mkdir -p /var/lib/redis
-    chown redis:redis /var/lib/redis
-    chown redis:redis /usr/local/redis
+    chown redis:redis -R /var/lib/redis
+    chown redis:redis -R /usr/local/redis
 fi
 
 #DEBHELPER#
