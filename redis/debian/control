@@ -2,7 +2,7 @@ Source: redis
 Section: web
 Priority: optional
 Maintainer: codetiger <admin@111179.xyz>
-Build-Depends: debhelper-compat (= 10), gcc, make
+Build-Depends: debhelper-compat (= 10), gcc, make, libsystemd-dev, libssl-dev
 Standards-Version: 4.5.0
 Homepage: https://111179.xyz
 
