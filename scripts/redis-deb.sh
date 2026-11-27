@@ -9,7 +9,7 @@ program_init(){
   sudo /bin/cp -r redis/debian/ /opt/deb_build/redis-${project_version}/debian
   sudo /bin/cp redis-${project_version}.tar.gz /opt/deb_build/redis_${project_version}.orig.tar.gz
   cat > changelog << EOF
-redis (${project_version}-1) stable; urgency=medium
+redis (100:${project_version}-1) stable; urgency=medium
 
   * Auto-built Redis ${project_version}
 

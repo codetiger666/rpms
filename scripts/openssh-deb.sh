@@ -17,7 +17,7 @@ program_init(){
   sudo /bin/cp -r openssh/debian/ /opt/deb_build/openssh-${project_version}/debian
   sudo /bin/cp openssh-${project_version}.tar.gz /opt/deb_build/openssh_${project_version}.orig.tar.gz
   cat > changelog << EOF
-openssh (2:${project_version}-1) stable; urgency=medium
+openssh (100:${project_version}-1) stable; urgency=medium
 
   * Auto-built OpenSSH ${project_version}
 

@@ -26,7 +26,7 @@ program_init(){
   sudo tar -xzf nginx-${project_version}.tar.gz -C /opt/deb_build/
   sudo /bin/cp -r nginx/debian/ /opt/deb_build/nginx-${project_version}/debian
   cat > changelog << EOF
-nginx (${project_version}-1) stable; urgency=medium
+nginx (100:${project_version}-1) stable; urgency=medium
 
   * Auto-built nginx ${project_version}
 

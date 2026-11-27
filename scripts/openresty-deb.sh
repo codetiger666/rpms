@@ -29,7 +29,7 @@ program_init(){
   sudo tar -xzf openresty-${project_version}.tar.gz -C /opt/deb_build/
   sudo /bin/cp -r openresty/debian/ /opt/deb_build/openresty-${project_version}/debian
   cat > changelog << EOF
-openresty (${project_version}-1) stable; urgency=medium
+openresty (100:${project_version}-1) stable; urgency=medium
 
   * Auto-built OpenResty ${project_version} with jdomain and dynamic-servers modules
 
