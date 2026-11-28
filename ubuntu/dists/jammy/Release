@@ -1,0 +1,31 @@
+Architectures: amd64 arm64
+Codename: jammy
+Components: main
+Date: Fri, 27 Nov 2026 03:15:59 +0000
+Label: CodeTiger ubuntu Repository
+Origin: Codetiger
+Suite: jammy
+MD5Sum:
+ 1330b5b57d7c4ee59f217bafd39680c7              164 Release
+ 5e84a1540cdbba2113079ffb566513bd             4751 main/binary-amd64/Packages
+ c3af74231d739d70870e0a9f3d1cefbd             1770 main/binary-amd64/Packages.gz
+ 5c8ebeba41d114aa9de188008a6abded             4750 main/binary-arm64/Packages
+ 47b645a568fa026f91972587abfc6d3b             1768 main/binary-arm64/Packages.gz
+SHA1:
+ a652e7493da6370be55150a2612e625ef5a7e054              164 Release
+ 3cc5a6453cdb3b66b201a85e00eb5584fdb41e48             4751 main/binary-amd64/Packages
+ 1070bc5a022abbc669ed26f744d2b7b9a15c0bbe             1770 main/binary-amd64/Packages.gz
+ 1954f998ece1aa118ef75e83ddd791d0bc51d1cc             4750 main/binary-arm64/Packages
+ e2ac64ee98ce3d714b679c60453d99b3eff57a8b             1768 main/binary-arm64/Packages.gz
+SHA256:
+ e52dec1c31ec858acd5cd6db9a1a74c442b28d6edfb7c45f46a725123f91a79a              164 Release
+ 64ff77180e0a8dac3ee51f53b3d363862c916c6676031fc0867e1afe9f3651b5             4751 main/binary-amd64/Packages
+ 7ed50dac9206d38e643dc0f40e8eb327a78c2b16d5d49851be4aed2b4b02fcda             1770 main/binary-amd64/Packages.gz
+ 473d1941a32079e36bdae940ccd7bd43fdc52f65619bb0a434828a7e9b60b206             4750 main/binary-arm64/Packages
+ 8fefed0c751b0d6f7f2b4661c2e62616e512c3387911f6cafdcc3980ff3d170f             1768 main/binary-arm64/Packages.gz
+SHA512:
+ 9f0f244c41b8f54c3e5b29f39aa501429260bcb7d41f55479fd4aeb1b91484b1a80e0dce518056b4d961332ab15f9cf47e9b76759d6778dc85f14c109c1b241b              164 Release
+ 728fb34ac83a93bf253e9c71384061fe256bd93152033c2cc573d6f13aee3863c567e57121047f134e2669fa96c405f79b8d2f4207c6df4f094fc0cad8e347bf             4751 main/binary-amd64/Packages
+ 7db05ea1794633ccabd6eea738d0c179568f430d425de49cf684521a84c9f145eb9cadb248e897df4e448d811a8ea87d8845738c022a12acfca81a5115bf1c82             1770 main/binary-amd64/Packages.gz
+ 21eeabe611966db776a0cd9b06ef3abff55ad23399b2f16ceda490b5e4b4026f06ad84c654eb6eeb49206807f032f063e8a4dda83998dedc56fab08ae612ee31             4750 main/binary-arm64/Packages
+ b8d7c350993f7b7c458e62b92f432fbe955d75dd89778299ff9e0b24e2fc709148e08902471f838f826c4c7c4363013cf8858888f10d43be0e625500144eb9f3             1768 main/binary-arm64/Packages.gz

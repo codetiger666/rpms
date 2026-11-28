@@ -1,0 +1,194 @@
+Package: nginx
+Version: 1.31.10-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 2546
+Depends: libc6 (>= 2.34), libcrypt1 (>= 1:4.1.0), libgd3 (>= 2.1.0~alpha~), libgeoip1 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libssl3 (>= 3.0.0), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/bookworm/main/binary-arm64/nginx_1.31.10-1_arm64.deb
+Size: 538204
+MD5sum: 7a6b3cf8df3488c3b94e437e1f48a9e2
+SHA1: cd6c8c48cac02856fa6fb53aed7bc7355b237b59
+SHA256: 58564b36469470f5e843133acf81d3eba4168913f59ef4c10647da3c4619d628
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: nginx ("engine x") is an HTTP web server, reverse proxy, content cache, load balancer, TCP/UDP proxy server, and mail proxy server. Originally written by Igor Sysoev and distributed under the 2-clause BSD License.
+
+Package: nginx-dbgsym
+Source: nginx
+Version: 1.31.10-1
+Auto-Built-Package: debug-symbols
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 276
+Depends: nginx (= 1.31.10-1)
+Filename: dists/bookworm/main/binary-arm64/nginx-dbgsym_1.31.10-1_arm64.deb
+Size: 52728
+MD5sum: ab04e78b88c45054ffde941321a530b9
+SHA1: 35796302f99ee9b674c3d1f04cd8a38c96f79cb0
+SHA256: 657b442803353016339179883ecbe53d81851bf23f1db38ff775c9a09656341a
+Section: debug
+Priority: optional
+Description: debug symbols for nginx
+Build-Ids: 59a1dd756a03bfc457fe9a456cbeb03feec0fea3
+
+Package: openresty
+Version: 1.31.9.1-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 10111
+Depends: libc6 (>= 2.34), libcrypt1 (>= 1:4.1.0), libgcc-s1 (>= 4.2), libgd3 (>= 2.1.0~alpha~), libgeoip1 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libssl3 (>= 3.0.0), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/bookworm/main/binary-arm64/openresty_1.31.9.1-1_arm64.deb
+Size: 1985796
+MD5sum: 3af549162cd50769b929221354e75b23
+SHA1: f34331993c5dc04c19b156571e2ee74b6614efac
+SHA256: 3f8494ed455cf1df13badadfb37e207a82cedd2273dc70d3d39dbb1e503d722c
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenResty self-compiled package
+ OpenResty is a full-fledged web platform that integrates the standard
+ Nginx core, LuaJIT, many carefully written Lua libraries, lots of
+ high quality 3rd-party Nginx modules, and most of their external
+ dependencies. This package is a self-compiled version with additional
+ modules including ngx_upstream_jdomain and nginx-upstream-dynamic-servers.
+
+Package: openresty-dbgsym
+Source: openresty
+Version: 1.31.9.1-1
+Auto-Built-Package: debug-symbols
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 3000
+Depends: openresty (= 1.31.9.1-1)
+Filename: dists/bookworm/main/binary-arm64/openresty-dbgsym_1.31.9.1-1_arm64.deb
+Size: 2558816
+MD5sum: 154455b2c04d7c9068f1fc8025f13b5a
+SHA1: cc9e301869c60a5979541eb75f4430f69919e8dd
+SHA256: 6146f58bf9ce3560de93bd2b668a3f45bcebf207cd8b91957be18323e24526e8
+Section: debug
+Priority: optional
+Description: debug symbols for openresty
+Build-Ids: 02d4e31df0381039b4c397d0b34240808476937f 1040d10384fe6d0ba3c5a16f44b1d92b7232d7e6 33c5ddb9640e218f9390e31e1274b0bbe27b978c 86af9e8e88ccb92b7d01d5cf6d0ad45d16325292 aa3c9730253e88494ff96075f2090fa27e62e281 b8eef9c9b82e0f795339ddf5144abcdc474b6741 f8507c13f1f6ffedbd869c0706e0ddb662926d79
+
+Package: openssh
+Version: 2:10.6.P2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 1582
+Depends: libc6 (>= 2.36), libselinux1 (>= 3.1~), openssh-openssl-libs
+Filename: dists/bookworm/main/binary-arm64/openssh_10.6.P2-1_arm64.deb
+Size: 322376
+MD5sum: 785477442444b041c7468ead202595f8
+SHA1: ceaa489714aa687db83c4799a42d71928c093edd
+SHA256: 7b7d4b134489292a592aec9c27edfc3293f9aadfb2f9a443346ec267a44c220a
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh编译
+
+Package: openssh-client
+Source: openssh
+Version: 2:10.6.P2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 5365
+Depends: openssh (= 2:10.6.P2-1), openssh-openssl-libs (= 2:10.6.P2-1)
+Filename: dists/bookworm/main/binary-arm64/openssh-client_10.6.P2-1_arm64.deb
+Size: 776124
+MD5sum: 7756fa5c98fad80808b3cff6d5ac3ef1
+SHA1: 99344a5e3680ff33bfbd6eb4c8c01cb77ab16247
+SHA256: e7d832377aca21d325aae5d211e7d997193104a6e5cf2fedd4f3a2871628666a
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh-clients编译
+
+Package: openssh-openssl-libs
+Source: openssh
+Version: 2:10.6.P2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 9275
+Filename: dists/bookworm/main/binary-arm64/openssh-openssl-libs_10.6.P2-1_arm64.deb
+Size: 2849908
+MD5sum: d02f340f991ea7c2875e73c56c2cbb39
+SHA1: 54bcb242a539f1fed0a96b1b4647b30567ea5271
+SHA256: 56166a82dd58b6f6bda980d339b196017510cb6987bd817466490b2203e2b275
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenSSL libraries for openssh (custom rpath build)
+
+Package: openssh-openssl-libs-dbgsym
+Source: openssh
+Version: 2:10.6.P2-1
+Auto-Built-Package: debug-symbols
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 8457
+Depends: openssh-openssl-libs (= 2:10.6.P2-1)
+Filename: dists/bookworm/main/binary-arm64/openssh-openssl-libs-dbgsym_10.6.P2-1_arm64.deb
+Size: 7655480
+MD5sum: 0e686519443a89e64d1fb7f91bd4ed0d
+SHA1: 3e1beb80f785a0adbb81bb83601a705366b5cf69
+SHA256: 12284647fd3d0354ffa234b70ad7b94fab625ebcaae74ece89caea506e4a5cae
+Section: debug
+Priority: optional
+Description: debug symbols for openssh-openssl-libs
+Build-Ids: 3fe460c79dd7b20e4d3f285714ab2f105edde253 ea025205461b74d3672c8a916b22a48b19f01fc4
+
+Package: openssh-server
+Source: openssh
+Version: 2:10.6.P2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 4413
+Depends: openssh-client (= 2:10.6.P2-1)
+Filename: dists/bookworm/main/binary-arm64/openssh-server_10.6.P2-1_arm64.deb
+Size: 652008
+MD5sum: 6849f30742c43d9b85647fc731b88f33
+SHA1: 1bafe849834376de73074509297a7c223f68ecb5
+SHA256: 6c7d4d8980374abd93b5e3b8d80648bf821145d05f4b8dcc77f913c16fedee69
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh-server编译
+
+Package: redis
+Version: 100:8.12.0-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 6893
+Depends: libc6 (>= 2.34), libssl3 (>= 3.0.0), libsystemd0
+Filename: dists/bookworm/main/binary-arm64/redis_8.12.0-1_arm64.deb
+Size: 1837012
+MD5sum: 29a4998822c5db0a6352ada37c319f15
+SHA1: e2367f81dd8980c29d60310bf95089f4175d7cc7
+SHA256: 33a28e09ebf086b197199286892eaabdc02b5e985a29eb7db10b238d00d51f2e
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.
+
+Package: redis-dbgsym
+Source: redis
+Version: 100:8.12.0-1
+Auto-Built-Package: debug-symbols
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 13541
+Depends: redis (= 100:8.12.0-1)
+Filename: dists/bookworm/main/binary-arm64/redis-dbgsym_8.12.0-1_arm64.deb
+Size: 11450692
+MD5sum: f6676d95e54694328bdd7d3592b3f84b
+SHA1: 3403a6a87680f56b4ba4937a28653ab47f885593
+SHA256: 482ab58340220a7a43bf6807cfe1c7b8f6751926f863c74014e795cf333cbd47
+Section: debug
+Priority: optional
+Description: debug symbols for redis
+Build-Ids: 378cef0f599d2ad5273774a16e93f0f03fcea954 73e04157d4c699c4c41c9b3f9237016bef3b7c9b 7d96c36b5533b1d5644048972437eeb22d72831b
+

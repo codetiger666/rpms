@@ -1,0 +1,774 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>自编译软件仓库</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css" />
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        body {
+            margin: 0;
+            color: #303133;
+            background: #f3f5f8;
+        }
+
+        #app, .file-manager, .list-grid {
+            overflow: visible !important;
+        }
+
+        .file-manager {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            min-height: 100vh;
+            padding: 24px;
+            padding-bottom: calc(24px + env(safe-area-inset-bottom));
+            background: #f3f5f8;
+        }
+
+        .path-bar,
+        .repo-box,
+        .list-grid {
+            background: #fff;
+            padding: 18px;
+            margin: 0 0 18px;
+            border: 1px solid #ebeef5;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(31, 45, 61, .04);
+        }
+
+        .path-bar {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            min-height: 54px;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .path-bar .el-breadcrumb__item {
+            flex: 0 0 auto;
+            cursor: pointer;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            margin: 0 0 10px 2px;
+            color: #303133;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .list-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+            gap: 12px;
+        }
+
+        .file-item {
+            display: flex;
+            min-width: 0;
+            min-height: 112px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 10px;
+            border: 1px solid transparent;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: background .2s ease, border-color .2s ease;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .file-item:hover {
+            background: #f5f7fa;
+            border-color: #ebeef5;
+        }
+
+        .file-icon {
+            color: #6b9ce8;
+            font-size: 42px;
+            line-height: 1.2;
+        }
+
+        .folder-icon {
+            color: #e6a23c;
+        }
+
+        .file-name {
+            width: 100%;
+            margin-top: 9px;
+            color: #606266;
+            font-size: 13px;
+            line-height: 1.45;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            text-align: center;
+        }
+
+        .context-menu {
+            position: fixed !important;
+            z-index: 10000 !important;
+            min-width: 160px;
+            max-width: calc(100vw - 24px);
+            padding: 5px 0;
+            overflow: hidden;
+            background: rgba(255, 255, 255, .96) !important;
+            border: 1px solid #ebeef5;
+            border-radius: 10px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, .14);
+            backdrop-filter: blur(8px);
+        }
+
+        .context-menu .el-menu-item {
+            min-height: 44px;
+            margin: 4px 8px;
+            width: calc(100% - 16px);
+            border-radius: 6px;
+            background: transparent !important;
+        }
+
+        .context-menu .el-menu-item:hover {
+            background: #f5f7fa !important;
+        }
+
+        .repo-box textarea {
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .repo-box .el-collapse {
+            border-top: 0;
+        }
+
+        .repo-box .el-collapse-item__header {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .repo-box p {
+            overflow-wrap: anywhere;
+            line-height: 1.6;
+        }
+
+        .loading-box,
+        .empty-box {
+            padding: 35px 15px;
+            text-align: center;
+            color: #909399;
+            background: #fff;
+            border: 1px solid #ebeef5;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .file-manager {
+                min-height: 100vh;
+                padding: 14px;
+                padding-bottom: calc(18px + env(safe-area-inset-bottom));
+            }
+
+            .path-bar,
+            .repo-box,
+            .list-grid {
+                padding: 13px;
+                margin-bottom: 13px;
+                border-radius: 9px;
+            }
+
+            .path-bar {
+                min-height: 48px;
+            }
+
+            .list-grid {
+                grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+                gap: 6px;
+            }
+
+            .file-item {
+                min-height: 100px;
+                padding: 12px 6px;
+            }
+
+            .file-icon {
+                font-size: 38px;
+            }
+
+            .file-name {
+                margin-top: 7px;
+                font-size: 12px;
+            }
+
+            .section-title {
+                font-size: 14px;
+            }
+
+            .repo-box textarea {
+                font-size: 12px;
+            }
+
+            .context-menu {
+                min-width: 150px;
+            }
+
+            .context-menu .el-menu-item {
+                min-height: 46px;
+                line-height: 46px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .file-manager {
+                padding: 10px;
+            }
+
+            .list-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 4px;
+                padding: 8px;
+            }
+
+            .file-item {
+                min-height: 92px;
+                padding: 10px 4px;
+            }
+
+            .file-icon {
+                font-size: 34px;
+            }
+        }
+
+        @media (hover: none) {
+            .file-item:hover {
+                background: transparent;
+                border-color: transparent;
+            }
+
+            .file-item:active {
+                background: #f0f2f5;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="app">
+
+    <div class="file-manager">
+
+        <!-- 软件源配置 -->
+        <div class="repo-box">
+            <div class="section-title">
+                软件源使用方法
+            </div>
+
+            <el-collapse>
+                <el-collapse-item title="RPM 软件源" name="rpm">
+                    <p>
+                        保存配置：
+                        <code>/etc/yum.repos.d/codetiger.repo</code>
+                    </p>
+
+                    <el-input
+                        type="textarea"
+                        readonly
+                        :rows="8"
+                        :value="repoConfig.rpm">
+                    </el-input>
+                </el-collapse-item>
+
+                <el-collapse-item title="DEB 软件源" name="deb">
+                    <p>
+                        保存配置：
+                        <code>/etc/apt/sources.list.d/codetiger.list</code>
+                    </p>
+
+                    <el-input
+                        type="textarea"
+                        readonly
+                        :rows="5"
+                        :value="repoConfig.deb">
+                    </el-input>
+                </el-collapse-item>
+            </el-collapse>
+        </div>
+
+        <!-- 路径导航 -->
+        <el-breadcrumb class="path-bar" separator="/">
+            <el-breadcrumb-item
+                v-for="(item, i) in pathItems"
+                :key="i"
+                @click.native="navigateTo(i)">
+                {{ item }}
+            </el-breadcrumb-item>
+        </el-breadcrumb>
+
+        <!-- 加载状态 -->
+        <div class="loading-box" v-if="loading">
+            <i class="el-icon-loading"></i>
+            正在加载...
+        </div>
+
+        <!-- 文件夹 -->
+        <div class="section" v-if="!loading && folders.length">
+            <div class="section-title">
+                文件夹
+            </div>
+
+            <div class="list-grid">
+                <div
+                    v-for="f in folders"
+                    :key="f.path"
+                    class="file-item"
+                    @click="handleItemClick(f)"
+                    @contextmenu.prevent.stop="showContextMenu(f, $event)"
+                    @touchstart="onTouchStart(f, $event)"
+                    @touchend="onTouchEnd"
+                    @touchmove="onTouchMove"
+                    @touchcancel="onTouchEnd">
+
+                    <i class="file-icon el-icon-folder folder-icon"></i>
+
+                    <div class="file-name">
+                        {{ f.name }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文件 -->
+        <div class="section" v-if="!loading && files.length">
+            <div class="section-title">
+                文件
+            </div>
+
+            <div class="list-grid">
+                <div
+                    v-for="f in files"
+                    :key="f.path"
+                    class="file-item"
+                    @click="handleItemClick(f)"
+                    @contextmenu.prevent.stop="showContextMenu(f, $event)"
+                    @touchstart="onTouchStart(f, $event)"
+                    @touchend="onTouchEnd"
+                    @touchmove="onTouchMove"
+                    @touchcancel="onTouchEnd">
+
+                    <i class="file-icon el-icon-document"></i>
+
+                    <div class="file-name">
+                        {{ f.name }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 空目录 -->
+        <div class="empty-box" v-if="!loading && !allItems.length">
+            <i class="el-icon-folder-opened"></i>
+            <p>当前目录为空</p>
+        </div>
+
+    </div>
+
+    <!-- 右键菜单 -->
+    <el-menu
+        class="context-menu"
+        v-show="contextMenu.visible"
+        :style="{
+            left: contextMenu.x + 'px',
+            top: contextMenu.y + 'px'
+        }"
+        @click.native.stop
+        @select="handleMenuClick">
+
+        <el-menu-item
+            index="download"
+            v-if="contextMenu.target && contextMenu.target.isFile">
+            <i class="el-icon-download"></i>
+            下载
+        </el-menu-item>
+
+        <el-menu-item
+            index="open"
+            v-if="contextMenu.target && !contextMenu.target.isFile">
+            <i class="el-icon-folder-opened"></i>
+            打开
+        </el-menu-item>
+
+    </el-menu>
+
+</div>
+
+<script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<script>
+    const apiBase = 'https://api.github.com';
+
+    const repo = 'codetiger666/rpms';
+
+    const branch = 'release';
+
+    // 软件源配置
+    const repoConfig = {
+        rpm: `[codetiger]
+name=$releasever - codetiger
+baseurl=https://codetiger666.github.io/rpms/redhat/$releasever/$basearch/
+enabled=1
+gpgcheck=0
+skip_if_unavailable=1
+priority=1
+metadata_expire=0`,
+
+        deb: `deb [trusted = yes] https://codetiger666.github.io/rpms/debian buster main`
+    };
+
+    new Vue({
+        el: '#app',
+
+        data() {
+            return {
+                repoConfig,
+
+                currentPath: '',
+
+                allItems: [],
+
+                loading: false,
+
+                contextMenu: {
+                    visible: false,
+                    x: 0,
+                    y: 0,
+                    target: null
+                },
+
+                longPressTimer: null,
+
+                longPressTriggered: false,
+
+                touchStartX: 0,
+
+                touchStartY: 0,
+
+                requestId: 0
+            };
+        },
+
+        computed: {
+            pathItems() {
+                return [
+                    'root',
+                    ...this.currentPath
+                        .split('/')
+                        .filter(Boolean)
+                ];
+            },
+
+            folders() {
+                return this.allItems.filter(
+                    i => !i.isFile
+                );
+            },
+
+            files() {
+                return this.allItems.filter(
+                    i => i.isFile
+                );
+            }
+        },
+
+        methods: {
+
+            // 加载文件列表
+            async loadFiles(path = '') {
+                const requestId = ++this.requestId;
+
+                this.loading = true;
+                this.allItems = [];
+                this.contextMenu.visible = false;
+
+                try {
+                    const url =
+                        `${apiBase}/repos/${repo}/contents/${path}?ref=${branch}`;
+
+                    const res = await fetch(url);
+
+                    if (!res.ok) {
+                        throw new Error(
+                            `GitHub API 请求失败：${res.status}`
+                        );
+                    }
+
+                    const data = await res.json();
+
+                    if (requestId !== this.requestId) {
+                        return;
+                    }
+
+                    if (!Array.isArray(data)) {
+                        throw new Error('GitHub API 返回数据格式异常');
+                    }
+
+                    this.allItems = data
+                        .filter(i =>
+                            ![
+                                'index.html',
+                                'README.md'
+                            ].includes(i.name)
+                        )
+                        .map(i => ({
+                            name: i.name,
+                            path: i.path,
+                            isFile: i.type === 'file',
+                            url: i.download_url
+                        }));
+
+                } catch (e) {
+                    if (requestId !== this.requestId) {
+                        return;
+                    }
+
+                    console.error(e);
+
+                    this.$message.error(
+                        '加载文件列表失败：' + e.message
+                    );
+
+                } finally {
+                    if (requestId === this.requestId) {
+                        this.loading = false;
+                    }
+                }
+            },
+
+            // 文件或文件夹点击
+            handleItemClick(item) {
+                // 长按后抑制可能产生的 click
+                if (this.longPressTriggered) {
+                    this.longPressTriggered = false;
+                    return;
+                }
+
+                this.contextMenu.visible = false;
+
+                if (!item.isFile) {
+                    this.openFolder(item);
+                }
+            },
+
+            // 显示右键菜单
+            showContextMenu(item, event) {
+                this.contextMenu.target = item;
+
+                this.setMenuPosition(
+                    event.clientX,
+                    event.clientY
+                );
+
+                this.contextMenu.visible = true;
+            },
+
+            // 设置菜单位置，防止超出屏幕
+            setMenuPosition(x, y) {
+                const menuWidth = 170;
+                const menuHeight = 110;
+                const margin = 8;
+
+                const maxX =
+                    window.innerWidth - menuWidth - margin;
+
+                const maxY =
+                    window.innerHeight - menuHeight - margin;
+
+                this.contextMenu.x = Math.max(
+                    margin,
+                    Math.min(x, maxX)
+                );
+
+                this.contextMenu.y = Math.max(
+                    margin,
+                    Math.min(y, maxY)
+                );
+            },
+
+            // 手机长按开始
+            onTouchStart(item, event) {
+                if (!event.touches || !event.touches.length) {
+                    return;
+                }
+
+                const touch = event.touches[0];
+
+                this.touchStartX = touch.clientX;
+                this.touchStartY = touch.clientY;
+
+                this.longPressTriggered = false;
+
+                clearTimeout(this.longPressTimer);
+
+                this.contextMenu.target = item;
+
+                this.longPressTimer = setTimeout(() => {
+                    this.longPressTriggered = true;
+
+                    this.setMenuPosition(
+                        this.touchStartX,
+                        this.touchStartY
+                    );
+
+                    this.contextMenu.visible = true;
+
+                    if (navigator.vibrate) {
+                        navigator.vibrate(30);
+                    }
+                }, 600);
+            },
+
+            // 手机触摸结束
+            onTouchEnd() {
+                clearTimeout(this.longPressTimer);
+            },
+
+            // 手机移动取消长按
+            onTouchMove(event) {
+                if (!event.touches || !event.touches.length) {
+                    clearTimeout(this.longPressTimer);
+                    return;
+                }
+
+                const touch = event.touches[0];
+
+                const dx = Math.abs(
+                    touch.clientX - this.touchStartX
+                );
+
+                const dy = Math.abs(
+                    touch.clientY - this.touchStartY
+                );
+
+                if (dx > 10 || dy > 10) {
+                    clearTimeout(this.longPressTimer);
+                }
+            },
+
+            // 菜单点击
+            handleMenuClick(cmd) {
+                const item = this.contextMenu.target;
+
+                this.contextMenu.visible = false;
+
+                if (!item) {
+                    return;
+                }
+
+                if (cmd === 'download' && item.isFile) {
+                    if (item.url) {
+                        window.open(
+                            item.url,
+                            '_blank',
+                            'noopener'
+                        );
+                    } else {
+                        this.$message.error(
+                            '该文件没有可用的下载地址'
+                        );
+                    }
+                }
+
+                if (cmd === 'open' && !item.isFile) {
+                    this.openFolder(item);
+                }
+            },
+
+            // 打开文件夹
+            openFolder(item) {
+                if (!item || item.isFile) {
+                    return;
+                }
+
+                this.contextMenu.visible = false;
+
+                this.currentPath = item.path;
+
+                this.loadFiles(item.path);
+            },
+
+            // 面包屑导航
+            navigateTo(index) {
+                const p = this.pathItems.slice(
+                    1,
+                    index + 1
+                );
+
+                this.currentPath = p.join('/');
+
+                this.loadFiles(this.currentPath);
+            },
+
+            // 点击外部关闭菜单
+            hideContextMenu(event) {
+                if (
+                    event &&
+                    event.target.closest &&
+                    event.target.closest('.context-menu')
+                ) {
+                    return;
+                }
+
+                this.contextMenu.visible = false;
+            }
+        },
+
+        mounted() {
+            this.loadFiles();
+
+            document.addEventListener(
+                'click',
+                this.hideContextMenu
+            );
+
+            document.addEventListener(
+                'contextmenu',
+                event => {
+                    if (!event.target.closest('.file-item')) {
+                        this.contextMenu.visible = false;
+                    }
+                }
+            );
+        },
+
+        beforeDestroy() {
+            document.removeEventListener(
+                'click',
+                this.hideContextMenu
+            );
+
+            clearTimeout(this.longPressTimer);
+        }
+    });
+</script>
+
+</body>
+</html>

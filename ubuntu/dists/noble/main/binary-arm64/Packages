@@ -1,0 +1,122 @@
+Package: nginx
+Version: 1.31.10-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 2535
+Depends: libc6 (>= 2.34), libcrypt1 (>= 1:4.1.0), libgd3 (>= 2.1.0~alpha~), libgeoip1t64 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libssl3t64 (>= 3.0.0), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/noble/main/binary-arm64/nginx_1.31.10-1_arm64.deb
+Size: 543366
+MD5sum: 75873933c816cb7a5ac6d43b92dc6a8a
+SHA1: 9fd5a58c9e9420da09c74208669055a11ac2d236
+SHA256: fdc18fdcaffd07eb709dd4fef5e3a2aff19c0f418da7282859d6dd0a17b4702d
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: nginx ("engine x") is an HTTP web server, reverse proxy, content cache, load balancer, TCP/UDP proxy server, and mail proxy server. Originally written by Igor Sysoev and distributed under the 2-clause BSD License.
+
+Package: openresty
+Version: 1.31.9.1-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 10105
+Depends: libc6 (>= 2.38), libcrypt1 (>= 1:4.1.0), libgcc-s1 (>= 4.2), libgd3 (>= 2.1.0~alpha~), libgeoip1t64 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libssl3t64 (>= 3.0.0), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/noble/main/binary-arm64/openresty_1.31.9.1-1_arm64.deb
+Size: 2188858
+MD5sum: 3544be9ceabef63fb6774560f491f3d9
+SHA1: e0234b35d0aae219b0ec41d4488e57597f3f5551
+SHA256: be90078a2128c7ef5aa05225d9c0a8790a90af3d309d9b69870b5b0b08281895
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenResty self-compiled package
+ OpenResty is a full-fledged web platform that integrates the standard
+ Nginx core, LuaJIT, many carefully written Lua libraries, lots of
+ high quality 3rd-party Nginx modules, and most of their external
+ dependencies. This package is a self-compiled version with additional
+ modules including ngx_upstream_jdomain and nginx-upstream-dynamic-servers.
+
+Package: openssh
+Version: 2:10.6.P2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 1443
+Depends: libc6 (>= 2.38), libselinux1 (>= 3.1~), openssh-openssl-libs
+Filename: dists/noble/main/binary-arm64/openssh_10.6.P2-1_arm64.deb
+Size: 208070
+MD5sum: bb43c84fdbf30ff5dd29c94d12981107
+SHA1: 7b46fadbf74a0da9b3226fe6a4cecdf36861738d
+SHA256: baa48915cb7bfdab738b6ae4c707ad95f155ae5201e07805a8730592cf0be749
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh编译
+
+Package: openssh-client
+Source: openssh
+Version: 2:10.6.P2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 5290
+Depends: openssh (= 2:10.6.P2-1), openssh-openssl-libs (= 2:10.6.P2-1)
+Filename: dists/noble/main/binary-arm64/openssh-client_10.6.P2-1_arm64.deb
+Size: 746738
+MD5sum: a2470afb827bf064619016ee0d627e9b
+SHA1: 56b874a90c99033cd7f66d126c3c53388fa26e7b
+SHA256: 59570ef9c47373edc90c91d5d27069e518417cd65c47702739f74d2a01d6a85f
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh-clients编译
+
+Package: openssh-openssl-libs
+Source: openssh
+Version: 2:10.6.P2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 9264
+Filename: dists/noble/main/binary-arm64/openssh-openssl-libs_10.6.P2-1_arm64.deb
+Size: 2985824
+MD5sum: 3d52a689eb7b92903c90346e9699d7d6
+SHA1: 411c4d09663962019ac23cfbc29aca15a34821e6
+SHA256: a4457ff9bfbd2d736e167e70019fb39145748da6a46dcf5c7de5652779a76b95
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenSSL libraries for openssh (custom rpath build)
+
+Package: openssh-server
+Source: openssh
+Version: 2:10.6.P2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 4213
+Depends: openssh-client (= 2:10.6.P2-1)
+Filename: dists/noble/main/binary-arm64/openssh-server_10.6.P2-1_arm64.deb
+Size: 604862
+MD5sum: b0afe083070860380839789046d716bc
+SHA1: e01f4521c2ec94c94f9109ed014ba8ded45dc5d1
+SHA256: d0c9b8adda69782f5a6b1cc74692ffdd536a2cc9914542c9668b33fb19a16a6a
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh-server编译
+
+Package: redis
+Version: 100:8.12.0-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 6961
+Depends: libc6 (>= 2.38), libssl3t64 (>= 3.0.0), libsystemd0
+Filename: dists/noble/main/binary-arm64/redis_8.12.0-1_arm64.deb
+Size: 2117748
+MD5sum: e9c6dd3348b2a2e0a5210149b2794127
+SHA1: 0b7af5b747d9ed41813a6748d1f8ca32f3cd301a
+SHA256: 9d4445055a66430347344df72e61f182c3d802440f4619d169f0c4ba653d48b1
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.
+

@@ -1,0 +1,31 @@
+Architectures: amd64 arm64
+Codename: noble
+Components: main
+Date: Fri, 27 Nov 2026 03:16:01 +0000
+Label: CodeTiger ubuntu Repository
+Origin: Codetiger
+Suite: noble
+MD5Sum:
+ d3073f35cfc47bada516a5bacbb1bceb              164 Release
+ 13e3b3b050775640bc3f1a05c552d635             4742 main/binary-amd64/Packages
+ 91af7617312a7c9304c56c2e0b7433bc             1769 main/binary-amd64/Packages.gz
+ edf36482522c96ee06e6c6259e06eee7             4742 main/binary-arm64/Packages
+ f35db9eb9705c42eccf1b61e4bd2f441             1771 main/binary-arm64/Packages.gz
+SHA1:
+ 5e5ec00c74db61e35f3de17ce15da184dd876694              164 Release
+ 4cbe3ba723aa7a70dd11fe6664cfa3b9d1b35de9             4742 main/binary-amd64/Packages
+ ecc6aa243f8f3d8000d4e7e14e331d3364f4c06f             1769 main/binary-amd64/Packages.gz
+ 96ba0268c08e63674af051c5f7c8e20d869e8da5             4742 main/binary-arm64/Packages
+ 3b6f3360284cb37b530190b5c5776b63f4de0439             1771 main/binary-arm64/Packages.gz
+SHA256:
+ c0d837cdec6a8ee132afa4c82c2dbe6456db88bf2f3c3ce1b5bf656ddcbc7917              164 Release
+ d85ff217a8edda21e7c58db1263cc33e44d362f9a0a3df8d595d389fcdc6c7b1             4742 main/binary-amd64/Packages
+ 120ca2cbf0f95acfeab8b9bf2fc7c79d461b5d4d516189ebca5516d5c9cd63a3             1769 main/binary-amd64/Packages.gz
+ d9613907d54f2df793ea5bd0bd9ec0a412079c21679bba2e5564518beb1ddc4c             4742 main/binary-arm64/Packages
+ 9028c64e118321c808cb6dd1d203458450b90d27a6dc2e90e858fe943fa247f7             1771 main/binary-arm64/Packages.gz
+SHA512:
+ ee5db675f94c77480007ece50a48e583297f87fd21e73046174f23e41fee818a025652068124a53d1e0b980be4936c003a174a49d6f0d9cce884af8e17185cd0              164 Release
+ 1a3a66d05b496116ee9981082ad7a7c3254d93d2092594350c10d5cd8e390d9831d4a11a87982556aa30871a2786af8bbfa928e42b150c884e2482b2ef349d6c             4742 main/binary-amd64/Packages
+ 2b8df06d536c3de11595c020f1d0203601922718aa40f6d5fea734bea33b1b7dab5de0cc2bc4b88e8ba7c3193fe50b5983b57f90de0b1b0e121fbbdb267201dd             1769 main/binary-amd64/Packages.gz
+ 5e7237a34855b8b6d5500f3bfd9525a34d657b7e948672ccfe7f7e51593b9f10a3553b5148fae7cd17431d615849c0d18ad781667a8a6ea58a90378e15ba6788             4742 main/binary-arm64/Packages
+ 0b09fabdebd4cd1ca4d4be99b0b87804251bf5f8b86ef2fa7d342b49fd9f9ab725fdc2014a85fe579933638860957565cb3e92f9eadc51d52db4c1a95ec04e9c             1771 main/binary-arm64/Packages.gz

@@ -1,0 +1,194 @@
+Package: nginx
+Version: 1.31.10-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 2551
+Depends: libc6 (>= 2.34), libcrypt1 (>= 1:4.1.0), libgd3 (>= 2.1.0~alpha~), libgeoip1t64 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libssl3t64 (>= 3.5.0), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/trixie/main/binary-arm64/nginx_1.31.10-1_arm64.deb
+Size: 536924
+MD5sum: 7bf4a73eba5baa7c4ee1c307401de55c
+SHA1: a6bacaa082d6919e8697eb88bdf55d0a831b715f
+SHA256: 31d94b2d8f10b1b955d46865172b571a420dd2ce59e29afdae95223f6bd83153
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: nginx ("engine x") is an HTTP web server, reverse proxy, content cache, load balancer, TCP/UDP proxy server, and mail proxy server. Originally written by Igor Sysoev and distributed under the 2-clause BSD License.
+
+Package: nginx-dbgsym
+Source: nginx
+Version: 1.31.10-1
+Auto-Built-Package: debug-symbols
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 2476
+Depends: nginx (= 1.31.10-1)
+Filename: dists/trixie/main/binary-arm64/nginx-dbgsym_1.31.10-1_arm64.deb
+Size: 52952
+MD5sum: 11563b2defd49c9c4937b1ffb4d5da94
+SHA1: 2b033deffa4c04aec157daba8a632c33fac902e8
+SHA256: e9eb2904db180485fdf930898aae67bb6705c693f947e1a90cb989e842352144
+Section: debug
+Priority: optional
+Description: debug symbols for nginx
+Build-Ids: e5a61e63c27b7dacae6abed353f404961cc8127a
+
+Package: openresty
+Version: 1.31.9.1-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 10114
+Depends: libc6 (>= 2.38), libcrypt1 (>= 1:4.1.0), libgcc-s1 (>= 4.2), libgd3 (>= 2.1.0~alpha~), libgeoip1t64 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libssl3t64 (>= 3.2.0), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/trixie/main/binary-arm64/openresty_1.31.9.1-1_arm64.deb
+Size: 1983668
+MD5sum: efc7c3309dfbddb56ece83c8666412e2
+SHA1: 8cf6811ff52a4fbe0b65225ad1f0bdce23612d3a
+SHA256: 23786d419dca74e687623caac2f51278a325f7de9ba07a1f0e2535610ac601a1
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenResty self-compiled package
+ OpenResty is a full-fledged web platform that integrates the standard
+ Nginx core, LuaJIT, many carefully written Lua libraries, lots of
+ high quality 3rd-party Nginx modules, and most of their external
+ dependencies. This package is a self-compiled version with additional
+ modules including ngx_upstream_jdomain and nginx-upstream-dynamic-servers.
+
+Package: openresty-dbgsym
+Source: openresty
+Version: 1.31.9.1-1
+Auto-Built-Package: debug-symbols
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 5668
+Depends: openresty (= 1.31.9.1-1)
+Filename: dists/trixie/main/binary-arm64/openresty-dbgsym_1.31.9.1-1_arm64.deb
+Size: 2579116
+MD5sum: db0da70177b0003912a8042dac55ca35
+SHA1: 86ea4f11f2d224ac31b22716be33610e3f31440d
+SHA256: c974e9658bb5d13f90eab04e49135dc8dd2ade5b48f831c1b4dd7d7217ab188d
+Section: debug
+Priority: optional
+Description: debug symbols for openresty
+Build-Ids: 509f7b081c0eafd21b8af78b7eb0de8f9bd20252 662ef163a13c3e7d552348ad7c341a92f6bc7c65 6e8bb647669eb63db0f0b5c7c46be48dfc6c762c 7a93f07308662f39694cecd6c25b69eba8c44a38 98fe82f5b278d16697594e5fa28deda2215b8ead 9cdf2ed7cc081863cba3e8e1468ee9cecc9e8994 bfb77ab02e63cf888f77c19da8e79ccb91640bfa
+
+Package: openssh
+Version: 2:10.6.P2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 1582
+Depends: libc6 (>= 2.38), libselinux1 (>= 3.1~), openssh-openssl-libs
+Filename: dists/trixie/main/binary-arm64/openssh_10.6.P2-1_arm64.deb
+Size: 322392
+MD5sum: e6a53bb66ae083228040978d98b31de0
+SHA1: 7cebee490dcbb0e29985a1787658d250f94e54b5
+SHA256: 3bccfd724e43bfe5b718ae6a4fbed0b251c2e13ce82b1b57212a613f7537d875
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh编译
+
+Package: openssh-client
+Source: openssh
+Version: 2:10.6.P2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 5365
+Depends: openssh (= 2:10.6.P2-1), openssh-openssl-libs (= 2:10.6.P2-1)
+Filename: dists/trixie/main/binary-arm64/openssh-client_10.6.P2-1_arm64.deb
+Size: 774708
+MD5sum: 387da7c234117fe7ca984d49d5bb415f
+SHA1: 57508ad2a40a033dab49b20709d1b6e627d0af72
+SHA256: ebce9d2f61849db71f9d328af1111612a2bd9701f7d1acbd5f3ac35a3255132c
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh-clients编译
+
+Package: openssh-openssl-libs
+Source: openssh
+Version: 2:10.6.P2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 9467
+Filename: dists/trixie/main/binary-arm64/openssh-openssl-libs_10.6.P2-1_arm64.deb
+Size: 2865772
+MD5sum: 72ea67ac3b9063074f64a3f223335b14
+SHA1: 4d4e2b10f96f09dc6aef1d845b3a7d66f92c75d7
+SHA256: 99fcaac426afca81219d1dc9caacdf6bef76c788b41c4ebf6b769153dea7d6ed
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenSSL libraries for openssh (custom rpath build)
+
+Package: openssh-openssl-libs-dbgsym
+Source: openssh
+Version: 2:10.6.P2-1
+Auto-Built-Package: debug-symbols
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 8492
+Depends: openssh-openssl-libs (= 2:10.6.P2-1)
+Filename: dists/trixie/main/binary-arm64/openssh-openssl-libs-dbgsym_10.6.P2-1_arm64.deb
+Size: 7684164
+MD5sum: 906b0a88e12e1632e10b7567341cfacb
+SHA1: e10114924fb5b088d4fb762c7acb99f18507dd38
+SHA256: 148b89ecc543dad5497e54ed868b9526cda1850079af8a33c14fcff9e9cad20a
+Section: debug
+Priority: optional
+Description: debug symbols for openssh-openssl-libs
+Build-Ids: 1cda4d40eff9c995b1f26f124661770d3d2df2ed 46185dce589b721526698421db3016472e561fe8
+
+Package: openssh-server
+Source: openssh
+Version: 2:10.6.P2-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 4352
+Depends: openssh-client (= 2:10.6.P2-1)
+Filename: dists/trixie/main/binary-arm64/openssh-server_10.6.P2-1_arm64.deb
+Size: 653608
+MD5sum: 3877e5fd8c0ce75cedb26ffb70da9b05
+SHA1: aba8af215758c788b692a42c8e6401ca1e28677a
+SHA256: cb17162d581b064d243db8cefef477e6128cabb3651e9fd6888d656782dc8346
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh-server编译
+
+Package: redis
+Version: 100:8.12.0-1
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 7089
+Depends: libc6 (>= 2.38), libssl3t64 (>= 3.0.0), libsystemd0
+Filename: dists/trixie/main/binary-arm64/redis_8.12.0-1_arm64.deb
+Size: 1857000
+MD5sum: 99c6779243a6c9de773395a748a395e6
+SHA1: 34e271d5f9527f966f27c9cb37ff7a003a833dba
+SHA256: 15cf4164b629676fc9743c25ea9d0d7c2778d0cbcab18ae8f7a4b5343a965f03
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.
+
+Package: redis-dbgsym
+Source: redis
+Version: 100:8.12.0-1
+Auto-Built-Package: debug-symbols
+Architecture: arm64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 19846
+Depends: redis (= 100:8.12.0-1)
+Filename: dists/trixie/main/binary-arm64/redis-dbgsym_8.12.0-1_arm64.deb
+Size: 11509976
+MD5sum: fcd9238977d072e0a46aa090c4bad868
+SHA1: b02c30cb8e76396013834dd05d76a5fd7626d792
+SHA256: 9921d96fd16614b99ffa822b393aafb0c57fad500bd239cd963df1ce97dbf368
+Section: debug
+Priority: optional
+Description: debug symbols for redis
+Build-Ids: 2dc9c7e09d25b696da6c4f4cb54154db0e6894e9 53fddbe85fa18e53fd2b0bd3ec763ba7bd53fff3 6e90691877a2f8d2fc954d3dd71ba279ecefefc7
+

@@ -1,0 +1,122 @@
+Package: nginx
+Version: 1.31.10-1
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 2477
+Depends: libc6 (>= 2.34), libgd3 (>= 2.1.0~alpha~), libgeoip1t64 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libssl4 (>= 4.0.0), libxml2-16 (>= 2.14.1), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/rolling/main/binary-amd64/nginx_1.31.10-1_amd64.deb
+Size: 574504
+MD5sum: 9b05e94539b8f902f44ef9497fa3f7b1
+SHA1: 1ee2798c039ae01286c106a5d266accc4461dbe2
+SHA256: f5d85a5a47e46e11f8fd473d56eb729da9b1fa17c6f4959afe9c6de27b61ad3d
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: nginx ("engine x") is an HTTP web server, reverse proxy, content cache, load balancer, TCP/UDP proxy server, and mail proxy server. Originally written by Igor Sysoev and distributed under the 2-clause BSD License.
+
+Package: openresty
+Version: 1.31.9.1-1
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 10117
+Depends: libc6 (>= 2.44), libcrypt1 (>= 1:4.1.0), libgcc-s1 (>= 3.3), libgd3 (>= 2.1.0~alpha~), libgeoip1t64 (>= 1.6.12), libpcre2-8-0 (>= 10.22), libssl4 (>= 4.0.0), libxml2-16 (>= 2.14.1), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Filename: dists/rolling/main/binary-amd64/openresty_1.31.9.1-1_amd64.deb
+Size: 2213354
+MD5sum: fd596a5775a87f543eba6f0cfc3a2717
+SHA1: de2e924f264960c60ce0d8e4630aaab418e1faea
+SHA256: 8db5115275adc39a0e57734ac88fe74a70c4c38a4bac6f4c9e164c9faf3f7834
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenResty self-compiled package
+ OpenResty is a full-fledged web platform that integrates the standard
+ Nginx core, LuaJIT, many carefully written Lua libraries, lots of
+ high quality 3rd-party Nginx modules, and most of their external
+ dependencies. This package is a self-compiled version with additional
+ modules including ngx_upstream_jdomain and nginx-upstream-dynamic-servers.
+
+Package: openssh
+Version: 2:10.6.P2-1
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 1435
+Depends: libc6 (>= 2.38), libselinux1 (>= 3.1~), openssh-openssl-libs
+Filename: dists/rolling/main/binary-amd64/openssh_10.6.P2-1_amd64.deb
+Size: 224248
+MD5sum: 0c39f7075e3c08344873117b2d72c623
+SHA1: 16aacbfe2f53ae300637245ce5282850227c192a
+SHA256: 8ff67b4c08c598a1df5a98744ed7fae1810ce31c990156c6ffec39195f2dd555
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh编译
+
+Package: openssh-client
+Source: openssh
+Version: 2:10.6.P2-1
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 5083
+Depends: openssh (= 2:10.6.P2-1), openssh-openssl-libs (= 2:10.6.P2-1)
+Filename: dists/rolling/main/binary-amd64/openssh-client_10.6.P2-1_amd64.deb
+Size: 784040
+MD5sum: b7567d191def4276ca052db192295cd1
+SHA1: 6887101fcbc960ae2055646034216c000bfdc3d6
+SHA256: 19dad648f4f1bfa4d82e0741368e90a07f17e53ce2c6f25f02eb03a5b159aee3
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh-clients编译
+
+Package: openssh-openssl-libs
+Source: openssh
+Version: 2:10.6.P2-1
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 9405
+Filename: dists/rolling/main/binary-amd64/openssh-openssl-libs_10.6.P2-1_amd64.deb
+Size: 2582868
+MD5sum: 357c02a8e031f7c96cd0ffd231027ce5
+SHA1: b53b4c26365997ff4abab1775dbf9173ad9c5510
+SHA256: 12bb8c9eedbf50bfea33ef08f23c02c10ced04827f4048c489a386bc3e415749
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: OpenSSL libraries for openssh (custom rpath build)
+
+Package: openssh-server
+Source: openssh
+Version: 2:10.6.P2-1
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 4141
+Depends: openssh-client (= 2:10.6.P2-1)
+Filename: dists/rolling/main/binary-amd64/openssh-server_10.6.P2-1_amd64.deb
+Size: 633892
+MD5sum: 2493cd0ea55f6aca45e8e9d733b241fe
+SHA1: 1ed8374df409755bda5ed2dc0ef80270dd136c1d
+SHA256: ae7172a6fa653dcf8c6db783d9cae15f273ab1dbb55df0c72894df02f73797d0
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: openssh-server编译
+
+Package: redis
+Version: 100:8.12.0-1
+Architecture: amd64
+Maintainer: codetiger <admin@111179.xyz>
+Installed-Size: 7333
+Depends: libc6 (>= 2.44), libssl4 (>= 4.0.0), libsystemd0
+Filename: dists/rolling/main/binary-amd64/redis_8.12.0-1_amd64.deb
+Size: 2159580
+MD5sum: 40213e46eb55103b9e76c3c5836ab2b7
+SHA1: a759d2f3ce2ae1dc6a8f2beca9c180a51fed53ad
+SHA256: e01e9f6d9303632eb9449b71ba012ccd3972d7d1c13568e7e2873eb2b4b35088
+Section: web
+Priority: optional
+Homepage: https://111179.xyz
+Description: Redis self-compiled package
+ Redis is an open-source, in-memory data structure store, used as a
+ database, cache, and message broker. This package is a self-compiled
+ version from source.
+
